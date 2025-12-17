@@ -1,6 +1,4 @@
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
-using Serilog;
 
 namespace Boundless.Backend;
 
@@ -8,7 +6,7 @@ public class Configuration
 {
     public static Configuration? Config;
 
-    [JsonPropertyName("version")] public string Version { get; set; } = VERSION;
+    [JsonProperty("version")] public string Version { get; set; } = VERSION;
     
     public static string DirectoryName =>
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BoundlessLauncher";
