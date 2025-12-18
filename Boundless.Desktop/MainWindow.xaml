@@ -4,10 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Boundless.Desktop"
+        xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200"
-        WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
-    <Grid>
-        
-    </Grid>
+        WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None"
+        Background="Transparent">
+    <Border Background="#13151a" CornerRadius="10" ClipToBounds="True">
+        <Grid Margin="10 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0" Background="Blue" MouseDown="TopBar_OnMouseDown" ZIndex="999"/>
+            <wpf:WebView2 x:Name="WebView" Grid.Row="1" Visibility="Collapsed"/>
+            <Canvas x:Name="LoadingCanvas" Grid.Row="1" Background="#13151a">
+                
+            </Canvas>
+        </Grid>
+    </Border>
 </Window>

@@ -10,7 +10,19 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+      <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3650.58" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     </ItemGroup>
 
+    <!--<Target Name="CopyBlazorWwwRoot" BeforeTargets="Build">
+        <ItemGroup>
+            <BlazorFiles Include="..\Boundless.Blazor\wwwroot\**\*" />
+        </ItemGroup>
+
+        <Copy
+                SourceFiles="@(BlazorFiles)"
+                DestinationFiles="@(BlazorFiles->'$(OutDir)blazor\%(RecursiveDir)%(Filename)%(Extension)')"
+                SkipUnchangedFiles="true" />
+    </Target>-->
+    
 </Project>
