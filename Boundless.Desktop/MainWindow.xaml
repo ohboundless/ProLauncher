@@ -7,19 +7,102 @@
         xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200"
-        WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None"
-        Background="Transparent">
-    <Border Background="#13151a" CornerRadius="10" ClipToBounds="True">
-        <Grid Margin="10 0">
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Loaded="MainWindow_OnLoaded">
+    <Window.Resources>
+
+        <!-- Normal window button -->
+        <Style x:Key="WindowButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3E3E42"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Close button -->
+        <Style x:Key="CloseButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource WindowButtonStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E81123"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+    <Border RenderTransformOrigin="0.5, 0.5">
+        <Border.RenderTransform>
+            <ScaleTransform x:Name="RootScale" ScaleX="1" ScaleY="1"/>
+        </Border.RenderTransform>
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="50"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             
-            <StackPanel Grid.Row="0" Background="Blue" MouseDown="TopBar_OnMouseDown" ZIndex="999"/>
-            <wpf:WebView2 x:Name="WebView" Grid.Row="1" Visibility="Collapsed"/>
-            <Canvas x:Name="LoadingCanvas" Grid.Row="1" Background="#13151a">
+            <Grid MouseLeftButtonDown="TopBar_OnMouseLeftButtonDown"
+                  Background="#0a0b10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
                 
+                <TextBlock Text="Boundless Launcher" 
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="10,0"
+                           Foreground="White"
+                           FontSize="12"/>
+
+                <!-- WINDOW BUTTONS -->
+                <StackPanel Grid.Column="1" MouseDown="TopBar_OnMouseLeftButtonDown" Background="#0a0b10"
+                            Orientation="Horizontal">
+
+                    <!-- MINIMIZE -->
+                    <Button Content="—"
+                            Width="56"
+                            Style="{StaticResource WindowButtonStyle}"
+                            Click="Minimize_OnClick"/>
+
+                    <!-- MAXIMIZE / RESTORE -->
+                    <Button Content="▢"
+                            Width="56"
+                            Style="{StaticResource WindowButtonStyle}"
+                            Click="Maximize_OnClick"/>
+
+                    <!-- CLOSE -->
+                    <Button Content="✕"
+                            Width="56"
+                            Style="{StaticResource CloseButtonStyle}"
+                            Click="Exit_OnClick"/>
+                </StackPanel>
+            </Grid>
+            
+            <wpf:WebView2 x:Name="WebView" Grid.Row="1"
+                          AllowExternalDrop="False"/>
+            <Canvas x:Name="LoadingCanvas" Grid.Row="1" Background="#0a0b10">
+                    
             </Canvas>
         </Grid>
     </Border>

@@ -1,7 +1,12 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Security.Policy;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Wpf;
 
 namespace Boundless.Desktop;
 
@@ -20,17 +25,137 @@ public partial class MainWindow : Window
         });*/
         
         InitializeComponent();
-
-        WebView.Source = new Uri("http://localhost:5185/");
-        WebView.Loaded += (_, _) =>
-        {
-            WebView.Visibility = Visibility.Visible;
-            LoadingCanvas.Visibility = Visibility.Collapsed;
-        };
     }
 
-    private void TopBar_OnMouseDown(object sender, MouseButtonEventArgs e)
+    private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
-        DragMove();
+        MaxHeight = SystemParameters.WorkArea.Height;
+        MaxWidth = SystemParameters.WorkArea.Width;
+        
+        WebView.CoreWebView2InitializationCompleted += (s, e) =>
+        {
+            var webView = (WebView2)s!;
+            webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+            webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
+            webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
+            webView.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
+            webView.CoreWebView2.Settings.IsGeneralAutofillEnabled = false;
+            webView.CoreWebView2.Settings.IsPinchZoomEnabled = false;
+            webView.CoreWebView2.Settings.IsPasswordAutosaveEnabled = false;
+            webView.CoreWebView2.Settings.IsReputationCheckingRequired = false;
+            webView.CoreWebView2.Settings.IsStatusBarEnabled = false;
+            webView.CoreWebView2.Settings.IsWebMessageEnabled = false;
+
+            webView.Loaded += (_, _) =>
+            {
+                webView.Visibility = Visibility.Visible;
+                LoadingCanvas.Visibility = Visibility.Collapsed;
+            };
+
+            webView.Source = new Uri("http://localhost:5185/");
+        };
+        
+        WebView.EnsureCoreWebView2Async();
+    }
+    
+    private void TopBar_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed)
+        {
+            if (e.ClickCount == 2)
+            {
+                ToggleMaximize();
+                return;
+            }
+
+            if (WindowState == WindowState.Maximized)
+            {
+                RestoreFromMaximized(e);
+            }
+
+            DragMove();
+        }
+    }
+    
+    private void RestoreFromMaximized(MouseButtonEventArgs e)
+    {
+        var mousePos = e.GetPosition(this);
+        var percentX = mousePos.X / ActualWidth;
+        
+        WindowState = WindowState.Normal;
+        Left = SystemParameters.WorkArea.Left + SystemParameters.WorkArea.Width * percentX - RestoreBounds.Width * percentX;
+        Top = SystemParameters.WorkArea.Top;
+    }
+    
+    private void ToggleMaximize()
+    {
+        WindowState = WindowState == WindowState.Maximized
+            ? WindowState.Normal
+            : WindowState.Maximized;
+    }
+
+    private void Exit_OnClick(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+    
+    private void Maximize_OnClick(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState == WindowState.Maximized
+            ? WindowState.Normal
+            : WindowState.Maximized;
+    }
+
+    private void Minimize_OnClick(object sender, RoutedEventArgs e)
+    {
+        var anim = new DoubleAnimation
+        {
+            From = 1,
+            To = 0,
+            Duration = TimeSpan.FromMilliseconds(200),
+            FillBehavior = FillBehavior.Stop
+        };
+
+        var left = Left;
+        var anim2 = new DoubleAnimation
+        {
+            From = left,
+            To = SystemParameters.WorkArea.Width / 2 - Width / 2,
+            Duration = TimeSpan.FromMilliseconds(200),
+            FillBehavior = FillBehavior.Stop
+        };
+
+        var top = Top;
+        var anim3 = new DoubleAnimation
+        {
+            From = top,
+            To = SystemParameters.WorkArea.Height,
+            Duration = TimeSpan.FromMilliseconds(200),
+            FillBehavior = FillBehavior.Stop
+        };
+        
+        var anim4 = new DoubleAnimation
+        {
+            From = 1,
+            To = 0.5,
+            Duration = TimeSpan.FromMilliseconds(100),
+            FillBehavior = FillBehavior.Stop
+        };
+
+        anim.Completed += (s, a) =>
+        {
+            WindowState = WindowState.Minimized;
+            Opacity = 1;
+            Left = left;
+            Top = top;
+            RootScale.ScaleX = 1;
+            RootScale.ScaleY = 1;
+        };
+
+        RootScale.BeginAnimation(ScaleTransform.ScaleXProperty, anim4);
+        RootScale.BeginAnimation(ScaleTransform.ScaleYProperty, anim4);
+        BeginAnimation(OpacityProperty, anim);
+        BeginAnimation(LeftProperty, anim2);
+        BeginAnimation(TopProperty, anim3);
     }
 }
