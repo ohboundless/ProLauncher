@@ -8,10 +8,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen" 
-        WindowStyle="None"
-        AllowsTransparency="True"
-        Background="Transparent"
         Loaded="MainWindow_OnLoaded">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0" UseAeroCaptionButtons="False" ResizeBorderThickness="7"/>
+    </WindowChrome.WindowChrome>
     <Window.Resources>
 
         <!-- Normal window button -->
@@ -34,7 +34,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#3E3E42"/>
+                    <Setter Property="Background" Value="#111111"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -45,24 +45,21 @@
                BasedOn="{StaticResource WindowButtonStyle}">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#E81123"/>
+                    <Setter Property="Background" Value="#FF7477"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
     </Window.Resources>
-    <Border RenderTransformOrigin="0.5, 0.5">
-        <Border.RenderTransform>
-            <ScaleTransform x:Name="RootScale" ScaleX="1" ScaleY="1"/>
-        </Border.RenderTransform>
+    <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="35"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             
             <Grid MouseLeftButtonDown="TopBar_OnMouseLeftButtonDown"
-                  Background="#0a0b10">
+                  Background="#181b25">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
@@ -76,7 +73,7 @@
                            FontSize="12"/>
 
                 <!-- WINDOW BUTTONS -->
-                <StackPanel Grid.Column="1" MouseDown="TopBar_OnMouseLeftButtonDown" Background="#0a0b10"
+                <StackPanel Grid.Column="1" MouseDown="TopBar_OnMouseLeftButtonDown" Background="#181b25"
                             Orientation="Horizontal">
 
                     <!-- MINIMIZE -->
@@ -101,7 +98,7 @@
             
             <wpf:WebView2 x:Name="WebView" Grid.Row="1"
                           AllowExternalDrop="False"/>
-            <Canvas x:Name="LoadingCanvas" Grid.Row="1" Background="#0a0b10">
+            <Canvas x:Name="LoadingCanvas" Grid.Row="1" Background="#181b25">
                     
             </Canvas>
         </Grid>

@@ -108,54 +108,6 @@ public partial class MainWindow : Window
 
     private void Minimize_OnClick(object sender, RoutedEventArgs e)
     {
-        var anim = new DoubleAnimation
-        {
-            From = 1,
-            To = 0,
-            Duration = TimeSpan.FromMilliseconds(200),
-            FillBehavior = FillBehavior.Stop
-        };
-
-        var left = Left;
-        var anim2 = new DoubleAnimation
-        {
-            From = left,
-            To = SystemParameters.WorkArea.Width / 2 - Width / 2,
-            Duration = TimeSpan.FromMilliseconds(200),
-            FillBehavior = FillBehavior.Stop
-        };
-
-        var top = Top;
-        var anim3 = new DoubleAnimation
-        {
-            From = top,
-            To = SystemParameters.WorkArea.Height,
-            Duration = TimeSpan.FromMilliseconds(200),
-            FillBehavior = FillBehavior.Stop
-        };
-        
-        var anim4 = new DoubleAnimation
-        {
-            From = 1,
-            To = 0.5,
-            Duration = TimeSpan.FromMilliseconds(100),
-            FillBehavior = FillBehavior.Stop
-        };
-
-        anim.Completed += (s, a) =>
-        {
-            WindowState = WindowState.Minimized;
-            Opacity = 1;
-            Left = left;
-            Top = top;
-            RootScale.ScaleX = 1;
-            RootScale.ScaleY = 1;
-        };
-
-        RootScale.BeginAnimation(ScaleTransform.ScaleXProperty, anim4);
-        RootScale.BeginAnimation(ScaleTransform.ScaleYProperty, anim4);
-        BeginAnimation(OpacityProperty, anim);
-        BeginAnimation(LeftProperty, anim2);
-        BeginAnimation(TopProperty, anim3);
+        WindowState = WindowState.Minimized;
     }
 }
