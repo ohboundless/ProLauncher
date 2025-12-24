@@ -1,0 +1,19 @@
+﻿using Boundless.Backend.Managers.Accounts;
+using Boundless.Backend.Managers.Tokens;
+
+namespace Boundless.Backend.Shared;
+
+public static class Statics
+{
+    public static WebApplication? App;
+
+    public static T GetService<T>() => (T)App!.Services.GetService(typeof(T))!;
+
+    public static AccountManager? AccountInstance;
+    public static TokenManager? TokenInstance;
+    
+    public static void StartLoops()
+    {
+        // Task.Run(..)
+    }
+}
