@@ -6,8 +6,15 @@
         xmlns:local="clr-namespace:Boundless.Desktop"
         xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200"
+        Title="Boundless Launcher" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen" 
+        ResizeMode="CanResize"
+        WindowStyle="None"
+        BorderThickness="1"
+        UseLayoutRounding="True"
+        MinWidth="750"
+        MinHeight="500"
+        SourceInitialized="MainWindow_OnSourceInitialized"
         Loaded="MainWindow_OnLoaded">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0" UseAeroCaptionButtons="False" ResizeBorderThickness="7"/>
