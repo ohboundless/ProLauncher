@@ -1,7 +1,5 @@
-﻿using Boundless.Backend.Managers.Accounts.Models;
-using Boundless.Backend.Managers.GameAccounts.Models;
+﻿using Boundless.Backend.Managers.GameAccounts.Models;
 using Boundless.Backend.Managers.Tokens.Models;
-using Boundless.Backend.Utils;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 

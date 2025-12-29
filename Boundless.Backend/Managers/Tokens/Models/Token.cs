@@ -10,19 +10,23 @@ public class Token
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
     
-    [BsonElement("account_id")] public string AccountId;
-    [BsonElement("secret")] public string Secret;
-    [BsonElement("creation_date")] public DateTime CreationDate;
-    [BsonElement("ip_address")] public string IpAddress;
+    [BsonElement("account_id")] 
+    public string AccountId;
+    
+    [BsonElement("secret")] 
+    public string Secret;
+    
+    [BsonElement("creation_date")] 
+    public DateTime CreationDate;
+    
+    [BsonElement("ip_address")] 
+    public string IpAddress;
 
-    public static Token Generate(string accountId, HttpContext context)
+    public Token(string accountId, HttpContext context)
     {
-        return new Token
-        {
-            AccountId = accountId,
-            Secret = StringUtils.RandomHex(32),
-            CreationDate =  DateTime.UtcNow,
-            IpAddress = context.GetRemoteIpAddress()
-        };
+        AccountId = accountId;
+        Secret = StringUtils.RandomHex(32);
+        CreationDate = DateTime.UtcNow;
+        IpAddress = context.GetRemoteIpAddress();
     }
 }

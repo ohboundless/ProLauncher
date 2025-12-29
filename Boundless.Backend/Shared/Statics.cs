@@ -1,4 +1,6 @@
 ﻿using Boundless.Backend.Managers.Accounts;
+using Boundless.Backend.Managers.Errors;
+using Boundless.Backend.Managers.GameAccounts;
 using Boundless.Backend.Managers.Tokens;
 using MongoDB.Driver;
 
@@ -13,6 +15,8 @@ public static class Statics
 
     public static AccountManager? AccountInstance;
     public static TokenManager? TokenInstance;
+    public static GameAccountManager? GameInstance;
+    public static ErrorManager? ErrorInstance;
     
     public static void StartLoops()
     {

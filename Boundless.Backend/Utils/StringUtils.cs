@@ -8,7 +8,7 @@ public static class StringUtils
     public static string ComputeHash(this string str)
     {
         using var sha256Hash = SHA256.Create();
-        var bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(str));
+        var bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(HASHING_SALT_1 + str + HASHING_SALT_2)); // Cry about it
         var builder = new StringBuilder();
         
         foreach (var b in bytes)

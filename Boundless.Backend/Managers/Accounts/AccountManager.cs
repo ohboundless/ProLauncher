@@ -1,4 +1,6 @@
-﻿using Boundless.Backend.Managers.Accounts.Models;
+﻿using System.Security.Cryptography;
+using System.Text;
+using Boundless.Backend.Managers.Accounts.Models;
 using Boundless.Backend.Managers.Tokens.Models;
 using Boundless.Backend.Utils;
 using Microsoft.Extensions.Options;
@@ -29,15 +31,15 @@ public class AccountManager : BaseManager
     {
         var accountId = await UniqueUtils.CreateUniqueAsync<string, UserAccount?>(() =>
             StringUtils.RandomHexAsBase64(64), GetByIdAsync);
-
+        
         await _accountCollection.InsertOneAsync(new UserAccount
         {
             AccountId = accountId,
             Username = username,
-            Password = password
+            Password = password.ComputeHash()
         });
 
-        var token = Token.Generate(accountId, context);
+        var token = new Token(accountId, context);
         await TokenInstance!.AddAsync(token);
         
         return token;
