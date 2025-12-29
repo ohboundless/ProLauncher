@@ -14,7 +14,7 @@ namespace Boundless.Backend.Controllers.Account;
 public class AccountController(AccountManager Manager) : ControllerBase
 {
     [HttpGet("token")]
-    public async Task<IActionResult> CreateToken([FromForm] string username, [FromForm] string password /* sha256password */) 
+    public async Task<IActionResult> CreateToken([FromForm] string username, [FromForm] string password) 
     {
         try
         {
