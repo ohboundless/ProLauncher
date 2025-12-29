@@ -12,6 +12,4 @@ public class UserAccount
     [BsonElement("account_id")] public string AccountId = string.Empty;
     [BsonElement("username")] public string Username = string.Empty;
     [BsonElement("password")] public string Password = string.Empty; // SHA256
-    [BsonElement("message")] public string? Message;
-    [BsonElement("tokens")] public List<string> Tokens = new(); // Token.Secret
 }

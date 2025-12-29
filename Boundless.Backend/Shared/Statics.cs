@@ -1,11 +1,13 @@
 ﻿using Boundless.Backend.Managers.Accounts;
 using Boundless.Backend.Managers.Tokens;
+using MongoDB.Driver;
 
 namespace Boundless.Backend.Shared;
 
 public static class Statics
 {
     public static WebApplication? App;
+    public static MongoClient? Mongo;
 
     public static T GetService<T>() => (T)App!.Services.GetService(typeof(T))!;
 

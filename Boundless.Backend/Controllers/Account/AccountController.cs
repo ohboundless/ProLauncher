@@ -2,7 +2,6 @@
 using Boundless.Backend.Exceptions;
 using Boundless.Backend.Managers.Accounts;
 using Boundless.Backend.Managers.Tokens.Models;
-using Boundless.Backend.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Boundless.Backend.Controllers.Account;
@@ -12,7 +11,7 @@ namespace Boundless.Backend.Controllers.Account;
 public class AccountController(AccountManager Manager) : ControllerBase
 {
     [HttpGet("token")]
-    public async Task<ContentResult> CreateToken([FromForm] string username, [FromForm] string password) // sha256password
+    public async Task<ContentResult> CreateToken([FromForm] string username, [FromForm] string password /* sha256password */) 
     {
         var account = await Manager.GetByUsernameAsync(username);
         if (account == null)
@@ -22,6 +21,8 @@ public class AccountController(AccountManager Manager) : ControllerBase
             throw new IncorrectPasswordException(username);
 
         var token = Token.Generate(account.AccountId, HttpContext);
+        await TokenInstance!.AddAsync(token);
+        
         return TokenResponse.Create(token);
     }
     

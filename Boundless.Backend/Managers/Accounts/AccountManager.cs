@@ -1,5 +1,4 @@
 ﻿using Boundless.Backend.Managers.Accounts.Models;
-using Boundless.Backend.Managers.Tokens;
 using Boundless.Backend.Managers.Tokens.Models;
 using Boundless.Backend.Utils;
 using Microsoft.Extensions.Options;
@@ -7,19 +6,13 @@ using MongoDB.Driver;
 
 namespace Boundless.Backend.Managers.Accounts;
 
-public class AccountManager
+public class AccountManager : BaseManager
 {
     private readonly IMongoCollection<UserAccount> _accountCollection;
     
-    public AccountManager(IOptions<AccountDatabaseSettings> settings)
+    public AccountManager(IOptions<AccountDatabaseSettings> settings) : base(settings)
     {
-        var mongoClient = new MongoClient(
-            settings.Value.ConnectionString);
-
-        var mongoDatabase = mongoClient.GetDatabase(
-            settings.Value.DatabaseName);
-
-        _accountCollection = mongoDatabase.GetCollection<UserAccount>(
+        _accountCollection = _database!.GetCollection<UserAccount>(
             settings.Value.AccountCollectionName);
     }
 

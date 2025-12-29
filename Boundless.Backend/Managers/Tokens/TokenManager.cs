@@ -4,19 +4,13 @@ using MongoDB.Driver;
 
 namespace Boundless.Backend.Managers.Tokens;
 
-public class TokenManager
+public class TokenManager : BaseManager
 {
     private readonly IMongoCollection<Token> _accountCollection;
     
-    public TokenManager(IOptions<TokenDatabaseSettings> settings)
+    public TokenManager(IOptions<TokenDatabaseSettings> settings) : base(settings)
     {
-        var mongoClient = new MongoClient(
-            settings.Value.ConnectionString);
-
-        var mongoDatabase = mongoClient.GetDatabase(
-            settings.Value.DatabaseName);
-
-        _accountCollection = mongoDatabase.GetCollection<Token>(
+        _accountCollection = _database!.GetCollection<Token>(
             settings.Value.TokenCollectionName);
     }
     

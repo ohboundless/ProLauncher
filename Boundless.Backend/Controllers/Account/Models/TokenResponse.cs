@@ -7,11 +7,8 @@ namespace Boundless.Backend.Controllers.Account.Models;
 
 public class TokenResponse
 {
-    [JsonPropertyName("token")]
+    [JsonProperty("token")]
     public string Token;
-    
-    [JsonPropertyName("expires")]
-    public long Expires; // Seconds
     
     public static ContentResult Create(Token token)
     {
@@ -20,8 +17,7 @@ public class TokenResponse
             ContentType = "application/json",
             Content = JsonConvert.SerializeObject(new TokenResponse
             {
-                Token = token.Secret,
-                Expires = token.Expires
+                Token = token.Secret
             })
         };
     }

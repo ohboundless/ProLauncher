@@ -1,11 +1,5 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Security.Policy;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 
 namespace Boundless.Desktop;
