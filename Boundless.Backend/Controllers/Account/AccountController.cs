@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Boundless.Backend.Controllers.Account;
 
 [ApiController]
-[Route("account")]
+[Route("api/account")]
 public class AccountController(AccountManager Manager) : ControllerBase
 {
     [HttpGet("token")]
@@ -33,7 +33,7 @@ public class AccountController(AccountManager Manager) : ControllerBase
         }
     }
     
-    [HttpGet("create")]
+    [HttpPost("create")]
     public async Task<IActionResult> CreateAccount([FromForm] string username, [FromForm] string password)
     {
         try
