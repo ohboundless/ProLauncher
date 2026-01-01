@@ -4,15 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Boundless.Blazor;
 using Boundless.Blazor.Accounts.Fortnite;
 
-var auth = await FortniteHandler.GetDeviceAuthAsync();
-Process.Start(new ProcessStartInfo
-{
-    FileName = auth.Uri,
-    UseShellExecute = true
-});
-
-
-
+Logging.StartLogging(Configuration.LoggingPath);
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

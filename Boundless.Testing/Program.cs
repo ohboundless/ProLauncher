@@ -1,26 +1,73 @@
-﻿using System.Diagnostics;
+﻿using System.Data;
+using System.Diagnostics;
 using Boundless.Blazor.Accounts.Fortnite;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-/*var auth = await FortniteHandler.GetDeviceAuthAsync();
-Process.Start(new ProcessStartInfo
+
+var loginNew = false;
+string? accountId = null;
+string? exchangeCode = null;
+
+start:
+
+if (loginNew)
 {
-    FileName = auth.Uri,
-    UseShellExecute = true
-});
+    var auth = await FortniteHandler.GetDeviceAuthAsync();
+    Process.Start(new ProcessStartInfo
+    {
+        FileName = auth.Uri,
+        UseShellExecute = true
+    });
 
-File.WriteAllText("device_auth.txt", auth.DeviceCode);*/
+    Console.WriteLine("Press enter when you have completed the login...");
+    Console.ReadLine();
 
-var deviceCode = File.ReadAllText("device_auth.txt");
+    var token = await FortniteHandler.GetTokenAsync(auth.DeviceCode);
+    accountId = token.AccountId;
 
-Console.ReadLine();
+    var launcher = await FortniteHandler.GetLauncherExchangeCode(token.Token);
+    exchangeCode = launcher.Token;
+    
+    File.WriteAllText("refresh_token.txt", JsonConvert.SerializeObject(new
+    {
+        launcher.AccountId,
+        launcher.DisplayName,
+        launcher.RefreshToken,
+        launcher.RefreshExpiresAt
+    }, Formatting.Indented));
+}
+else
+{
+    var json = JObject.Parse(File.ReadAllText("refresh_token.txt"));
+    if (DateTime.UtcNow > json["RefreshExpiresAt"]!.Value<DateTime>())
+    {
+        loginNew = true;
+        goto start;
+    }
+    
+    var token = await FortniteHandler.GetTokenAsync(refreshToken: json["RefreshToken"]!.ToString());
+    accountId = token.AccountId;
+    
+    var launcher = await FortniteHandler.GetLauncherExchangeCode(token.Token);
+    exchangeCode = launcher.Token;
+    
+    File.WriteAllText("refresh_token.txt", JsonConvert.SerializeObject(new
+    {
+        launcher.AccountId,
+        launcher.DisplayName,
+        launcher.RefreshToken,
+        launcher.RefreshExpiresAt
+    }, Formatting.Indented));
+}
 
-var token = await FortniteHandler.GetTokenAsync(deviceCode, null);
-var exchangeCode = await FortniteHandler.GetLauncherExchangeCode(token);
+if (exchangeCode == null)
+    throw new NoNullAllowedException();
 
 Process.Start(new ProcessStartInfo
 {
     FileName = "S:\\Fortnite\\FortniteGame\\Binaries\\Win64\\FortniteLauncher.exe",
     WorkingDirectory = "S:\\Fortnite\\FortniteGame\\Binaries\\Win64",
     Arguments = $"-AUTH_LOGIN=unused -AUTH_PASSWORD={exchangeCode} " +
-                "-AUTH_TYPE=exchangecode -epicapp=Fortnite -epicenv=Prod -EpicPortal -epicuserid=efebce63db7d4fe291e804cc3dfc3222"
+                $"-AUTH_TYPE=exchangecode -epicapp=Fortnite -epicenv=Prod -EpicPortal -epicuserid={accountId}"
 });

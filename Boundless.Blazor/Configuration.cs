@@ -12,6 +12,7 @@ public class Configuration
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BoundlessLauncher";
 
     private static string FilePath => DirectoryName + "\\" + "Config.json";
+    public static string LoggingPath => DirectoryName + "\\" + "Boundless.Blazor-.log";
     
     public static void Initialize()
     {

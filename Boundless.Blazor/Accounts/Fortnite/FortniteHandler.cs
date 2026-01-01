@@ -46,8 +46,17 @@ public static class FortniteHandler
                ?? throw new NoNullAllowedException("Could not get 'verification_uri_complete'.")
                );
     }
+
+    public record TokenResponse
+    {
+        public required string Token;
+        public required string AccountId;
+        public required string DisplayName;
+        public required string RefreshToken;
+        public required DateTime RefreshExpiresAt;
+    }
     
-    public static async Task<string> GetTokenAsync(string? deviceCode, string? exchangeCode)
+    public static async Task<TokenResponse> GetTokenAsync(string? deviceCode = null, string? exchangeCode = null, string? refreshToken = null)
     {
         var request = new RestRequest(TOKEN_URI, Method.Post);
 
@@ -57,26 +66,43 @@ public static class FortniteHandler
             request.AddParameter("grant_type", "device_code");
             request.AddParameter("device_code", deviceCode);
         }
-        else // From /exchange
+        else if (exchangeCode != null) // From /exchange
         {
             request.AddHeader("Authorization", LAUNCHER_CLIENT);
             request.AddParameter("grant_type", "exchange_code");
             request.AddParameter("exchange_code", exchangeCode);
         }
+        else if (refreshToken != null)
+        {
+            request.AddHeader("Authorization", LAUNCHER_CLIENT);
+            request.AddParameter("grant_type", "refresh_token");
+            request.AddParameter("refresh_token", refreshToken);
+        }
+        else
+        {
+            throw new NullReferenceException("All arguments are null.");
+        }
 
         var response = await _client.ExecuteAsync(request);
         var json = JObject.Parse(response.Content);
-        
-        return json["access_token"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'access_token'.");
+
+        return new TokenResponse
+        {
+            Token = json["access_token"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'access_token'."),
+            AccountId = json["account_id"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'account_id'."),
+            DisplayName = json["displayName"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'displayName'."),
+            RefreshToken = json["refresh_token"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'refresh_token'."),
+            RefreshExpiresAt = json["refresh_expires_at"]?.Value<DateTime>() ?? throw new NoNullAllowedException("Could not get 'refresh_expires_at'.")
+        };
     }
 
-    public static async Task<string> GetLauncherExchangeCode(string token)
+    public static async Task<TokenResponse> GetLauncherExchangeCode(string token)
     {
         var switchCode = await Code(token);
-        var launcherToken = await GetTokenAsync(null, exchangeCode: switchCode);
-        var launcherCode = await Code(launcherToken);
+        var launcherResponse = await GetTokenAsync(exchangeCode: switchCode);
+        var launcherCode = await Code(launcherResponse.Token);
 
-        return launcherCode;
+        return launcherResponse with { Token = launcherCode };
         
         async Task<string> Code(string code)
         {
