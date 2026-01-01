@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Boundless.Blazor.Accounts;
 
@@ -10,12 +11,12 @@ public enum GameAccountType
 
 public interface IGameAccount
 {
-    [JsonPropertyName("type")]
+    [JsonProperty("type")]
     public GameAccountType Type { get; }
     
-    [JsonPropertyName("icon")]
+    [JsonProperty("icon")]
     public string Icon { get; }
     
-    [JsonPropertyName("username")]
+    [JsonProperty("username")]
     public string Username { get; }
 }

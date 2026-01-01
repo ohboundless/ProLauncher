@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Serilog;
 
 namespace Boundless.Desktop;
 
@@ -7,13 +8,17 @@ namespace Boundless.Desktop;
 /// </summary>
 public partial class App : Application
 {
-    private void App_OnStartup(object sender, StartupEventArgs e)
+    protected override void OnStartup(StartupEventArgs e)
     {
-        // do some code stuff like initializing your ViewModel or something else
+        Logging.StartLogging(Configuration.LoggingPath);
 
-
-        // Instanciate the view you want to display and show it
-        MainWindow mainWindow = new MainWindow();
-        mainWindow.ShowDialog();
+        var now = DateTime.Now;
+        Logger.Information($"Opened log file ({now.ToLongDateString()} - {now.ToLongTimeString()}");
+        
+        Logger.Information("Starting blazor application...");
+        // Start blazor app
+        Logger.Information("Launched blazor application. (not yet)");
+        
+        base.OnStartup(e);
     }
 }

@@ -51,13 +51,13 @@ public static class FortniteHandler
     {
         var request = new RestRequest(TOKEN_URI, Method.Post);
 
-        if (deviceCode != null)
+        if (deviceCode != null) // From Device Auth
         {
             request.AddHeader("Authorization", SWITCH_CLIENT);
             request.AddParameter("grant_type", "device_code");
             request.AddParameter("device_code", deviceCode);
         }
-        else
+        else // From /exchange
         {
             request.AddHeader("Authorization", LAUNCHER_CLIENT);
             request.AddParameter("grant_type", "exchange_code");

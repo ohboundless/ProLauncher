@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Boundless.Blazor.Accounts.Fortnite;
 
@@ -8,6 +9,6 @@ public class FortniteAccount : IGameAccount
     public string Icon { get; }
     public string Username { get; }
 
-    [JsonPropertyName("device_code")]
-    public string DeviceCode;
+    [JsonProperty("device_code")]
+    public string DeviceCode { get; }
 }
