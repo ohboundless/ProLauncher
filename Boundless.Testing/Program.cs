@@ -4,8 +4,7 @@ using Boundless.Blazor.Accounts.Fortnite;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-
-var loginNew = false;
+var loginNew = true;
 string? accountId = null;
 string? exchangeCode = null;
 

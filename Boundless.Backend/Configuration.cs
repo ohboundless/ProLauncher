@@ -1,3 +1,6 @@
+global using static Boundless.Backend.Configuration;
+using Boundless.Backend.Controllers.Account.Models;
+using Boundless.Backend.Exceptions;
 using Newtonsoft.Json;
 
 namespace Boundless.Backend;
@@ -6,10 +9,10 @@ public class Configuration
 {
     public static Configuration? Config;
 
-    [JsonProperty("version")] public string Version { get; set; } = VERSION;
+    [JsonProperty("status")] public StatusModel Status { get; set; } = new();
     
     public static string DirectoryName =>
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BoundlessLauncher";
+        AppDomain.CurrentDomain.BaseDirectory + "\\BoundlessLauncher";
 
     private static string FilePath => DirectoryName + "\\" + "Config.json";
     
@@ -31,5 +34,11 @@ public class Configuration
     {
         Config ??= new();
         File.WriteAllText(FilePath, JsonConvert.SerializeObject(Config, Formatting.Indented));
+    }
+
+    public static void CheckConfig()
+    {
+        if (Config is null)
+            throw new ConfigurationNullException();
     }
 }

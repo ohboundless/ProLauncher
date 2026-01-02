@@ -12,7 +12,7 @@ public class Configuration
     public static string DirectoryName =>
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BoundlessLauncher";
 
-    private static string FilePath => DirectoryName + "\\" + "Config.json";
+    private static string FilePath => DirectoryName + "\\" + "Config_Desktop.json";
     public static string LoggingPath => DirectoryName + "\\" + "Boundless-.log";
     
     public static void Initialize()
