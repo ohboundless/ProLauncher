@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Boundless.Blazor.Accounts;
+using Boundless.Blazor.Games;
 
 namespace Boundless.Blazor.Models.Accounts;
 
