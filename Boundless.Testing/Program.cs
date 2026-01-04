@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using System.Diagnostics;
-using Boundless.Blazor.Accounts.Fortnite;
+using Boundless.Blazor.Games.Fortnite;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
-namespace Boundless.Blazor.Accounts;
+namespace Boundless.Blazor.Games;
 
 public enum GameAccountType
 {

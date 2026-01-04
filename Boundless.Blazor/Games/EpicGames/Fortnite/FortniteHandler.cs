@@ -1,11 +1,18 @@
 using System.Data;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using Boundless.Blazor.Games.EpicGames;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 
-namespace Boundless.Blazor.Accounts.Fortnite;
+namespace Boundless.Blazor.Games.Fortnite;
 
+[SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
 public static class FortniteHandler
 {
+    #region API HANDLER
+
     private static RestClient _client { get; } = new();
 
     private const string TOKEN_URI = "https://account-public-service-prod.ol.epicgames.com/account/api/oauth/token";
@@ -114,4 +121,48 @@ public static class FortniteHandler
             return json["code"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'code'.");
         }
     }
+    
+    #endregion
+    
+    #region LAUNCHER
+
+    /// <summary>
+    /// Launches Fortnite on a specific account.
+    /// </summary>
+    /// <param name="account"></param>
+    /// <returns>True: Fortnite was launched successfully. False: Login has expired.</returns>
+    public static async Task<bool> LaunchFortnite(FortniteAccount account)
+    {
+        if (DateTime.UtcNow > account.RefreshExpiresAt)
+            return false;
+    
+        var token = await GetTokenAsync(refreshToken: account.RefreshToken);
+        var accountId = token.AccountId;
+    
+        var launcher = await GetLauncherExchangeCode(token.Token);
+        var exchangeCode = launcher.Token;
+
+        account.RefreshToken = launcher.RefreshToken;
+        account.RefreshExpiresAt = launcher.RefreshExpiresAt;
+
+        if (!EpicInstallations.Installs.TryGetValue("Fortnite", out var install))
+            throw new ApplicationException("Unable to launch Fortnite because it is not installed.");
+            
+        var win64 = install.Path + @"\FortniteGame\Binaries\Win64";
+        
+        var proc = Process.Start(new ProcessStartInfo
+        {
+            FileName = win64 + "\\FortniteLauncher.exe",
+            WorkingDirectory = win64,
+            Arguments = $"-AUTH_LOGIN=unused -AUTH_PASSWORD={exchangeCode} " +
+                        $"-AUTH_TYPE=exchangecode -epicapp=Fortnite -epicenv=Prod -EpicPortal -epicuserid={accountId}"
+        });
+
+        GameList.LaunchedGames.Add(new LaunchedGame("Fortnite", proc));
+
+        return true;
+    }
+
+    #endregion
+
 }
