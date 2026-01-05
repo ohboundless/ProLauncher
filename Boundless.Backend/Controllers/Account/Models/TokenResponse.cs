@@ -6,11 +6,26 @@ namespace Boundless.Backend.Controllers.Account.Models;
 
 public class TokenResponse
 {
-    [JsonProperty("token")]
-    public string Token { get; private set; }
+    /*[JsonProperty("userId")]
+    public string UserId { get; private set; }
+    
+    [JsonProperty("secret")]
+    public string Secret { get; private set; }
+    
+    [JsonProperty("secretExpiresAt")]
+    public DateTime SecretExpiresAt { get; private set; }
+    
+    [JsonProperty("nextSecret")]
+    public string NextSecret { get; private set; }*/
 
     public static JsonResult Create(Token token)
     {
-        return new JsonResult(new TokenResponse { Token = token.Secret });
+        return new JsonResult(new
+        {
+            userId = token.AccountId,
+            secret = token.Secret,
+            secretExpiresAt = token.ExpiresAt,
+            nextSecret = token.NextSecret
+        });
     }
 }

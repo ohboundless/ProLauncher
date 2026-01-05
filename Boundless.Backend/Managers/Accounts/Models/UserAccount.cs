@@ -21,6 +21,9 @@ public class UserAccount
     
     [BsonElement("username")]
     public string Username = string.Empty;
+
+    [BsonElement("friends")] 
+    public string[] Friends = [];
     
     [BsonElement("password")] 
     public string Password = string.Empty; // SHA256

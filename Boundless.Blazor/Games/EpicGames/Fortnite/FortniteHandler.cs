@@ -54,7 +54,7 @@ public static class FortniteHandler
                );
     }
 
-    public record TokenResponse
+    public record FortniteToken
     {
         public required string Token;
         public required string AccountId;
@@ -63,7 +63,7 @@ public static class FortniteHandler
         public required DateTime RefreshExpiresAt;
     }
     
-    public static async Task<TokenResponse> GetTokenAsync(string? deviceCode = null, string? exchangeCode = null, string? refreshToken = null)
+    public static async Task<FortniteToken> GetTokenAsync(string? deviceCode = null, string? exchangeCode = null, string? refreshToken = null)
     {
         var request = new RestRequest(TOKEN_URI, Method.Post);
 
@@ -93,7 +93,7 @@ public static class FortniteHandler
         var response = await _client.ExecuteAsync(request);
         var json = JObject.Parse(response.Content);
 
-        return new TokenResponse
+        return new FortniteToken
         {
             Token = json["access_token"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'access_token'."),
             AccountId = json["account_id"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'account_id'."),
@@ -103,7 +103,7 @@ public static class FortniteHandler
         };
     }
 
-    public static async Task<TokenResponse> GetLauncherExchangeCode(string token)
+    public static async Task<FortniteToken> GetLauncherExchangeCode(string token)
     {
         var switchCode = await Code(token);
         var launcherResponse = await GetTokenAsync(exchangeCode: switchCode);

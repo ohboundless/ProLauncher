@@ -30,7 +30,7 @@ public class AccountManager : BaseManager
     public async Task<Token> CreateAccountAsync(string username, string password, HttpContext context)
     {
         var accountId = await UniqueUtils.CreateUniqueAsync<string, UserAccount?>(() =>
-            StringUtils.RandomHexAsBase64(64), GetByIdAsync);
+            StringUtils.RandomHex(32), GetByIdAsync);
         
         await _accountCollection.InsertOneAsync(new UserAccount
         {

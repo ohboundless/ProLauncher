@@ -1,4 +1,8 @@
-﻿@inject NavigationManager Navigation
+﻿@using Boundless.Blazor.Models.Accounts
+@using Boundless.Blazor.Utils
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject NavigationManager Navigation
+@inject ProtectedLocalStorage ProtectedLocalStore
 
 <nav class="sidebar">
     <ul class="nav-links">
@@ -34,7 +38,7 @@
         </svg>
         
         <div class="login-status" style="padding: 10px 20px; background: rgb(0,0,0,.2); border-radius: 15px;">
-            @*@if (Account == null)
+            @if (Account == null)
             {
                 <button style="background: #3886c9; border: none; color: white; width: 90%; margin-left: 50%; transform: translateX(-50%); padding: 9px 18px; font-size: 15px; border-radius: 4px;" @onclick="() => _showLogin = true">Login</button>
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-person" viewBox="0 0 16 16" style="top: 48%; left: 50%; transform: translate(-50%, -50%); position: absolute; display: none" @onclick="() => _showLogin = true">
@@ -44,11 +48,11 @@
             else
             {
                 <div>
-                    <img @onclick="() => _showLogoutModal = true" src="@(Account.IconUri)" alt="AccountIconUri" width="40" height="40" id="account-icon"  style="border-radius: 25%; margin-bottom: 5px;"/>
+                    <img @onclick="() => _showLogoutModal = true" src="@(Account.Icon)" alt="AccountIconUri" width="40" height="40" id="account-icon"  style="border-radius: 25%; margin-bottom: 5px;"/>
                     <button style="background: transparent; box-shadow: inset 0 0 0 1px #f54542; border: none; color: white; padding: 5px 8px; font-size: 12px; border-radius: 4px; margin-left: 4px;" @onclick="() => _showLogoutModal = true">Sign out</button>
                 </div>
                 <span style="color: white;">logged in as @(Account.Username)</span>
-            }*@
+            }
         </div>
     </div>
 </nav>
@@ -149,20 +153,20 @@
     
     bool _showLogin;
     bool _showLogoutModal;
-    //UserAccount? Account;
+    UserAccount? Account;
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        /*if (!firstRender)
+        if (!firstRender)
             return;
 
-        var login = await ProtectedLocalStore.IsAuthed();
+        var login = await ProtectedLocalStore.GetAccount();
         if (login.IsValid)
         {
-            Account = login.Account;
+            // TODO
         }
         
-        StateHasChanged();*/
+        StateHasChanged();
     }
 
     async Task Logout()

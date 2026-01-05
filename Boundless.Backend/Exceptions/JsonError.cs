@@ -34,15 +34,17 @@ public class JsonError
     
     public static async Task<JsonResult> HandleAsync(HttpContext context, string? accountId, string errorType, string message, int errorCode = 400)
     {
+        var guid = System.Guid.Empty;
 #if DEBUG // Only long non-internal errors when debugging
         var error = new ErrorEntry(accountId, new Exception(message), context);
+        guid = error.Guid;
         await ErrorInstance!.AddAsync(error);
 #endif
 
         return new JsonResult(new JsonError
         {
             AccountId = accountId,
-            Guid = error.Guid.ToString(),
+            Guid = guid.ToString(),
             Error = errorType,
             Message = message
         }) { StatusCode = errorCode };

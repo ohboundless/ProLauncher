@@ -11,7 +11,7 @@ using MongoDB.Driver;
 using static Boundless.Backend.Logging;
 
 StartLogging("Boundless.Backend-.log");
-Configuration.Initialize();
+Initialize();
 
 var builder = WebApplication.CreateBuilder(args);
 

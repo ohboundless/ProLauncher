@@ -6,6 +6,9 @@ using Boundless.Blazor.Games.Fortnite;
 
 Logging.StartLogging(Configuration.LoggingPath);
 
+var now = DateTime.Now;
+Logger.Information($"Opened log file ({now.ToLongDateString()} - {now.ToLongTimeString()}");
+
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
