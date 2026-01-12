@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Boundless.Blazor.Games.Fortnite;
+namespace Boundless.Blazor.Games.EpicGames.Fortnite;
 
 public class FortniteAccount : IGameAccount
 {

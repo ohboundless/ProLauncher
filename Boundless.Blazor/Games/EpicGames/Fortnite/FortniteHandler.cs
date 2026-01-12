@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 
-namespace Boundless.Blazor.Games.Fortnite;
+namespace Boundless.Blazor.Games.EpicGames.Fortnite;
 
 [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
 public static class FortniteHandler

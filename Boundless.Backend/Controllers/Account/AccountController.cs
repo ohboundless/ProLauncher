@@ -109,29 +109,36 @@ public class AccountController(AccountManager Manager) : ControllerBase
             return await JsonError.HandleInternalAsync(HttpContext, null, ex);
         }
     }
-    
+
     public async Task<IActionResult?> ValidateAsync(string userId, string secret)
     {
-        var session = await TokenInstance!.GetBySecretAsync(secret);
-
-        if (session == null )
+        try
         {
-            return await JsonError.HandleAsync(HttpContext, null, "InvalidToken",
-                "Session not found.");
-        }
-        
-        if (DateTime.UtcNow > session.ExpiresAt )
-        {
-            return await JsonError.HandleAsync(HttpContext, null, "InvalidToken",
-                "Session has expired.");
-        }
+            var session = await TokenInstance!.GetBySecretAsync(secret);
 
-        if (session.AccountId != userId)
-        {
-            return await JsonError.HandleAsync(HttpContext, null, "TokenNotForUser",
-                $"Token supplied was not issued for '{userId}'");
-        }
+            if (session == null)
+            {
+                return await JsonError.HandleAsync(HttpContext, null, "InvalidToken",
+                    "Session not found.");
+            }
 
-        return null;
+            if (DateTime.UtcNow > session.ExpiresAt)
+            {
+                return await JsonError.HandleAsync(HttpContext, null, "InvalidToken",
+                    "Session has expired.");
+            }
+
+            if (session.AccountId != userId)
+            {
+                return await JsonError.HandleAsync(HttpContext, null, "TokenNotForUser",
+                    $"Token supplied was not issued for '{userId}'");
+            }
+
+            return null;
+        }
+        catch (Exception ex)
+        {
+            return await JsonError.HandleInternalAsync(HttpContext, null, ex);
+        }
     }
 }
