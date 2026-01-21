@@ -14,11 +14,11 @@ namespace Boundless.Backend.Controllers.Account;
 public class AccountController(AccountManager Manager) : ControllerBase
 {
     [HttpGet("token")]
-    public async Task<IActionResult> CreateToken([FromForm] string userId, [FromForm] string password) 
+    public async Task<IActionResult> CreateToken([FromForm] string username, [FromForm] string password) 
     {
         try
         {
-            var account = await Manager.GetByIdAsync(userId);
+            var account = await Manager.GetByUsernameAsync(username);
             if (account == null || account.Password != password.ComputeHash())
                 return await JsonError.HandleAsync(HttpContext, null, "InvalidUsernameOrPassword", "Invalid username or password.");
 
@@ -97,9 +97,9 @@ public class AccountController(AccountManager Manager) : ControllerBase
                 return await JsonError.HandleAsync(HttpContext, null, "InvalidPassword", 
                     "Password must be 8-32 characters long and contain the following: One number, one lowercase letter, and one special character.");
             
-            /*var account = await Manager.GetByUsernameAsync(username);
+            var account = await Manager.GetByUsernameAsync(username);
             if (account != null)
-                return await JsonError.HandleAsync(HttpContext, null, "InvalidUsername", "Username already exists.");*/
+                return await JsonError.HandleAsync(HttpContext, null, "InvalidUsername", "Username already exists.");
 
             var token = await Manager.CreateAccountAsync(username, password, HttpContext);
             return TokenResponse.Create(token);
