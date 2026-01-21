@@ -8,7 +8,7 @@ public class Configuration
     public static Configuration? Config;
     
     // Binary data holders
-    public static LoginStorage? Login;
+    public static LoginStorage? LoginData;
 
     // Actual config data
     [JsonProperty("version")] public string Version { get; set; } = VERSION;
@@ -33,8 +33,8 @@ public class Configuration
         Logger.Information("Loaded config.");
 
         // Load binary data holders
-        Login = new LoginStorage();
-        Login.Read();
+        LoginData = new LoginStorage();
+        LoginData.Read();
     }
 
     private static void Save()

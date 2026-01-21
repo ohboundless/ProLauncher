@@ -78,6 +78,11 @@ public class BinaryDataHolder
         
         _writer.Close();
     }
+
+    public void Delete()
+    {
+        File.Delete(FilePath);
+    }
     
     #endregion
 

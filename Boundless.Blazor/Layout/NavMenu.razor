@@ -1,4 +1,5 @@
-﻿@using Boundless.Blazor.Models.Accounts
+﻿@using Boundless.Blazor.Config.Data
+@using Boundless.Blazor.Models.Accounts
 @using Boundless.Blazor.Utils
 @inject NavigationManager Navigation
 
@@ -158,11 +159,12 @@
         if (!firstRender)
             return;
 
-        /*var login = await ProtectedLocalStore.GetAccount();
+        var login = await LoginStorage.GetAccount();
         if (login.IsValid)
         {
+            var acc = login.Account;
             // TODO
-        }*/
+        }
         
         StateHasChanged();
     }

@@ -1,7 +1,7 @@
+using static Boundless.Blazor.Config.Configuration;
 using Boundless.Blazor.Models.Accounts;
 using Newtonsoft.Json;
 using RestSharp;
-using Serilog;
 
 namespace Boundless.Blazor.Config.Data;
 
@@ -31,18 +31,18 @@ public class LoginStorage : BinaryDataHolder
 
     public static async Task<LoginSession> GetAccount()
     {
-        if (Configuration.Login == null)
+        if (LoginData == null)
             return LoginSession.Invalid;
         
-        var userId = Configuration.Login.UserId;
-        var secret = Configuration.Login.Secret;
-        var expires = Configuration.Login.ExpiresAt;
+        var userId = LoginData.UserId;
+        var secret = LoginData.Secret;
+        var expires = LoginData.ExpiresAt;
 
         if (DateTime.UtcNow > expires)
         {
             Logger.Information("Login secret expired requesting new one...");
             
-            var nextSecret = Configuration.Login.NextSecret;
+            var nextSecret = LoginData.NextSecret;
 
             var request1 = new RestRequest("/api/account/nextSecret");
             request1.AddParameter("userId", userId);
@@ -68,6 +68,15 @@ public class LoginStorage : BinaryDataHolder
         return new LoginSession(account);
     }
 
+    public static void Logout()
+    {
+        if (LoginData == null)
+            return;
+            
+        LoginData.Delete();
+        LoginData = null;
+    }
+
     private static void ProcessTokenResponse(RestResponse response)
     {
         if (response.Content == null)
@@ -75,9 +84,9 @@ public class LoginStorage : BinaryDataHolder
         
         var nextSecretResponse = JsonConvert.DeserializeObject<TokenResponse>(response.Content);
             
-        Configuration.Login!.Secret = nextSecretResponse!.Secret;
-        Configuration.Login.ExpiresAt = nextSecretResponse.SecretExpiresAt;
-        Configuration.Login.NextSecret = nextSecretResponse.NextSecret;
-        Configuration.Login.Save();
+        LoginData!.Secret = nextSecretResponse!.Secret;
+        LoginData.ExpiresAt = nextSecretResponse.SecretExpiresAt;
+        LoginData.NextSecret = nextSecretResponse.NextSecret;
+        LoginData.Save();
     }
 }
