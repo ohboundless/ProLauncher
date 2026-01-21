@@ -1,11 +1,16 @@
+using Boundless.Blazor.Config.Data;
 using Newtonsoft.Json;
 
-namespace Boundless.Blazor;
+namespace Boundless.Blazor.Config;
 
 public class Configuration
 {
     public static Configuration? Config;
+    
+    // Binary data holders
+    public static LoginStorage? Login;
 
+    // Actual config data
     [JsonProperty("version")] public string Version { get; set; } = VERSION;
     
     public static string DirectoryName =>
@@ -26,6 +31,10 @@ public class Configuration
                  ?? throw new JsonException($"Could not deserialize json from '{FilePath}'");
         
         Logger.Information("Loaded config.");
+
+        // Load binary data holders
+        Login = new LoginStorage();
+        Login.Read();
     }
 
     private static void Save()

@@ -1,4 +1,5 @@
 using System.Data;
+using Boundless.Blazor.Config;
 using Boundless.Blazor.Games.EpicGames.Fortnite;
 using Newtonsoft.Json;
 

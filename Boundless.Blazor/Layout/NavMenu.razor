@@ -1,8 +1,6 @@
 ﻿@using Boundless.Blazor.Models.Accounts
 @using Boundless.Blazor.Utils
-@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject NavigationManager Navigation
-@inject ProtectedLocalStorage ProtectedLocalStore
 
 <nav class="sidebar">
     <ul class="nav-links">
@@ -160,11 +158,11 @@
         if (!firstRender)
             return;
 
-        var login = await ProtectedLocalStore.GetAccount();
+        /*var login = await ProtectedLocalStore.GetAccount();
         if (login.IsValid)
         {
             // TODO
-        }
+        }*/
         
         StateHasChanged();
     }

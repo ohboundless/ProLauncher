@@ -2,12 +2,9 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Boundless.Blazor;
-using Boundless.Blazor.Games.Fortnite;
+using Boundless.Blazor.Config;
 
-Logging.StartLogging(Configuration.LoggingPath);
-
-var now = DateTime.Now;
-Logger.Information($"Opened log file ({now.ToLongDateString()} - {now.ToLongTimeString()}");
+StartupTasks();
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
