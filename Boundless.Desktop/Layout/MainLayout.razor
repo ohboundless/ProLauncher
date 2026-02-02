@@ -1,0 +1,33 @@
+﻿@using Boundless.Desktop.Pages
+@using Microsoft.AspNetCore.Components.Routing
+@inherits LayoutComponentBase
+<div class="page">
+    <NavMenu/>
+
+    <div id="main">
+        <Library/>
+    </div>
+</div>
+
+@code {
+
+    private static Dictionary<string, Type?> _pages = new()
+    {
+        { "Home", typeof(Home) },
+        { "Library", typeof(Library) },
+    };
+
+    private string _currentPage = "Library";
+
+    public void Page(string name)
+    {
+        _currentPage = name;
+    }
+
+    protected override async void OnInitialized()
+    {
+        await base.OnInitializedAsync();
+
+    }
+
+}

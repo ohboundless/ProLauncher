@@ -1,8 +1,6 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Boundless.Blazor;
-using Boundless.Blazor.Config;
 
 StartupTasks();
 

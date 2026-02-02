@@ -5,6 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Boundless.Desktop"
         xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:wpf1="http://schemas.microsoft.com/winfx/2006/xaml/presentation/blazor"
+        xmlns:pages="clr-namespace:Boundless.Desktop.Pages"
+        xmlns:layout="clr-namespace:Boundless.Desktop.Layout"
         mc:Ignorable="d"
         Title="Boundless Launcher" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen" 
@@ -103,8 +106,11 @@
                 </StackPanel>
             </Grid>
             
-            <wpf:WebView2 x:Name="WebView" Grid.Row="1"
-                          AllowExternalDrop="False"/>
+            <wpf1:BlazorWebView Grid.Row="1" HostPage="wwwroot\index.html" Services="{DynamicResource services}">
+                <wpf1:BlazorWebView.RootComponents>
+                    <wpf1:RootComponent Selector="#app" ComponentType="{x:Type layout:MainLayout}" />
+                </wpf1:BlazorWebView.RootComponents>
+            </wpf1:BlazorWebView>
             <Canvas x:Name="LoadingCanvas" Grid.Row="1" Background="#181b25">
                     
             </Canvas>

@@ -1,8 +1,4 @@
-﻿@using Boundless.Blazor.Config.Data
-@using Boundless.Blazor.Models.Accounts
-@inject NavigationManager Navigation
-
-<nav class="sidebar">
+﻿<nav class="sidebar">
     <ul class="nav-links">
         <li>
             <a href="#" id="home">
@@ -29,30 +25,6 @@
             </a>
         </li>
     </ul>
-    <div class="bottom-bar" style="bottom: 1%; position: absolute; width: 90%; left: 50%; transform: translateX(-50%); ">
-        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" class="bi bi-gear" viewBox="0 0 16 16">
-            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
-            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
-        </svg>
-        
-        <div class="login-status" style="padding: 10px 20px; background: rgb(0,0,0,.2); border-radius: 15px;">
-            @if (Account == null)
-            {
-                <button style="background: #3886c9; border: none; color: white; width: 90%; margin-left: 50%; transform: translateX(-50%); padding: 9px 18px; font-size: 15px; border-radius: 4px;" @onclick="() => _showLogin = true">Login</button>
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-person" viewBox="0 0 16 16" style="top: 48%; left: 50%; transform: translate(-50%, -50%); position: absolute; display: none" @onclick="() => _showLogin = true">
-                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
-                </svg>
-            }
-            else
-            {
-                <div>
-                    <img @onclick="() => _showLogoutModal = true" src="@(Account.Icon)" alt="AccountIconUri" width="40" height="40" id="account-icon"  style="border-radius: 25%; margin-bottom: 5px;"/>
-                    <button style="background: transparent; box-shadow: inset 0 0 0 1px #f54542; border: none; color: white; padding: 5px 8px; font-size: 12px; border-radius: 4px; margin-left: 4px;" @onclick="() => _showLogoutModal = true">Sign out</button>
-                </div>
-                <span style="color: white;">logged in as @(Account.Username)</span>
-            }
-        </div>
-    </div>
 </nav>
 
 <script>
@@ -121,56 +93,4 @@
     }
 </script>
 
-@if (_showLogin)
-{
-    <LoginModal></LoginModal>
-    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" class="bi bi-x-lg" viewBox="0 0 16 16" style="top: 20px; right: 20px; position: absolute; z-index:999; pointer-events: none;">
-        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-    </svg>
-    <div id="dropshadow" @onclick="() => _showLogin = false">
-    </div>
-}
-
-@if (_showLogoutModal)
-{
-    <div class="modal-container">
-        <p style="font-size: 18px; color: white;">Are you sure you want to sign out?</p>
-        <div>
-            <button @onclick="Logout" style="background: transparent; box-shadow: inset 0 0 0 1px #f54542; margin-top: 0; border: none; color: white; border-radius: 4px; padding: 8px 10px; font-size: 14px;">Yes I'm sure</button>
-            <button @onclick="() => _showLogoutModal = false" style="background: transparent; box-shadow: inset 0 0 0 1px #0d6efd; margin-top: 0; border: none; color: white; border-radius: 4px; padding: 8px 10px; font-size: 14px;">No I don't wanna</button>
-        </div>
-    </div>
-    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" class="bi bi-x-lg" viewBox="0 0 16 16" style="top: 20px; right: 80px; position: absolute; z-index:999; pointer-events: none;">
-        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-    </svg>
-    <div id="dropshadow" @onclick="() => _showLogoutModal = false">
-    </div>
-}
-
-@code {
-    
-    bool _showLogin;
-    bool _showLogoutModal;
-    UserAccount? Account;
-    
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (!firstRender)
-            return;
-
-        var login = await LoginStorage.GetAccount();
-        if (login.IsValid)
-        {
-            var acc = login.Account;
-            // TODO
-        }
-        
-        StateHasChanged();
-    }
-
-    async Task Logout()
-    {
-        /*await ProtectedLocalStore.Logout();
-        Navigation.Refresh(true);*/
-    }
-}
+@code { }
