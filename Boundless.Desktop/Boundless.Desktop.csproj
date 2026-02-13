@@ -18,7 +18,18 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\images\" />
+      <UpToDateCheckInput Remove="Pages\Home.razor" />
+      <UpToDateCheckInput Remove="Pages\Library.razor" />
+      <UpToDateCheckInput Remove="Pages\NotFound.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\css\app.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\MainLayout.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\NavMenu.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\Fortnite_Splash.bmp" />
+      <_ContentIncludedByDefault Remove="wwwroot\index.html" />
     </ItemGroup>
 
     <!--<Target Name="CopyBlazorWwwRoot" BeforeTargets="Build">

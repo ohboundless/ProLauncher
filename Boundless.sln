@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boundless.Backend", "Boundl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boundless.Testing", "Boundless.Testing\Boundless.Testing.csproj", "{3CAE1746-C732-46EF-A07A-23B21D61BBF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boundless.Blazor", "Boundless.Blazor\Boundless.Blazor.csproj", "{6B8BDADE-DE41-486A-B8D5-F65A857248D2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,9 +28,5 @@ Global
 		{3CAE1746-C732-46EF-A07A-23B21D61BBF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CAE1746-C732-46EF-A07A-23B21D61BBF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CAE1746-C732-46EF-A07A-23B21D61BBF1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B8BDADE-DE41-486A-B8D5-F65A857248D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B8BDADE-DE41-486A-B8D5-F65A857248D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B8BDADE-DE41-486A-B8D5-F65A857248D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B8BDADE-DE41-486A-B8D5-F65A857248D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
