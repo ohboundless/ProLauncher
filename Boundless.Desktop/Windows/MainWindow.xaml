@@ -7,6 +7,7 @@
         xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         xmlns:wpf1="http://schemas.microsoft.com/winfx/2006/xaml/presentation/blazor"
         xmlns:templates="clr-namespace:Boundless.Desktop.Templates"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
         Title="Boundless Launcher" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen" 
@@ -19,6 +20,28 @@
         Style="{StaticResource MyBoundlessWindowStyle}"
         Loaded="MainWindow_OnLoaded">
         <Grid>
-                <TextBlock>Test</TextBlock>
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0" Background="#181b25">
+                        <Border Padding="0 2">
+                                <Border.Style>
+                                        <Style TargetType="Border">
+                                                <Setter Property="Background" Value="#181b25"></Setter>
+                                                <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#111111"/>
+                                                </Trigger>
+                                                </Style.Triggers>
+                                        </Style>
+                                </Border.Style>
+                                <StackPanel Orientation="Horizontal" Margin="10">
+                                        <ui:SymbolIcon Symbol="Games24" Foreground="White" FontSize="24"/>
+                                        <TextBlock Text="Library" Margin="10 0" Foreground="White" FontSize="16"/>
+                                </StackPanel>
+                        </Border>
+                </StackPanel>
         </Grid>
 </templates:BoundlessWindow>

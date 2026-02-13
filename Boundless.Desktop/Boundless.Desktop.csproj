@@ -12,9 +12,11 @@
       <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="9.0.120" />
       <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3719.77" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+      <PackageReference Include="RestSharp" Version="113.1.0" />
       <PackageReference Include="Serilog" Version="4.3.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
       <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+      <PackageReference Include="WPF-UI" Version="4.2.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -46,7 +48,7 @@
 
     <!--<Target Name="CopyBlazorWwwRoot" BeforeTargets="Build">
         <ItemGroup>
-            <BlazorFiles Include="..\Boundless.Blazor\wwwroot\**\*" />
+            <BlazorFiles Include="..\Boundless.Desktop\wwwroot\**\*" />
         </ItemGroup>
 
         <Copy
