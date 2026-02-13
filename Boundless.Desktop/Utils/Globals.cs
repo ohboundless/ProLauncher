@@ -1,4 +1,5 @@
 global using static Boundless.Desktop.Utils.Globals;
+using Boundless.Desktop.Config;
 using RestSharp;
 
 namespace Boundless.Desktop.Utils;
