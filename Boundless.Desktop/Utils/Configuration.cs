@@ -1,7 +1,7 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace Boundless.Desktop;
+namespace Boundless.Desktop.Utils;
 
 public class Configuration
 {

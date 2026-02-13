@@ -32,6 +32,18 @@
       <_ContentIncludedByDefault Remove="wwwroot\index.html" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Page Update="Windows\MainWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="UserControls\" />
+    </ItemGroup>
+
     <!--<Target Name="CopyBlazorWwwRoot" BeforeTargets="Build">
         <ItemGroup>
             <BlazorFiles Include="..\Boundless.Blazor\wwwroot\**\*" />

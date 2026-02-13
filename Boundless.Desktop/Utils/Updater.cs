@@ -1,4 +1,4 @@
-namespace Boundless.Desktop;
+namespace Boundless.Desktop.Utils;
 
 public static class Updater
 {

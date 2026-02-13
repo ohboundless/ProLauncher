@@ -1,30 +1,44 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Web.WebView2.Wpf;
 
-namespace Boundless.Desktop;
+namespace Boundless.Desktop.Templates;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-public partial class MainWindow : Window
+public class BoundlessWindow : Window
 {
-    public MainWindow()
+    public BoundlessWindow()
     {
-        InitializeComponent();
-        
-        var serviceCollection = new ServiceCollection();
-        serviceCollection.AddWpfBlazorWebView();
-        Resources.Add("services", serviceCollection.BuildServiceProvider());
+        Loaded += OnLoaded;
     }
-
-    private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+    
+    static BoundlessWindow()
     {
-        MaxHeight = SystemParameters.WorkArea.Height;
-        MaxWidth = SystemParameters.WorkArea.Width;
+        // This makes sure it picks up the default style in XAML
+        DefaultStyleKeyProperty.OverrideMetadata(
+            typeof(BoundlessWindow),
+            new FrameworkPropertyMetadata(typeof(BoundlessWindow))
+        );
+    }
+    
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        var topBar = Template.FindName("TopBar", this) as Grid;
+        if (topBar != null)
+            topBar.MouseLeftButtonDown += TopBar_OnMouseLeftButtonDown;
+        
+        var minimizeBtn = Template.FindName("MinimizeBtn", this) as Button;
+        if (minimizeBtn != null)
+            minimizeBtn.Click += Minimize_OnClick;
+        
+        var maximizeBtn = Template.FindName("MaximizeBtn", this) as Button;
+        if (maximizeBtn != null)
+            maximizeBtn.Click += Maximize_OnClick;
+        
+        var exitBtn = Template.FindName("ExitBtn", this) as Button;
+        if (exitBtn != null)
+            exitBtn.Click += Exit_OnClick;
     }
     
     private void TopBar_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -44,6 +58,23 @@ public partial class MainWindow : Window
 
             DragMove();
         }
+    }
+
+    private void Minimize_OnClick(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
+    
+    private void Maximize_OnClick(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState == WindowState.Maximized
+            ? WindowState.Normal
+            : WindowState.Maximized;
+    }
+    
+    private void Exit_OnClick(object sender, RoutedEventArgs e)
+    {
+        Close();
     }
     
     private void RestoreFromMaximized(MouseButtonEventArgs e)
@@ -100,23 +131,6 @@ public partial class MainWindow : Window
         WindowState = WindowState == WindowState.Maximized
             ? WindowState.Normal
             : WindowState.Maximized;
-    }
-
-    private void Exit_OnClick(object sender, RoutedEventArgs e)
-    {
-        Close();
-    }
-    
-    private void Maximize_OnClick(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState == WindowState.Maximized
-            ? WindowState.Normal
-            : WindowState.Maximized;
-    }
-
-    private void Minimize_OnClick(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState.Minimized;
     }
 
     private void MainWindow_OnSourceInitialized(object? sender, EventArgs e)

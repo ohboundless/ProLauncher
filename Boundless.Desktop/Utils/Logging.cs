@@ -1,7 +1,7 @@
 global using static Serilog.Log;
 using Serilog;
 
-namespace Boundless.Desktop;
+namespace Boundless.Desktop.Utils;
 
 public static class Logging
 {
