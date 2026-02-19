@@ -35,27 +35,61 @@
             <StackPanel>    
                 <Grid Visibility="Visible">
                     <WrapPanel Margin="15">
-                        <Border Width="170" Height="240" x:Name="Border" Background="#181b25" CornerRadius="12" ClipToBounds="True">
-                            <Grid>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="200"/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
+                        <Grid Width="190" Height="240">
+                            <Grid.OpacityMask>
+                                <VisualBrush Visual="{Binding ElementName=Border1}" />
+                            </Grid.OpacityMask>
                             
-                                    <Image Source="/Images/Splash.bmp" VerticalAlignment="Top"/>
-                                    <TextBlock Grid.Row="1" Foreground="White" 
-                                               Text="View" VerticalAlignment="Center" Margin="15 0"/>
-                                </Grid>
-                                <Border Visibility="Collapsed">
-                                    <StackPanel HorizontalAlignment="Center"
-                                                VerticalAlignment="Center">
-                                        <Button>Launch</Button>
-                                        <Button>Menu</Button>
-                                    </StackPanel>
-                                </Border>
+                            <Border Name="Border1" Background="#181b25" CornerRadius="6"></Border>
+                            
+                            <Grid>
+                                <Image Source="/Images/Splash.bmp" HorizontalAlignment="Center"
+                                       VerticalAlignment="Top" 
+                                       Stretch="UniformToFill"/>
                             </Grid>
-                        </Border>
+                            <Border Name="Border" Opacity="0">
+                                <Border.Background>
+                                    <SolidColorBrush Color="#000000" Opacity="0.85"/>
+                                </Border.Background>
+                                <Border.Triggers>
+                                    <EventTrigger RoutedEvent="MouseEnter">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="Border"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    From="0" To="1" Duration="0:0:.2"
+                                                    FillBehavior="HoldEnd"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="MouseLeave">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="Border"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    From="1" To="0" Duration="0:0:.2"
+                                                    FillBehavior="HoldEnd"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Border.Triggers>
+                                <StackPanel HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <Button Width="100" Margin="0 5" 
+                                            Background="#181b25"
+                                            Padding="5 10"
+                                            BorderBrush="#282f4a"
+                                            BorderThickness="2">Launch</Button>
+                                    <Button Width="100" Margin="0 5" 
+                                            Background="#181b25"
+                                            Padding="5 10"
+                                            BorderBrush="#282f4a"
+                                            BorderThickness="2">Menu</Button>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
                     </WrapPanel>
                 </Grid>
             </StackPanel>
