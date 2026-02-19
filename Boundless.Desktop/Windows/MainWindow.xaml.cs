@@ -23,4 +23,9 @@ public partial class MainWindow : BoundlessWindow
         MaxHeight = SystemParameters.WorkArea.Height;
         MaxWidth = SystemParameters.WorkArea.Width;
     }
+
+    private void Library_OnClick(object sender, MouseButtonEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -1,0 +1,27 @@
+<UserControl x:Class="Boundless.Desktop.UserControls.NavButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Boundless.Desktop.UserControls"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             mc:Ignorable="d"
+             d:DesignHeight="50" d:DesignWidth="300">
+    <Border Padding="0 2" CornerRadius="0 10 10 0" 
+            BorderBrush="#455aa1" BorderThickness=" 0 0 0 0">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="Background" Value="#181b25"></Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#111111"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <StackPanel Orientation="Horizontal" Margin="10">
+            <ui:SymbolIcon Name="LabelIcon" Symbol="Games24" Foreground="White" FontSize="24"/>
+            <TextBlock Name="LabelText" Text="Library" Margin="10 0" Foreground="White" FontSize="16"/>
+        </StackPanel>
+    </Border>
+</UserControl>

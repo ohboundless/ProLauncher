@@ -8,6 +8,7 @@
         xmlns:wpf1="http://schemas.microsoft.com/winfx/2006/xaml/presentation/blazor"
         xmlns:templates="clr-namespace:Boundless.Desktop.Templates"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:userControls="clr-namespace:Boundless.Desktop.UserControls"
         mc:Ignorable="d"
         Title="Boundless Launcher" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen" 
@@ -19,29 +20,45 @@
         MinHeight="500"
         Style="{StaticResource MyBoundlessWindowStyle}"
         Loaded="MainWindow_OnLoaded">
-        <Grid>
-                <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                
-                <StackPanel Grid.Column="0" Background="#181b25">
-                        <Border Padding="0 2">
-                                <Border.Style>
-                                        <Style TargetType="Border">
-                                                <Setter Property="Background" Value="#181b25"></Setter>
-                                                <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="#111111"/>
-                                                </Trigger>
-                                                </Style.Triggers>
-                                        </Style>
-                                </Border.Style>
-                                <StackPanel Orientation="Horizontal" Margin="10">
-                                        <ui:SymbolIcon Symbol="Games24" Foreground="White" FontSize="24"/>
-                                        <TextBlock Text="Library" Margin="10 0" Foreground="White" FontSize="16"/>
-                                </StackPanel>
+    <Grid Background="#181b25">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0" Background="#181b25" Margin="0 0 5 0">
+            <userControls:NavButton Label="Library" Icon="Games24" MouseUp="Library_OnClick"/>
+        </StackPanel>
+            
+        <Border Grid.Column="1" Background="#282f4a" CornerRadius="20 0 0 0"
+            d:DataContext="{d:DesignInstance }">
+            <StackPanel>    
+                <Grid Visibility="Visible">
+                    <WrapPanel Margin="15">
+                        <Border Width="170" Height="240" x:Name="Border" Background="#181b25" CornerRadius="12" ClipToBounds="True">
+                            <Grid>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="200"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                            
+                                    <Image Source="/Images/Splash.bmp" VerticalAlignment="Top"/>
+                                    <TextBlock Grid.Row="1" Foreground="White" 
+                                               Text="View" VerticalAlignment="Center" Margin="15 0"/>
+                                </Grid>
+                                <Border Visibility="Collapsed">
+                                    <StackPanel HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+                                        <Button>Launch</Button>
+                                        <Button>Menu</Button>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
                         </Border>
-                </StackPanel>
-        </Grid>
+                    </WrapPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
 </templates:BoundlessWindow>
