@@ -10,9 +10,9 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:userControls="clr-namespace:Boundless.Desktop.UserControls"
         mc:Ignorable="d"
-        Height="800" Width="1200"
+        Height="700" Width="1150"
         WindowStartupLocation="CenterScreen" 
-        ResizeMode="CanResize"
+        ResizeMode="NoResize"
         WindowStyle="None"
         BorderThickness="1"
         UseLayoutRounding="True"
@@ -21,21 +21,42 @@
         Title="Boundless Launcher"
         Style="{StaticResource MyBoundlessWindowStyle}"
         Loaded="MainWindow_OnLoaded">
-    <Grid Background="#181b25">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush>
+                <LinearGradientBrush.Transform>
+                    <RotateTransform Angle="45"/>
+                </LinearGradientBrush.Transform>
+                <LinearGradientBrush.GradientStops>
+                    <GradientStop Color="#101226" Offset=".1"/>
+                    <GradientStop Color="#160f24" Offset=".4"/>
+                    <GradientStop Color="#1a0f24" Offset=".9"/>
+                </LinearGradientBrush.GradientStops>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="80"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <StackPanel Grid.Column="0" Background="#181b25" Margin="0 0 5 0">
-            <userControls:NavButton Label="News" Icon="News24" MouseUp="Library_OnClick"/>
-            <userControls:NavButton Label="Library" Icon="Games24" MouseUp="Library_OnClick"/>
-            <userControls:NavButton Label="Plugins" Icon="PlugConnected24" MouseUp="Library_OnClick"/>
+        <StackPanel Grid.Column="0">
+            <userControls:NavButton Label="News" Icon="News24" MouseUp="Library_OnClick" 
+                                    Width="50" Height="50"
+                                    Margin="0 5"/>
+            <userControls:NavButton Label="Library" Icon="Games24" MouseUp="Library_OnClick" 
+                                    Width="50" Height="50"
+                                    Margin="0 5"/>
+            <userControls:NavButton Label="Plugins" Icon="PlugConnected24" MouseUp="Library_OnClick" 
+                                    Width="50" Height="50"
+                                    Margin="0 5"/>
         </StackPanel>
             
-        <Border Grid.Column="1" CornerRadius="8 0 0 0"
+        <Border Grid.Column="1"
+                BorderThickness="1 0 0 0"
+                BorderBrush="#969696"
             d:DataContext="{d:DesignInstance }">
-            <StackPanel>    
+            <StackPanel>
                 <Grid Visibility="Visible">
                     <WrapPanel Margin="15">
                         <Grid Width="190" Height="240">

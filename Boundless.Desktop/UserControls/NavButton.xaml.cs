@@ -7,8 +7,8 @@ public partial class NavButton : UserControl
 {
     public string Label
     {
-        get => LabelText.Text;
-        set => LabelText.Text = value;
+        get => (string)ToolTip;
+        set => ToolTip = value;
     }
     
     public SymbolRegular Icon

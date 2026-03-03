@@ -56,11 +56,11 @@
                         <Border>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="28"/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <Grid Background="#181b25" x:Name="TopBar">
+                                <Grid x:Name="TopBar" Background="#161936">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="Auto"/>
@@ -74,9 +74,11 @@
                                                FontSize="12"/>
 
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <Button Content="—" Width="56" Style="{StaticResource WindowButtonStyle}" x:Name="MinimizeBtn"/>
-                                        <Button Content="▢" Width="56" Style="{StaticResource WindowButtonStyle}" x:Name="MaximizeBtn"/>
-                                        <Button Content="✕" Width="56" Style="{StaticResource CloseButtonStyle}" x:Name="ExitBtn"/>
+                                        <Button Content="-" Width="46" Foreground="Gray" Style="{StaticResource WindowButtonStyle}" x:Name="MinimizeBtn"/>
+                                        <Button Width="46" Style="{StaticResource WindowButtonStyle}" x:Name="MaximizeBtn">
+                                            <Image Source="Images/Buttons/Maximize.png" Width="30" Height="30"/>
+                                        </Button>
+                                        <Button Content="✕" Width="46"  Style="{StaticResource CloseButtonStyle}" x:Name="ExitBtn"/>
                                     </StackPanel>
                                 </Grid>
 
