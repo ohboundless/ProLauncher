@@ -10,6 +10,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />
+                <ResourceDictionary>
+                    <FontFamily x:Key="Roboto">pack://application:,,,/Fonts/#Roboto</FontFamily>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             
         <Style x:Key="WindowButtonStyle" TargetType="Button">
@@ -31,7 +34,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#111111"/>
+                    <Setter Property="Background" Value="#0fffffff"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -74,10 +77,8 @@
                                                FontSize="12"/>
 
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <Button Content="-" Width="46" Foreground="Gray" Style="{StaticResource WindowButtonStyle}" x:Name="MinimizeBtn"/>
-                                        <Button Width="46" Style="{StaticResource WindowButtonStyle}" x:Name="MaximizeBtn">
-                                            <Image Source="Images/Buttons/Maximize.png" Width="30" Height="30"/>
-                                        </Button>
+                                        <Button Content="—" Width="46" Foreground="Gray" Style="{StaticResource WindowButtonStyle}" x:Name="MinimizeBtn"/>
+                                        <Button Content="▢" Width="46" Style="{StaticResource WindowButtonStyle}" x:Name="MaximizeBtn"/>
                                         <Button Content="✕" Width="46"  Style="{StaticResource CloseButtonStyle}" x:Name="ExitBtn"/>
                                     </StackPanel>
                                 </Grid>
