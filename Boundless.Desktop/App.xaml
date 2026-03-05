@@ -63,7 +63,7 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <Grid x:Name="TopBar" Background="#161936">
+                                <Grid x:Name="TopBar" Background="#0a101d">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="Auto"/>

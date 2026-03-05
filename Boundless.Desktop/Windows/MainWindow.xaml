@@ -9,6 +9,7 @@
         xmlns:templates="clr-namespace:Boundless.Desktop.Templates"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:userControls="clr-namespace:Boundless.Desktop.UserControls"
+        xmlns:tabs="clr-namespace:Boundless.Desktop.UserControls.Tabs"
         mc:Ignorable="d"
         Height="700" Width="1150"
         WindowStartupLocation="CenterScreen" 
@@ -28,9 +29,9 @@
                     <RotateTransform Angle="45"/>
                 </LinearGradientBrush.Transform>
                 <LinearGradientBrush.GradientStops>
-                    <GradientStop Color="#101226" Offset=".1"/>
-                    <GradientStop Color="#160f24" Offset=".4"/>
-                    <GradientStop Color="#1a0f24" Offset=".9"/>
+                    <GradientStop Color="#111828" Offset=".1"/>
+                    <GradientStop Color="#0e1628" Offset=".4"/>
+                    <GradientStop Color="#040814" Offset=".9"/>
                 </LinearGradientBrush.GradientStops>
             </LinearGradientBrush>
         </Grid.Background>
@@ -40,7 +41,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <StackPanel Grid.Column="0" Background="#161936">
+        <StackPanel Grid.Column="0" Background="#0a101d">
             <userControls:NavButton Label="News" Icon="News24" MouseUp="Library_OnClick" 
                                     Width="50" Height="50"
                                     Margin="0 5"/>
@@ -67,71 +68,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <StackPanel Grid.Row="1" Grid.Column="1">
-                    <Grid Visibility="Visible" x:Name="LibraryTab">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="75"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        
-                        <TextBlock Grid.Row="0" Text="Library" FontSize="30" Foreground="White" FontWeight="SemiBold" FontFamily="{StaticResource Roboto}"/>
-                        <WrapPanel Margin="15" Grid.Row="1">
-                            <Grid Width="190" Height="260">
-                                <Grid.OpacityMask>
-                                    <VisualBrush Visual="{Binding ElementName=Border1}" />
-                                </Grid.OpacityMask>
-                                
-                                <Border Name="Border1" Background="#181b25" CornerRadius="6"></Border>
-                                
-                                <Grid>
-                                    <Image Source="/Images/Splash.bmp" HorizontalAlignment="Center"
-                                           VerticalAlignment="Top" 
-                                           Stretch="UniformToFill"/>
-                                </Grid>
-                                <Border Name="Border" Opacity="0">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="#000000" Opacity="0.85"/>
-                                    </Border.Background>
-                                    <Border.Triggers>
-                                        <EventTrigger RoutedEvent="MouseEnter">
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetName="Border"
-                                                        Storyboard.TargetProperty="Opacity"
-                                                        From="0" To="1" Duration="0:0:.2"
-                                                        FillBehavior="HoldEnd"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger>
-                                        <EventTrigger RoutedEvent="MouseLeave">
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetName="Border"
-                                                        Storyboard.TargetProperty="Opacity"
-                                                        From="1" To="0" Duration="0:0:.2"
-                                                        FillBehavior="HoldEnd"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger>
-                                    </Border.Triggers>
-                                    <StackPanel HorizontalAlignment="Center"
-                                                VerticalAlignment="Center">
-                                        <Button Width="100" Margin="0 5" 
-                                                Background="#181b25"
-                                                Padding="5 10"
-                                                BorderBrush="#282f4a"
-                                                BorderThickness="2">Launch</Button>
-                                        <Button Width="100" Margin="0 5" 
-                                                Background="#181b25"
-                                                Padding="5 10"
-                                                BorderBrush="#282f4a"
-                                                BorderThickness="2">Menu</Button>
-                                    </StackPanel>
-                                </Border>
-                            </Grid>
-                        </WrapPanel>
-                    </Grid>
+                    <tabs:LibraryTab x:Name="LibraryTab"/>
                 </StackPanel>
             </Grid>
         </Border>
