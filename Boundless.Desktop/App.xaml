@@ -45,7 +45,7 @@
                BasedOn="{StaticResource WindowButtonStyle}">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF7477"/>
+                    <Setter Property="Background" Value="#FF0000"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -77,7 +77,7 @@
                                                FontSize="12"/>
 
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <Button Content="—" Width="46" Foreground="Gray" Style="{StaticResource WindowButtonStyle}" x:Name="MinimizeBtn"/>
+                                        <Button Content="—" Width="46" Foreground="White" Style="{StaticResource WindowButtonStyle}" x:Name="MinimizeBtn"/>
                                         <Button Content="▢" Width="46" Style="{StaticResource WindowButtonStyle}" x:Name="MaximizeBtn"/>
                                         <Button Content="✕" Width="46"  Style="{StaticResource CloseButtonStyle}" x:Name="ExitBtn"/>
                                     </StackPanel>
