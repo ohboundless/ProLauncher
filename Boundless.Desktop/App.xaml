@@ -8,8 +8,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />
+                <ui:ThemesDictionary Theme="Dark" />
                 <ResourceDictionary>
                     <FontFamily x:Key="Roboto">pack://application:,,,/Fonts/#Roboto</FontFamily>
                 </ResourceDictionary>

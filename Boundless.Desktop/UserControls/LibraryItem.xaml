@@ -6,7 +6,45 @@
              xmlns:local="clr-namespace:Boundless.Desktop.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="200" d:DesignWidth="400">
-    <Grid Width="400" Height="200">
+    <Grid Width="400" Height="200" RenderTransformOrigin="0.5,0.5">
+        <Grid.RenderTransform>
+            <ScaleTransform ScaleX="1" ScaleY="1"/>
+        </Grid.RenderTransform>
+        
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                        To="1.05" Duration="0:0:0.10"/>
+                                    <DoubleAnimation
+                                        Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                        To="1.05" Duration="0:0:0.10"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                        To="1" Duration="0:0:0.15"/>
+                                    <DoubleAnimation
+                                        Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                        To="1" Duration="0:0:0.15"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+        
         <Grid.OpacityMask>
             <VisualBrush Visual="{Binding ElementName=Border1}" />
         </Grid.OpacityMask>
