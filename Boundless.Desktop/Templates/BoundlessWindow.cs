@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Forms;
 
 namespace Boundless.Desktop.Templates;
 
@@ -64,9 +65,37 @@ public class BoundlessWindow : Window
     {
         WindowState = WindowState.Minimized;
     }
+
+    public (int Left, int Top, double Width, double Height) GetMontiorWorkInfo()
+    {
+        var mouseInWindow = Mouse.GetPosition(this);
+        var mouseScreen = PointToScreen(mouseInWindow);
+        POINT pt;
+        pt.x = (int)mouseScreen.X;
+        pt.y = (int)mouseScreen.Y;
+        
+        var monitor = MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
+        var mi = new MONITORINFO { cbSize = Marshal.SizeOf(typeof(MONITORINFO)) };
+        GetMonitorInfo(monitor, ref mi);
+        
+        var dpiFactorX = PresentationSource.FromVisual(this)?.CompositionTarget?.TransformFromDevice.M11 ?? 1;
+        var dpiFactorY = PresentationSource.FromVisual(this)?.CompositionTarget?.TransformFromDevice.M22 ?? 1;
+        var workWidth = (mi.rcWork.right - mi.rcWork.left) * dpiFactorX;
+        var workHeight = (mi.rcWork.bottom - mi.rcWork.top) * dpiFactorY;
+
+        return (mi.rcWork.left, mi.rcWork.top, workWidth, workHeight);
+    }
+
+    private void SetMaxWindowSize()
+    {
+        var info = GetMontiorWorkInfo();
+        MaxWidth = info.Width;
+        MaxHeight = info.Height;
+    }
     
     private void Maximize_OnClick(object sender, RoutedEventArgs e)
     {
+        SetMaxWindowSize();
         WindowState = WindowState == WindowState.Maximized
             ? WindowState.Normal
             : WindowState.Maximized;
@@ -86,32 +115,14 @@ public class BoundlessWindow : Window
         var restoreWidth = RestoreBounds.Width;
         var restoreHeight = RestoreBounds.Height;
 
-        // Convert mouse position to screen coordinates (DIPs -> pixels)
-        var mouseScreen = PointToScreen(mouseInWindow);
-        POINT pt;
-        pt.x = (int)mouseScreen.X;
-        pt.y = (int)mouseScreen.Y;
-
-        // Get monitor under cursor
-        var monitor = MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
-        var mi = new MONITORINFO { cbSize = Marshal.SizeOf(typeof(MONITORINFO)) };
-        GetMonitorInfo(monitor, ref mi);
-
-        // Get working area in DIPs
-        var dpiFactorX = PresentationSource.FromVisual(this)?.CompositionTarget?.TransformFromDevice.M11 ?? 1;
-        var dpiFactorY = PresentationSource.FromVisual(this)?.CompositionTarget?.TransformFromDevice.M22 ?? 1;
-
-        var workLeft = mi.rcWork.left * dpiFactorX;
-        var workTop = mi.rcWork.top * dpiFactorY;
-        var workWidth = (mi.rcWork.right - mi.rcWork.left) * dpiFactorX;
-        // var workHeight = (mi.rcWork.bottom - mi.rcWork.top) * dpiFactorY;
+        var workInfo = GetMontiorWorkInfo();
 
         // Restore window first
         SystemCommands.RestoreWindow(this);
 
         // Calculate Left so cursor stays “attached”
-        Left = workLeft + (workWidth * percentX) - (restoreWidth * percentX);
-        Top = workTop; // anchored to top
+        Left = workInfo.Left + (workInfo.Width * percentX) - (restoreWidth * percentX);
+        Top = workInfo.Top; // anchored to top
 
         Width = restoreWidth;
         Height = restoreHeight;
@@ -128,15 +139,10 @@ public class BoundlessWindow : Window
     
     private void ToggleMaximize()
     {
+        SetMaxWindowSize();
         WindowState = WindowState == WindowState.Maximized
             ? WindowState.Normal
             : WindowState.Maximized;
-    }
-
-    private void MainWindow_OnSourceInitialized(object? sender, EventArgs e)
-    {
-        var hwnd = new WindowInteropHelper(this).Handle;
-        HwndSource.FromHwnd(hwnd)?.AddHook(WndProc);
     }
     
     private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
