@@ -42,7 +42,7 @@
         </Grid.ColumnDefinitions>
         
         <StackPanel Grid.Column="0" Background="#0a101d">
-            <userControls:NavButton Label="News" Icon="News24" MouseUp="Library_OnClick" 
+            <userControls:NavButton Label="News" Icon="News24" MouseUp="Home_OnClick"
                                     Width="50" Height="50"
                                     Margin="0 5"/>
             <userControls:NavButton Label="Library" Icon="Games24" MouseUp="Library_OnClick" 
@@ -67,7 +67,8 @@
                     <ColumnDefinition Width="50"/>
                 </Grid.ColumnDefinitions>
                 
-                <StackPanel Grid.Row="1" Grid.Column="1">
+                <StackPanel Grid.Row="1" Grid.Column="1" x:Name="Tabs">
+                    <tabs:HomeTab x:Name="HomeTab"/>
                     <tabs:LibraryTab x:Name="LibraryTab"/>
                 </StackPanel>
             </Grid>

@@ -13,9 +13,12 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         
-        <TextBlock Grid.Row="0" Text="Library" FontSize="30" Foreground="White" FontWeight="SemiBold" FontFamily="{StaticResource Roboto}"/>
+        <TextBlock Grid.Row="0" Text="Library" 
+                   FontSize="30" Foreground="White" 
+                   FontWeight="SemiBold" FontFamily="{StaticResource Roboto}"/>
+        
         <WrapPanel Margin="15" Grid.Row="1">
-            <userControls:LibraryItem/>
+            <userControls:LibraryItem MouseUp="Fortnite_OnMouseUp"/>
         </WrapPanel>
     </Grid>
 </UserControl>

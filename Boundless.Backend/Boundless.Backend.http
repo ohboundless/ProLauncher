@@ -1,6 +1,6 @@
 @Boundless.Backend_HostAddress = http://localhost:5197
 
-GET {{Boundless.Backend_HostAddress}}/weatherforecast/
-Accept: application/json
+# GET {{Boundless.Backend_HostAddress}}/weatherforecast/
+# Accept: application/json
 
 ###

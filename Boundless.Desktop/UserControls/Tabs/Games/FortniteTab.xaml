@@ -1,0 +1,41 @@
+<local:TabWithBack x:Class="Boundless.Desktop.UserControls.Tabs.Games.FortniteTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Boundless.Desktop.UserControls.Tabs"
+             xmlns:userControls="clr-namespace:Boundless.Desktop.UserControls"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="75"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" 
+                    Background="Transparent"
+                    MouseUp="BackArrow_MouseUp">
+            <Border Width="40" Height="40">
+                <ui:SymbolIcon Symbol="ArrowLeft24" Foreground="White" FontSize="25"/>
+            </Border>
+            <TextBlock Text="Fortnite"  VerticalAlignment="Center"
+                       FontSize="30" Foreground="White" 
+                       FontWeight="SemiBold" FontFamily="{StaticResource Roboto}"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
+            <Button Padding="20  15" Margin="5"
+                    Background="#1f000000"
+                    MinWidth="120">Account Checker</Button>
+            <Button Padding="20  15" Margin="5"
+                    Background="#1f000000"
+                    MinWidth="120">Lobby Bot</Button>
+            <Button Padding="20  15" Margin="5"
+                    Background="#1f000000"
+                    MinWidth="120">Stats</Button>
+        </StackPanel>
+    </Grid>
+</local:TabWithBack>

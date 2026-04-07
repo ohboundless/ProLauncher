@@ -1,5 +1,6 @@
 global using static Boundless.Desktop.Utils.Globals;
 using Boundless.Desktop.Config;
+using Boundless.Desktop.Windows;
 using RestSharp;
 
 namespace Boundless.Desktop.Utils;
@@ -10,6 +11,8 @@ public static class Globals
 
     public const string BACKEND_URI = "http://localhost:5197";
     public static RestClient Client = new(BACKEND_URI);
+
+    public static MainWindow MainWindow;
     
     public static void StartupTasks()
     {
