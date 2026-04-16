@@ -1,4 +1,4 @@
-<local:TabWithBack x:Class="Boundless.Desktop.UserControls.Tabs.Games.FortniteTab"
+<local:TabWithBack x:Class="Boundless.Desktop.UserControls.Tabs.Games.Fortnite.FortniteTab"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Boundless.Desktop.UserControls.Tabs"
              xmlns:userControls="clr-namespace:Boundless.Desktop.UserControls"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:fortnite="clr-namespace:Boundless.Desktop.UserControls.Tabs.Games.Fortnite"
              mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1000">
     <Grid>
@@ -29,7 +30,8 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
             <Button Padding="20  15" Margin="5"
                     Background="#1f000000"
-                    MinWidth="120">Account Checker</Button>
+                    MinWidth="120"
+                    Click="AccountCheckerBtn_OnClick">Account Checker</Button>
             <Button Padding="20  15" Margin="5"
                     Background="#1f000000"
                     MinWidth="120">Lobby Bot</Button>
@@ -37,5 +39,9 @@
                     Background="#1f000000"
                     MinWidth="120">Stats</Button>
         </StackPanel>
+        
+        <Border Grid.Row="2">
+            
+        </Border>
     </Grid>
 </local:TabWithBack>

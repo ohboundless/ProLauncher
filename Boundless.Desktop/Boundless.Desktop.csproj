@@ -40,12 +40,12 @@
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-      <Page Update="UserControls\Tabs\Games\FortniteTab.xaml">
+      <Page Update="UserControls\Tabs\HomeTab.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-      <Page Update="UserControls\Tabs\HomeTab.xaml">
+      <Page Update="UserControls\Tabs\Games\Fortnite\FortniteTab.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>

@@ -1,0 +1,65 @@
+<templates:BoundlessWindow x:Class="Boundless.Desktop.Windows.Fortnite.FortniteLockerWindow"
+                           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                           xmlns:local="clr-namespace:Boundless.Desktop.Windows.Fortnite"
+                           xmlns:templates="clr-namespace:Boundless.Desktop.Templates"
+                           xmlns:userControls="clr-namespace:Boundless.Desktop.UserControls"
+                           mc:Ignorable="d"
+                           Style="{StaticResource MyBoundlessWindowStyle}"
+                           Height="600" Width="1000"
+                           WindowStartupLocation="CenterScreen"
+                           Loaded="FortniteLockerWindow_OnLoaded">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush>
+                <LinearGradientBrush.Transform>
+                    <RotateTransform Angle="45"/>
+                </LinearGradientBrush.Transform>
+                <LinearGradientBrush.GradientStops>
+                    <GradientStop Color="#111828" Offset=".1"/>
+                    <GradientStop Color="#0e1628" Offset=".4"/>
+                    <GradientStop Color="#040814" Offset=".9"/>
+                </LinearGradientBrush.GradientStops>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0" Background="#0a101d">
+            <userControls:NavButton Label="News" Icon="Person24"
+                                    Width="50" Height="50"
+                                    Margin="0 5"/>
+            <userControls:NavButton Label="Library" Icon="Backpack24" 
+                                    Width="50" Height="50"
+                                    Margin="0 5"/>
+            <!--<userControls:NavButton Label="Plugins" Icon="Person"
+                                    Width="50" Height="50"
+                                    Margin="0 5"/>-->
+        </StackPanel>
+        
+        <WrapPanel Margin="10" Grid.Column="1">
+            <Border Width="75" Height="75">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="5"
+                                      Opacity=".5"
+                                      ShadowDepth="2" />
+                </Border.Effect>
+                <Grid>
+                    <Border CornerRadius="8" Background="#98bdf5" Name="Border1">
+                    </Border>
+                    <StackPanel>
+                        <Image Source="https://fortnite-api.com/images/cosmetics/br/character_sweetletter/smallicon.png"/>
+                        <StackPanel.OpacityMask>
+                            <VisualBrush Visual="{Binding ElementName=Border1}" />
+                        </StackPanel.OpacityMask>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </WrapPanel>
+    </Grid>
+</templates:BoundlessWindow>

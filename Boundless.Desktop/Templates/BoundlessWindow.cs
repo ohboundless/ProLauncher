@@ -10,6 +10,10 @@ public class BoundlessWindow : Window
 {
     public BoundlessWindow()
     {
+        WindowStyle = WindowStyle.None;
+        BorderThickness = new Thickness(1);
+        UseLayoutRounding = true;
+        ResizeMode = ResizeMode.NoResize;
         Loaded += OnLoaded;
     }
     

@@ -15,81 +15,81 @@
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             
-        <Style x:Key="WindowButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#0fffffff"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+            <Style x:Key="WindowButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#0fffffff"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
-        <!-- Close button -->
-        <Style x:Key="CloseButtonStyle"
-               TargetType="Button"
-               BasedOn="{StaticResource WindowButtonStyle}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF0000"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        
-        <Style TargetType="templates:BoundlessWindow" x:Key="MyBoundlessWindowStyle">
-            <Setter Property="WindowStyle" Value="None"/>
-            <Setter Property="Background" Value="#181b25"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="templates:BoundlessWindow">
-                        <Border>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="28"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+            <!-- Close button -->
+            <Style x:Key="CloseButtonStyle"
+                   TargetType="Button"
+                   BasedOn="{StaticResource WindowButtonStyle}">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF0000"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            
+            <Style TargetType="templates:BoundlessWindow" x:Key="MyBoundlessWindowStyle">
+                <Setter Property="WindowStyle" Value="None"/>
+                <Setter Property="Background" Value="#181b25"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="templates:BoundlessWindow">
+                            <Border>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="28"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
 
-                                <Grid x:Name="TopBar" Background="#0a101d">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+                                    <Grid x:Name="TopBar" Background="#0a101d">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="{TemplateBinding Title}" 
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center"
-                                               Margin="10,0"
-                                               Foreground="White"
-                                               FontSize="12"/>
+                                        <TextBlock Text="{TemplateBinding Title}" 
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0"
+                                                   Foreground="White"
+                                                   FontSize="12"/>
 
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <Button Content="—" Width="46" Foreground="White" Style="{StaticResource WindowButtonStyle}" x:Name="MinimizeBtn"/>
-                                        <Button Content="▢" Width="46" Style="{StaticResource WindowButtonStyle}" x:Name="MaximizeBtn"/>
-                                        <Button Content="✕" Width="46"  Style="{StaticResource CloseButtonStyle}" x:Name="ExitBtn"/>
-                                    </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <Button Content="—" Width="46" Foreground="White" Style="{StaticResource WindowButtonStyle}" x:Name="MinimizeBtn"/>
+                                            <Button Content="▢" Width="46" Style="{StaticResource WindowButtonStyle}" x:Name="MaximizeBtn"/>
+                                            <Button Content="✕" Width="46"  Style="{StaticResource CloseButtonStyle}" x:Name="ExitBtn"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <ContentPresenter Grid.Row="1"/>
                                 </Grid>
-
-                                <ContentPresenter Grid.Row="1"/>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
