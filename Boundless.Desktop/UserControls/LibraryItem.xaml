@@ -45,19 +45,21 @@
             </Style>
         </Grid.Style>
         
-        <Grid.OpacityMask>
-            <VisualBrush Visual="{Binding ElementName=Border1}" />
-        </Grid.OpacityMask>
-        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="160"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <Border Name="Border1" Grid.ColumnSpan="2" 
-                Background="#0f141e" CornerRadius="10"></Border>
+        <Border Grid.Column="0" 
+                Grid.ColumnSpan="2" 
+                Name="Border1"
+                Background="#121212" CornerRadius="10"/>
+        <Border Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#2fffffff" BorderThickness="1" CornerRadius="10" Margin="-10"/>
         
         <Grid Grid.Column="0">
+            <Grid.OpacityMask>
+                <VisualBrush Visual="{Binding ElementName=Border1}" />
+            </Grid.OpacityMask>
             <Image Source="/Images/Splash.bmp" HorizontalAlignment="Center"
                    VerticalAlignment="Top"
                    Stretch="UniformToFill" Name="Image"/>

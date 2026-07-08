@@ -10,74 +10,89 @@
              mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1000">
     <Grid>
-        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" 
+                    Background="Transparent"
+                    MouseUp="BackArrow_MouseUp">
+            <Border Width="40" Height="40">
+                <ui:SymbolIcon Symbol="ArrowLeft24" Foreground="White" FontSize="25"/>
+            </Border>
+            <TextBlock Text="Fortnite"  VerticalAlignment="Center"
+                       FontSize="30" Foreground="White" 
+                       FontWeight="SemiBold" FontFamily="{StaticResource Roboto}"/>
+        </StackPanel>
+        
+        <Grid Grid.Row="1" Name="Login" 
+              Visibility="Visible"
+              HorizontalAlignment="Center" 
+              VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="70"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+        
+            <StackPanel Grid.Row="1" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                <Button Content="Login"
+                        Name="LoginBtn"
+                        Padding="20 10" Width="180" 
+                        Background="#0fffffff" 
+                        BorderBrush="#2fffffff" 
+                        BorderThickness="2"
+                        Click="Login_OnClick"/>
+            </StackPanel>
+        </Grid>
+        
+        <Grid Grid.Row="1" Name="Main" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="75"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
             
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" 
-                        Background="Transparent"
-                        MouseUp="BackArrow_MouseUp">
-                <Border Width="40" Height="40">
-                    <ui:SymbolIcon Symbol="ArrowLeft24" Foreground="White" FontSize="25"/>
-                </Border>
-                <TextBlock Text="Fortnite"  VerticalAlignment="Center"
-                           FontSize="30" Foreground="White" 
-                           FontWeight="SemiBold" FontFamily="{StaticResource Roboto}"/>
+            <Border Grid.Row="0" HorizontalAlignment="Right" Background="#20000000" 
+                    Padding="12 5" Margin="5" CornerRadius="5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Account Null" Name="AccountName" VerticalAlignment="Center" Foreground="White"/>
+                    <Border Height="45" Width="45" Margin="10 0 0 0">
+                        <Grid>
+                            <Border CornerRadius="8" Background="#98bdf5" Name="Border1">
+                            </Border>
+                            <StackPanel>
+                                <Image Width="45" Height="45"
+                                       Name="AccountIcon"
+                                       Source="https://fortnite-api.com/images/cosmetics/br/character_sweetletter/smallicon.png"/>
+                                <StackPanel.OpacityMask>
+                                    <VisualBrush Visual="{Binding ElementName=Border1}" />
+                                </StackPanel.OpacityMask>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+        
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Padding="20  15" Margin="5"
+                        Background="#0fffffff"
+                        MinWidth="120"
+                        Click="AccountCheckerBtn_OnClick">Account Checker</Button>
+                <Button Padding="20  15" Margin="5"
+                        Background="#0fffffff"
+                        MinWidth="120">Lobby Bot</Button>
+                <Button Padding="20  15" Margin="5"
+                        Background="#0fffffff"
+                        MinWidth="120">Stats</Button>
             </StackPanel>
             
-            <Grid Name="Login" Visibility="Visible">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition Height="70"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-            
-                <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="Login" Padding="20 10" Width="180" Background="#253b6b" BorderBrush="#4d6599" BorderThickness="2"/>
-                </StackPanel>
-            </Grid>
-            
-            <Grid Name="Main" Visibility="Collapsed">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="75"/>
-                    <RowDefinition Height="75"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Border Grid.Row="0" HorizontalAlignment="Right" Background="#20000000" 
-                        Padding="12 5" Margin="5" CornerRadius="5">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Account Null" VerticalAlignment="Center"/>
-                        <Border Height="45" Width="45" Margin="10 0 0 0">
-                            <Grid>
-                                <Border CornerRadius="8" Background="#98bdf5" Name="Border1">
-                                </Border>
-                                <StackPanel>
-                                    <Image Width="45" Height="45" 
-                                           Source="https://fortnite-api.com/images/cosmetics/br/character_sweetletter/smallicon.png"/>
-                                    <StackPanel.OpacityMask>
-                                        <VisualBrush Visual="{Binding ElementName=Border1}" />
-                                    </StackPanel.OpacityMask>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-                </Border>
-            
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button Padding="20  15" Margin="5"
-                            Background="#1f000000"
-                            MinWidth="120"
-                            Click="AccountCheckerBtn_OnClick">Account Checker</Button>
-                    <Button Padding="20  15" Margin="5"
-                            Background="#1f000000"
-                            MinWidth="120">Lobby Bot</Button>
-                    <Button Padding="20  15" Margin="5"
-                            Background="#1f000000"
-                            MinWidth="120">Stats</Button>
-                </StackPanel>
+            <Border Grid.Row="2">
                 
-                <Border Grid.Row="2">
-                    
-                </Border>
-            </Grid>
+            </Border>
         </Grid>
     </Grid>
 </local:TabWithBack>

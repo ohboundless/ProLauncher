@@ -2,6 +2,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Boundless.Desktop.Games.EpicGames;
+using Boundless.Desktop.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -37,6 +38,11 @@ public static class FortniteHandler
         return json["access_token"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'access_token'.");
     }
     
+    /// <summary>
+    /// Generate a device auth Uri and code
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="NoNullAllowedException"></exception>
     public static async Task<(string DeviceCode, string Uri)> GetDeviceAuthAsync()
     {
         var accessToken = await GetClientAccessTokenAsync();
@@ -63,7 +69,7 @@ public static class FortniteHandler
         public required DateTime RefreshExpiresAt;
     }
     
-    public static async Task<FortniteToken> GetTokenAsync(string? deviceCode = null, string? exchangeCode = null, string? refreshToken = null)
+    public static async Task<FortniteToken?> GetTokenAsync(string? deviceCode = null, string? exchangeCode = null, string? refreshToken = null)
     {
         var request = new RestRequest(TOKEN_URI, Method.Post);
 
@@ -93,13 +99,33 @@ public static class FortniteHandler
         var response = await _client.ExecuteAsync(request);
         var json = JObject.Parse(response.Content);
 
-        return new FortniteToken
+        var errorCode = json["errorCode"]?.ToString();
+        return errorCode switch
         {
-            Token = json["access_token"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'access_token'."),
-            AccountId = json["account_id"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'account_id'."),
-            DisplayName = json["displayName"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'displayName'."),
-            RefreshToken = json["refresh_token"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'refresh_token'."),
-            RefreshExpiresAt = json["refresh_expires_at"]?.Value<DateTime>() ?? throw new NoNullAllowedException("Could not get 'refresh_expires_at'.")
+            // No errors
+            null => new FortniteToken
+            {
+                Token =
+                    json["access_token"]?.ToString() ??
+                    throw new NoNullAllowedException("Could not get 'access_token'."),
+                AccountId =
+                    json["account_id"]?.ToString() ??
+                    throw new NoNullAllowedException("Could not get 'account_id'."),
+                DisplayName =
+                    json["displayName"]?.ToString() ??
+                    throw new NoNullAllowedException("Could not get 'displayName'."),
+                RefreshToken =
+                    json["refresh_token"]?.ToString() ??
+                    throw new NoNullAllowedException("Could not get 'refresh_token'."),
+                RefreshExpiresAt = json["refresh_expires_at"]?.Value<DateTime>() ??
+                                   throw new NoNullAllowedException("Could not get 'refresh_expires_at'.")
+            },
+            
+            // Still pending
+            "errors.com.epicgames.account.oauth.authorization_pending" => null, 
+            
+            // Unknown/unhandled error
+            _ => throw new ApplicationException($"Unhandled error: \n{errorCode}\n{json["errorMessage"]}")
         };
     }
 
@@ -164,4 +190,26 @@ public static class FortniteHandler
     }
 
     #endregion
+
+    public static async Task StartAuthorization()
+    {
+        var auth = await GetDeviceAuthAsync();
+        WebUtils.StartUrl(auth.Uri);
+
+        FortniteToken? token = null;
+        var retryCount = 0;
+        
+        while (token == null)
+        {
+            if (retryCount >= 18) // 3 minutes
+                throw new TimeoutException("Device authorization has timed out!");
+            
+            await Task.Delay(10000); // 10 seconds
+            token = await GetTokenAsync(auth.DeviceCode);
+            retryCount++;
+        }
+
+        var account = new FortniteAccount(token);
+        await Accounts.Fortnite.AddAccountAsync(account);
+    }
 }

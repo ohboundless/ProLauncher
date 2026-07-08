@@ -22,26 +22,13 @@
         Title=""
         Style="{StaticResource MyBoundlessWindowStyle}"
         Loaded="MainWindow_OnLoaded">
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush>
-                <LinearGradientBrush.Transform>
-                    <RotateTransform Angle="45"/>
-                </LinearGradientBrush.Transform>
-                <LinearGradientBrush.GradientStops>
-                    <GradientStop Color="#111828" Offset=".1"/>
-                    <GradientStop Color="#0e1628" Offset=".4"/>
-                    <GradientStop Color="#040814" Offset=".9"/>
-                </LinearGradientBrush.GradientStops>
-            </LinearGradientBrush>
-        </Grid.Background>
-        
+    <Grid Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <StackPanel Grid.Column="0" Background="#0a101d">
+        <StackPanel Grid.Column="0" Background="#101010">
             <userControls:NavButton Label="News" Icon="News24" MouseUp="Home_OnClick"
                                     Width="50" Height="50"
                                     Margin="0 5"/>
@@ -52,6 +39,8 @@
                                     Width="50" Height="50"
                                     Margin="0 5"/>
         </StackPanel>
+        <Border Grid.Column="0" BorderThickness="0 0 1 0" 
+                BorderBrush="#0fffffff" Margin="0 0 0 10"/>
         
         <Border Grid.Column="1"
             d:DataContext="{d:DesignInstance }">
