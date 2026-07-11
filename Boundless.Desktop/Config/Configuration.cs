@@ -1,5 +1,6 @@
 using System.IO;
 using Boundless.Desktop.Config.Data;
+using Boundless.Desktop.Utils;
 using Newtonsoft.Json;
 
 namespace Boundless.Desktop.Config;
@@ -32,11 +33,11 @@ public class Configuration
         Config = JsonConvert.DeserializeObject<Configuration>(json) 
                  ?? throw new JsonException($"Could not deserialize json from '{FilePath}'");
         
-        Logger.Information("Loaded config.");
+        Log(ELogCategory.Startup, ELogLevel.Info, "Loaded config.");
 
         // Load binary data holders
         LoginData = new LoginStorage();
-        LoginData.Read();
+        LoginData.TryRead();
     }
 
     private static void Save()

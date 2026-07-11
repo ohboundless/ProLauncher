@@ -1,6 +1,7 @@
 using System.Net.Http;
 using static Boundless.Desktop.Config.Configuration;
 using Boundless.Desktop.Models.Accounts;
+using Boundless.Desktop.Utils;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -17,7 +18,7 @@ public class LoginStorage : BinaryDataHolder
 
     public static async Task<LoginSession> Login(string username, string password)
     {
-        Logger.Information("Login secret expired requesting new one...");
+        Log(ELogCategory.Login, ELogLevel.Info,"Login secret expired requesting new one...");
         
         var request = new RestRequest("/api/account/token");
         request.AddParameter("username", username);
@@ -25,7 +26,7 @@ public class LoginStorage : BinaryDataHolder
 
         var response = await Client.ExecuteAsync(request);
         ProcessTokenResponse(response);
-        Logger.Information("Logged in...");
+        Log(ELogCategory.Login, ELogLevel.Info,"Logged in...");
         
         return await GetAccount();
     }
@@ -41,7 +42,7 @@ public class LoginStorage : BinaryDataHolder
 
         if (DateTime.UtcNow > expires)
         {
-            Logger.Information("Login secret expired requesting new one...");
+            Log(ELogCategory.Login, ELogLevel.Info,"Login secret expired requesting new one...");
             
             var nextSecret = LoginData.NextSecret;
 
@@ -53,7 +54,7 @@ public class LoginStorage : BinaryDataHolder
             ProcessTokenResponse(response1);
         }
 
-        Logger.Information("Getting account information...");
+        Log(ELogCategory.Login, ELogLevel.Info,"Getting account information...");
         
         var request = new RestRequest("/api/account/me");
         request.AddParameter("userId", userId);
@@ -64,7 +65,7 @@ public class LoginStorage : BinaryDataHolder
             throw new HttpRequestException("Response content for /api/account/me was null.");
         
         var account = JsonConvert.DeserializeObject<AccountResponse>(response.Content);
-        Logger.Information("Received response. Returning valid session...");
+        Log(ELogCategory.Login, ELogLevel.Info,"Received response. Returning valid session...");
         
         return new LoginSession(account);
     }

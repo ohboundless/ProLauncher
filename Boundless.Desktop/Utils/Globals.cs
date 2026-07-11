@@ -20,7 +20,7 @@ public static class Globals
     {
         Logging.StartLogging(Configuration.LoggingPath);
         var now = DateTime.UtcNow;
-        Logger.Information($"Opened log file ({now.ToLongDateString()} - {now.ToLongTimeString()})");
+        Log(ELogCategory.Startup, ELogLevel.Info, $"Opened log file ({now.ToLongDateString()} - {now.ToLongTimeString()})");
         
         Configuration.Initialize();
     }

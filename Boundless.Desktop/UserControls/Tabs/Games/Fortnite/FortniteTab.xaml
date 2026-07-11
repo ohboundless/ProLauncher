@@ -74,6 +74,7 @@
                             </StackPanel>
                         </Grid>
                     </Border>
+                    <ui:SymbolIcon Symbol="ArrowDown24" Foreground="White" Margin="10 0"/>
                 </StackPanel>
             </Border>
         

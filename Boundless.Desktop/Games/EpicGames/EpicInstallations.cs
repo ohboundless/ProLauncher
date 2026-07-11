@@ -1,6 +1,6 @@
 using System.IO;
+using Boundless.Desktop.Utils;
 using Newtonsoft.Json.Linq;
-using Serilog;
 
 namespace Boundless.Desktop.Games.EpicGames;
 
@@ -12,6 +12,8 @@ public record EpicInstall
 
 public static class EpicInstallations
 {
+    private static LogCategory Category => new("EpicInstallations");
+    
     private static string[] Apps =
     [
         "Fortnite"
@@ -25,7 +27,7 @@ public static class EpicInstallations
         var programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
         var launcherDataPath = $@"{programData}\Epic\UnrealEngineLauncher\LauncherInstalled.dat";
         
-        Information("LauncherDataPath: " + launcherDataPath);
+        Log(Category, ELogLevel.Info, "LauncherDataPath: " + launcherDataPath);
         
         if (!File.Exists(launcherDataPath))
             throw new FileNotFoundException("Could not find LauncherInstalled.dat");
@@ -34,7 +36,7 @@ public static class EpicInstallations
         var installations = launcherData["InstallationList"]
                             ?? throw new NullReferenceException("No installations found in LauncherInstalled.dat");
         
-        Information("Parsed LauncherInstalled.dat ...");
+        Log(Category, ELogLevel.Info, "Parsed LauncherInstalled.dat ...");
         
         foreach (var installation in installations)
         {
@@ -43,7 +45,7 @@ public static class EpicInstallations
 
             if (!Apps.Contains(appName))
             {
-                Information($"Skipping unsupported app: '{appName}'...");
+                Log(Category, ELogLevel.Info, $"Skipping unsupported app: '{appName}'...");
                 continue;
             }
 
@@ -55,7 +57,7 @@ public static class EpicInstallations
             var result = new EpicInstall { Path = path, Version = version };
             Installs[appName] = result;
                 
-            Information($"Populated {appName} install location.");
+            Log(Category, ELogLevel.Info, $"Populated {appName} install location.");
         }
     }
 }

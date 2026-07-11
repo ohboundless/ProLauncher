@@ -2,24 +2,28 @@ using System.Collections;
 using System.Data;
 using System.IO;
 using System.Runtime.CompilerServices;
+using Boundless.Desktop.Utils;
 
 namespace Boundless.Desktop.Config.Data;
 
-public class BinaryDataHolder
+public class BinaryDataHolder : ILog
 {
+    public LogCategory Category => new("BinaryDataHolder");
+
     public virtual string FileName { get; }
     private string FilePath => Path.Combine(Configuration.DirectoryName, FileName);
     
     #region LOADING AND SAVING
     
-    public bool Read()
+    public bool TryRead()
     {
         if (!File.Exists(FilePath))
         {   
-            Logger.Information($"Cannot load '{FilePath}' because it does not exist.");
+            Log(this, ELogLevel.Error, $"Cannot load '{FilePath}' because it does not exist.");
             return false;
         }
 
+        Log(this, ELogLevel.Info, $"Opening binary holder file: '{FilePath}'");
         _reader = new BinaryReader(File.OpenRead(FilePath));
         
         var properties = GetType().GetProperties();
@@ -37,14 +41,14 @@ public class BinaryDataHolder
             else
             {
                 var type = property.PropertyType;
-                var methodDef = typeof(BinaryDataHolder).GetMethod(nameof(Read));
+                var methodDef = typeof(BinaryDataHolder).GetMethod(nameof(TryRead));
                 var methodInst = methodDef!.MakeGenericMethod(type);
                 
                 var result = methodInst.Invoke(this, []);
                 property.SetValue(this, result);
             }
             
-            Logger.Information($"Loaded '{property.Name}'...");
+            Log(this, ELogLevel.Info, $"Loaded '{property.Name}'...");
         }
         
         _reader.Close();
@@ -55,9 +59,10 @@ public class BinaryDataHolder
     
     public void Save()
     {
-        Logger.Information("Opening binary file...");
+        Log(this, ELogLevel.Info, "Opening binary holder file for writing...");
         _writer = new BinaryWriter(File.Exists(FilePath) ? File.OpenWrite(FilePath) : File.Create(FilePath));
-        Logger.Information($"Opened '{FilePath}'");
+        
+        Log(this, ELogLevel.Info, $"Opened '{FilePath}'");
         
         var properties = GetType().GetProperties();
         foreach (var property in properties)
@@ -74,10 +79,11 @@ public class BinaryDataHolder
                 Write(value);
             }
             
-            Logger.Information($"Saved '{property.Name}'...");
+            Log(this, ELogLevel.Info, $"Saved '{property.Name}'...");
         }
         
         _writer.Close();
+        Log(this, ELogLevel.Info, $"Closed '{FilePath}'...");
     }
 
     public void Delete()
