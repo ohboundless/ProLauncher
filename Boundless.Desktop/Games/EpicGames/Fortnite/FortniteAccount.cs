@@ -1,4 +1,6 @@
+using Boundless.Desktop.Config;
 using Newtonsoft.Json;
+using static Boundless.Desktop.Config.Configuration;
 
 namespace Boundless.Desktop.Games.EpicGames.Fortnite;
 
@@ -30,5 +32,7 @@ public class FortniteAccount : IGameAccount
         RefreshExpiresAt = token.RefreshExpiresAt;
 
         Recent = this;
+        ConfigData!.CurrentAccounts.AccountIdsByGame["Fortnite"] = token.AccountId;
+        SaveConfig();
     }
 }

@@ -7,13 +7,21 @@ namespace Boundless.Desktop.Config;
 
 public class Configuration
 {
-    public static Configuration? Config;
+    public static Configuration? ConfigData;
     
     // Binary data holders
     public static LoginStorage? LoginData;
 
     // Actual config data
     [JsonProperty("version")] public string Version { get; set; } = VERSION;
+
+    public class CurrentAccountEntries
+    {
+        [JsonProperty("accountIds")]
+        public Dictionary<string, string> AccountIdsByGame = new();
+    }
+    
+    [JsonProperty("currentAccountEntries")] public CurrentAccountEntries CurrentAccounts { get; set; } = new();
     
     public static string DirectoryName =>
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BoundlessLauncher";
@@ -21,16 +29,16 @@ public class Configuration
     private static string FilePath => DirectoryName + "\\" + "Config.json";
     public static string LoggingPath => DirectoryName + @"\Logs\Boundless.Desktop-.log";
     
-    public static void Initialize()
+    public static void InitializeConfig()
     {
         Directory.CreateDirectory(DirectoryName);
         Directory.CreateDirectory(DirectoryName + "\\Logs");
         
         if (!File.Exists(FilePath))
-            Save();
+            SaveConfig();
 
         var json = File.ReadAllText(FilePath);
-        Config = JsonConvert.DeserializeObject<Configuration>(json) 
+        ConfigData = JsonConvert.DeserializeObject<Configuration>(json) 
                  ?? throw new JsonException($"Could not deserialize json from '{FilePath}'");
         
         Log(ELogCategory.Startup, ELogLevel.Info, "Loaded config.");
@@ -40,9 +48,9 @@ public class Configuration
         LoginData.TryRead();
     }
 
-    private static void Save()
+    public static void SaveConfig()
     {
-        Config ??= new();
-        File.WriteAllText(FilePath, JsonConvert.SerializeObject(Config, Formatting.Indented));
+        ConfigData ??= new();
+        File.WriteAllText(FilePath, JsonConvert.SerializeObject(ConfigData, Formatting.Indented));
     }
 }

@@ -22,6 +22,6 @@ public static class Globals
         var now = DateTime.UtcNow;
         Log(ELogCategory.Startup, ELogLevel.Info, $"Opened log file ({now.ToLongDateString()} - {now.ToLongTimeString()})");
         
-        Configuration.Initialize();
+        Configuration.InitializeConfig();
     }
 }

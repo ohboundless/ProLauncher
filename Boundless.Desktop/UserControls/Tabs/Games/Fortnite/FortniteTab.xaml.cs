@@ -2,9 +2,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Boundless.Desktop.Games;
 using Boundless.Desktop.Games.EpicGames.Fortnite;
 using Boundless.Desktop.Utils;
 using Boundless.Desktop.Windows.Fortnite;
+using static Boundless.Desktop.Config.Configuration;
 
 namespace Boundless.Desktop.UserControls.Tabs.Games.Fortnite;
 
@@ -13,12 +15,28 @@ public partial class FortniteTab : TabWithBack
     public FortniteTab(Action backAction) : base(backAction)
     {
         InitializeComponent();
+        TryGetLogin();
     }
 
-    private bool IsLoggingIn = false;
+    private async Task TryGetLogin()
+    {
+        if (!ConfigData!.CurrentAccounts.AccountIdsByGame.TryGetValue("Fortnite", out var accountId))
+            return;
+        
+        await Accounts.Fortnite.LoadAsync();
+        var account = Accounts.Fortnite.Accounts!.FirstOrDefault(x => x.Id == accountId);
+        if (account != null)
+        {
+            LoadAccount(account);
+            PostLogin();
+        }
+    }
+
+    private bool _isLoggingIn;
+    
     private async Task TriggerLogin()
     {
-        if (IsLoggingIn)
+        if (_isLoggingIn)
         {
             Log(ELogCategory.UI, ELogLevel.Info, "Fortnite login already initialized, returning...");
             return;
@@ -26,14 +44,27 @@ public partial class FortniteTab : TabWithBack
         
         Log(ELogCategory.UI, ELogLevel.Info, "Fortnite login triggered...");
         
-        IsLoggingIn = true;
+        _isLoggingIn = true;
         LoginBtn.Content = "Loading...";
         await FortniteHandler.StartAuthorization();
 
+        PostLogin();
+    }
+
+    public void PostLogin()
+    {
         Log(ELogCategory.UI, ELogLevel.Info, "Fortnite login completed, making tab visible...");
+        
         Login.Visibility = Visibility.Collapsed;
         Main.Visibility = Visibility.Visible;
         LoginBtn.Content = "Login";
+        _isLoggingIn = false;
+    }
+    
+    public void LoadAccount(FortniteAccount account)
+    {
+        AccountName.Text = account.Username;
+        AccountIcon.Source = new BitmapImage(new Uri(account.Icon));
     }
 
     private void BackArrow_MouseUp(object sender, MouseButtonEventArgs e)
@@ -65,11 +96,5 @@ public partial class FortniteTab : TabWithBack
             if (FortniteAccount.Recent != null)
                 LoadAccount(FortniteAccount.Recent);
         }
-    }
-
-    public void LoadAccount(FortniteAccount account)
-    {
-        AccountName.Text = account.Username;
-        AccountIcon.Source = new BitmapImage(new Uri(account.Icon));
     }
 }
