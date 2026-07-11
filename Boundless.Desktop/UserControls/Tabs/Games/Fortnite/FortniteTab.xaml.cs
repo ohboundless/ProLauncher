@@ -38,11 +38,11 @@ public partial class FortniteTab : TabWithBack
     {
         if (_isLoggingIn)
         {
-            Log(ELogCategory.UI, ELogLevel.Info, "Fortnite login already initialized, returning...");
+            Log(LogCategory.UI, LogLevel.Info, "Fortnite login already initialized, returning...");
             return;
         }
         
-        Log(ELogCategory.UI, ELogLevel.Info, "Fortnite login triggered...");
+        Log(LogCategory.UI, LogLevel.Info, "Fortnite login triggered...");
         
         _isLoggingIn = true;
         LoginBtn.Content = "Loading...";
@@ -53,7 +53,7 @@ public partial class FortniteTab : TabWithBack
 
     public void PostLogin()
     {
-        Log(ELogCategory.UI, ELogLevel.Info, "Fortnite login completed, making tab visible...");
+        Log(LogCategory.UI, LogLevel.Info, "Fortnite login completed, making tab visible...");
         
         Login.Visibility = Visibility.Collapsed;
         Main.Visibility = Visibility.Visible;

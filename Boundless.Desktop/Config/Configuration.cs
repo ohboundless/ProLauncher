@@ -41,7 +41,7 @@ public class Configuration
         ConfigData = JsonConvert.DeserializeObject<Configuration>(json) 
                  ?? throw new JsonException($"Could not deserialize json from '{FilePath}'");
         
-        Log(ELogCategory.Startup, ELogLevel.Info, "Loaded config.");
+        Log(LogCategory.Startup, LogLevel.Info, "Loaded config.");
 
         // Load binary data holders
         LoginData = new LoginStorage();

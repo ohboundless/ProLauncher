@@ -4,7 +4,7 @@ using Serilog;
 
 namespace Boundless.Desktop.Utils;
 
-public enum ELogLevel
+public enum LogLevel
 {
     Verbose,
     Info,
@@ -13,22 +13,7 @@ public enum ELogLevel
     Fatal
 }
 
-public interface ILog
-{
-    internal LogCategory Category { get; }
-}
-
-public sealed class LogCategory(string name)
-{
-    public string Name = name;
-
-    public override string ToString()
-    {
-        return Name;
-    }
-}
-
-public enum ELogCategory
+public enum LogCategory
 {
     // Main
     Any,
@@ -52,43 +37,33 @@ public static class Logging
             .CreateLogger();
     }
 
-    public static void Log(string category, ELogLevel level, string message)
+    public static void Log(string category, LogLevel level, string message)
     {
         var str = $"[{category}] {message}";
         switch (level)
         {
-            case ELogLevel.Verbose:
+            case LogLevel.Verbose:
                 Logger.Verbose(str);
                 break;
-            case ELogLevel.Info:
+            case LogLevel.Info:
                 Logger.Information(str);
                 break;
-            case ELogLevel.Warn:
+            case LogLevel.Warn:
                 Logger.Warning(str);
                 break;
-            case ELogLevel.Error:
+            case LogLevel.Error:
                 Logger.Error(str);
                 break;
-            case ELogLevel.Fatal:
+            case LogLevel.Fatal:
                 Logger.Fatal(str);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(level), level, null);
         }
     }
-    
-    public static void Log(ELogCategory category, ELogLevel level, string message)
+
+    public static void Log(LogCategory category, LogLevel level, string message)
     {
         Log(category.ToString(), level, message);
-    }
-    
-    public static void Log(LogCategory category, ELogLevel level, string message)
-    {
-        Log(category.Name, level, message);
-    }
-    
-    public static void Log(ILog log, ELogLevel level, string message)
-    {
-        Log(log.Category.Name, level, message);
     }
 }

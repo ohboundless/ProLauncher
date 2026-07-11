@@ -12,8 +12,6 @@ namespace Boundless.Desktop.Games.EpicGames.Fortnite;
 [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
 public static class FortniteHandler
 {
-    private static LogCategory Category => new("FortniteHandler");
-    
     #region API HANDLER
 
     private static RestClient _client { get; } = new();
@@ -159,7 +157,7 @@ public static class FortniteHandler
     /// <returns>True: Fortnite was launched successfully. False: Login has expired.</returns>
     public static async Task<bool> LaunchFortnite(FortniteAccount account)
     {
-        Log(Category, ELogLevel.Info, "Starting Fortnite launch process...");
+        Log("Fortnite", LogLevel.Info, "Starting Fortnite launch process...");
         if (DateTime.UtcNow > account.RefreshExpiresAt)
             return false;
     
@@ -177,7 +175,7 @@ public static class FortniteHandler
             
         var win64 = install.Path + @"\FortniteGame\Binaries\Win64";
         
-        Log(ELogCategory.Processes, ELogLevel.Info, "Launching ");
+        Log(LogCategory.Processes, LogLevel.Info, "Launching ");
         var proc = Process.Start(new ProcessStartInfo
         {
             FileName = win64 + "\\FortniteLauncher.exe",
@@ -199,7 +197,7 @@ public static class FortniteHandler
     /// <exception cref="TimeoutException"></exception>
     public static async Task StartAuthorization()
     {
-        Log(Category, ELogLevel.Info, "Starting device authorization...");
+        Log("Fortnite", LogLevel.Info, "Starting device authorization...");
         var auth = await GetDeviceAuthAsync();
         WebUtils.StartUrl(auth.Uri);
 
