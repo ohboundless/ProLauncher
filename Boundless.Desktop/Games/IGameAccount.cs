@@ -17,6 +17,9 @@ public interface IGameAccount
     [JsonProperty("icon")]
     public string Icon { get; }
     
+    [JsonProperty("id")]
+    public string Id { get; }
+    
     [JsonProperty("username")]
     public string Username { get; }
 }

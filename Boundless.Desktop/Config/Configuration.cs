@@ -17,12 +17,13 @@ public class Configuration
     public static string DirectoryName =>
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BoundlessLauncher";
 
-    private static string FilePath => DirectoryName + "\\" + "Config_Blazor.json";
-    public static string LoggingPath => DirectoryName + "\\" + "Boundless.Desktop-.log";
+    private static string FilePath => DirectoryName + "\\" + "Config.json";
+    public static string LoggingPath => DirectoryName + @"\Logs\Boundless.Desktop-.log";
     
     public static void Initialize()
     {
         Directory.CreateDirectory(DirectoryName);
+        Directory.CreateDirectory(DirectoryName + "\\Logs");
         
         if (!File.Exists(FilePath))
             Save();

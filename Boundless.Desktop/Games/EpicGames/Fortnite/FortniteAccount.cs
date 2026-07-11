@@ -9,6 +9,7 @@ public class FortniteAccount : IGameAccount
     
     public GameAccountType Type => GameAccountType.Fortnite;
     public string Icon { get; set; }
+    public string Id { get; set; }
     public string Username { get; set; }
     
     [JsonProperty("refresh_token")]
@@ -22,6 +23,7 @@ public class FortniteAccount : IGameAccount
     
     public FortniteAccount(FortniteHandler.FortniteToken token)
     {
+        Id = token.AccountId;
         Username = token.DisplayName;
         Icon = "https://fortnite.gg/img/items/899/style-1.jpg?4"; // Renegade Raider placeholder
         RefreshToken = token.RefreshToken;
