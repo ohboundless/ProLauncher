@@ -82,6 +82,10 @@
                 <Button Padding="20  15" Margin="5"
                         Background="#0fffffff"
                         MinWidth="120"
+                        Click="Launch_OnClick">Launch</Button>
+                <Button Padding="20  15" Margin="5"
+                        Background="#0fffffff"
+                        MinWidth="120"
                         Click="AccountCheckerBtn_OnClick">Account Checker</Button>
                 <Button Padding="20  15" Margin="5"
                         Background="#0fffffff"

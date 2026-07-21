@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Boundless.Desktop.Games;
+using Boundless.Desktop.Games.EpicGames;
 using Boundless.Desktop.Games.EpicGames.Fortnite;
 using Boundless.Desktop.Utils;
 using Boundless.Desktop.Windows.Fortnite;
@@ -63,6 +64,7 @@ public partial class FortniteTab : TabWithBack
     
     public void LoadAccount(FortniteAccount account)
     {
+        FortniteAccount.Recent = account;
         AccountName.Text = account.Username;
         AccountIcon.Source = new BitmapImage(new Uri(account.Icon));
     }
@@ -95,6 +97,20 @@ public partial class FortniteTab : TabWithBack
         {
             if (FortniteAccount.Recent != null)
                 LoadAccount(FortniteAccount.Recent);
+        }
+    }
+
+    private async void Launch_OnClick(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            EpicInstallations.PopulateInstallations(); // TODO probably put somewhere else
+            await FortniteHandler.LaunchFortnite(FortniteAccount.Recent);
+        }
+        catch (Exception ex)
+        {
+            // TODO handle
+            Log(LogCategory.Processes, LogLevel.Error, ex.ToString());
         }
     }
 }

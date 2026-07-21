@@ -68,8 +68,6 @@ public static class FortniteHandler
         public string Token;
         public string AccountId;
         public string DisplayName;
-        public string RefreshToken;
-        public DateTime RefreshExpiresAt;
     }
 
     private static async Task<FortniteToken?> HandleTokenRequest(RestRequest request)
@@ -93,13 +91,6 @@ public static class FortniteHandler
                 DisplayName =
                     json["displayName"]?.ToString() ??
                     throw new NoNullAllowedException("Could not get 'displayName'."),
-                
-                RefreshToken =
-                    json["refresh_token"]?.ToString() ??
-                    throw new NoNullAllowedException("Could not get 'refresh_token'."),
-                
-                RefreshExpiresAt = 
-                    DateTime.Parse(json["refresh_expires_at"]?.ToString() ?? throw new NoNullAllowedException("Could not get 'refresh_expires_at'."))
             },
 
             // Still pending
@@ -164,26 +155,13 @@ public static class FortniteHandler
     
     #region LAUNCHER
     
-    public static async Task<bool> LaunchFortnite(FortniteAccount account)
+    public static async Task LaunchFortnite(FortniteAccount account)
     {
         Log("Fortnite", LogLevel.Info, "Starting Fortnite launch process...");
 
-        FortniteToken? exchanged = null;
-        if (account.RefreshExpiresAt > DateTime.UtcNow)
-        {
-            var androidToken = await GetTokenWithDeviceAuth(account.DeviceAuth);
-            exchanged = await ExchangeToken(LAUNCHER_CLIENT, androidToken.Token);
-        }
-        else
-        {
-            var token = await GetTokenAsync(LAUNCHER_CLIENT, "refresh_token", account.RefreshToken);
-            exchanged = await ExchangeToken(LAUNCHER_CLIENT, token.Token);
-        }
-
+        var androidToken = await GetTokenWithDeviceAuth(account.DeviceAuth);
+        var exchanged = await ExchangeToken(LAUNCHER_CLIENT, androidToken.Token);
         var exchangeCode = await GetExchangeCode(exchanged.Token);
-        account.RefreshToken = exchanged.RefreshToken;
-        account.RefreshExpiresAt = exchanged.RefreshExpiresAt;
-        
         
         if (!EpicInstallations.Installs.TryGetValue("Fortnite", out var install))
             throw new ApplicationException("Unable to launch Fortnite because it is not installed.");
@@ -200,8 +178,6 @@ public static class FortniteHandler
         });
 
         GameList.LaunchedGames.Add(new LaunchedGame("Fortnite", proc));
-
-        return true;
     }
 
     #endregion
