@@ -31,7 +31,7 @@ public static class FortniteHandler
     private const string ANDROID_CLIENT =
         "Basic M2Y2OWU1NmM3NjQ5NDkyYzhjYzI5ZjFhZjA4YThhMTI6YjUxZWU5Y2IxMjIzNGY1MGE2OWVmYTY3ZWY1MzgxMmU=";
     
-    private static async Task<string> GetClientAccessTokenAsync()
+    private static async Task<string> GetClientAccessToken()
     {
         var request = new RestRequest(TOKEN_URI, Method.Post);
         request.AddHeader("Authorization", SWITCH_CLIENT);
@@ -47,9 +47,9 @@ public static class FortniteHandler
     /// </summary>
     /// <returns></returns>
     /// <exception cref="NoNullAllowedException"></exception>
-    public static async Task<(string DeviceCode, string Uri)> GetDeviceAuthAsync()
+    private static async Task<(string DeviceCode, string Uri)> GetDeviceAuth()
     {
-        var accessToken = await GetClientAccessTokenAsync();
+        var accessToken = await GetClientAccessToken();
         var request = new RestRequest("https://account-public-service-prod.ol.epicgames.com/account/api/oauth/deviceAuthorization", Method.Post);
         request.AddHeader("Authorization", "Bearer " + accessToken);
         
@@ -101,7 +101,7 @@ public static class FortniteHandler
         };
     }
 
-    public static async Task<FortniteToken?> GetTokenAsync(string client, string grantType, string code)
+    public static async Task<FortniteToken?> GetToken(string client, string grantType, string code)
     {
         var request = new RestRequest(TOKEN_URI, Method.Post);
         request.AddHeader("Authorization", client);
@@ -146,7 +146,7 @@ public static class FortniteHandler
     public static async Task<FortniteToken?> ExchangeToken(string forClient, string token)
     {
         var code = await GetExchangeCode(token);
-        var response = await GetTokenAsync(forClient, "exchange_code", code);
+        var response = await GetToken(forClient, "exchange_code", code);
 
         return response;
     }
@@ -189,7 +189,7 @@ public static class FortniteHandler
     public static async Task StartAuthorization()
     {
         Log("Fortnite", LogLevel.Info, "Starting device authorization...");
-        var auth = await GetDeviceAuthAsync();
+        var auth = await GetDeviceAuth();
         WebUtils.StartUrl(auth.Uri);
 
         FortniteToken? token = null;
@@ -201,7 +201,7 @@ public static class FortniteHandler
                 throw new TimeoutException("Device authorization has timed out!");
             
             await Task.Delay(10000); // 10 seconds
-            token = await GetTokenAsync(SWITCH_CLIENT, "device_code", auth.DeviceCode);
+            token = await GetToken(SWITCH_CLIENT, "device_code", auth.DeviceCode);
             retryCount++;
         }
 
