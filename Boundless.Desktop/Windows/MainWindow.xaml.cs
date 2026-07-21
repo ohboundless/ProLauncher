@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using Boundless.Desktop.Config;
+using Boundless.Desktop.Games.EpicGames.Fortnite;
 using Boundless.Desktop.Templates;
 using Boundless.Desktop.Utils;
 using Microsoft.Extensions.DependencyInjection;

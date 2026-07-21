@@ -18,7 +18,7 @@ public static class Globals
     
     public static void StartupTasks()
     {
-        Logging.StartLogging(Configuration.LoggingPath);
+        StartLogging(Configuration.LoggingPath);
         var now = DateTime.UtcNow;
         Log(LogCategory.Startup, LogLevel.Info, $"Opened log file ({now.ToLongDateString()} - {now.ToLongTimeString()})");
         

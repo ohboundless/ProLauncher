@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 
@@ -6,11 +7,27 @@ namespace Boundless.Desktop.Utils;
 
 public static class WebUtils
 {
+    public static async Task<string?> GetTextAsync(this RestClient client, RestRequest request)
+    {
+        // Log(LogCategory.Http, LogLevel.Info, $"Getting content from '{client.BuildUri(request).AbsoluteUri}'");
+        var response = await client.ExecuteAsync(request);
+        return response.Content;
+    }
+    
     public static async Task<dynamic> GetJsonAsync(this RestClient client, RestRequest request)
     {
         Log(LogCategory.Http, LogLevel.Info, $"Getting JSON from '{client.BuildUri(request).AbsoluteUri}'");
-        var response = await client.ExecuteAsync(request);
-        var json = JObject.Parse(response.Content);
+        var text = await client.GetTextAsync(request);
+        var json = JObject.Parse(text);
+
+        return json;
+    }
+    
+    public static async Task<T> GetJsonAsync<T>(this RestClient client, RestRequest request)
+    {
+        Log(LogCategory.Http, LogLevel.Info, $"Getting JSON from '{client.BuildUri(request).AbsoluteUri}'");
+        var text = await client.GetTextAsync(request);
+        var json = JsonConvert.DeserializeObject<T>(text);
 
         return json;
     }
