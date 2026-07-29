@@ -26,15 +26,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\css\app.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\MainLayout.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\NavMenu.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\images\Fortnite_Splash.bmp" />
-      <_ContentIncludedByDefault Remove="wwwroot\index.html" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Page Update="Windows\MainWindow.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
@@ -61,16 +52,4 @@
         <Resource Include="Fonts\Roboto-Italic-VariableFont_wdth,wght.ttf" />
         <Resource Include="Fonts\Roboto-VariableFont_wdth,wght.ttf" />
     </ItemGroup>
-
-    <!--<Target Name="CopyBlazorWwwRoot" BeforeTargets="Build">
-        <ItemGroup>
-            <BlazorFiles Include="..\Boundless.Desktop\wwwroot\**\*" />
-        </ItemGroup>
-
-        <Copy
-                SourceFiles="@(BlazorFiles)"
-                DestinationFiles="@(BlazorFiles->'$(OutDir)blazor\%(RecursiveDir)%(Filename)%(Extension)')"
-                SkipUnchangedFiles="true" />
-    </Target>-->
-    
 </Project>

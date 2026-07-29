@@ -14,6 +14,6 @@ public partial class LibraryTab : UserControl
 
     private void Fortnite_OnMouseUp(object sender, MouseButtonEventArgs e)
     {
-        MainWindow.SetCurrentTab<FortniteTab>(() => MainWindow.SetCurrentTab<LibraryTab>());
+        //MainWindow.SetCurrentTab<FortniteTab>(() => MainWindow.SetCurrentTab<LibraryTab>());
     }
 }

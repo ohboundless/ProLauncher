@@ -11,56 +11,66 @@
         xmlns:userControls="clr-namespace:Boundless.Desktop.UserControls"
         xmlns:tabs="clr-namespace:Boundless.Desktop.UserControls.Tabs"
         mc:Ignorable="d"
-        Height="700" Width="1150"
+        Height="800" Width="1250"
         WindowStartupLocation="CenterScreen" 
         ResizeMode="NoResize"
         WindowStyle="None"
         BorderThickness="1"
         UseLayoutRounding="True"
-        MinWidth="750"
-        MinHeight="500"
+        MinWidth="950"
+        MinHeight="600"
         Title=""
-        Style="{StaticResource MyBoundlessWindowStyle}"
-        Loaded="MainWindow_OnLoaded">
-    <Grid Background="Transparent">
+        Style="{StaticResource MyBoundlessWindowStyle}">
+    <Grid Background="#090f19">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="290"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <StackPanel Grid.Column="0" Background="#101010">
-            <userControls:NavButton Label="News" Icon="News24" MouseUp="Home_OnClick"
-                                    Width="50" Height="50"
-                                    Margin="0 5"/>
-            <userControls:NavButton Label="Library" Icon="Games24" MouseUp="Library_OnClick" 
-                                    Width="50" Height="50"
-                                    Margin="0 5"/>
-            <userControls:NavButton Label="Plugins" Icon="PlugConnected24" MouseUp="Library_OnClick" 
-                                    Width="50" Height="50"
-                                    Margin="0 5"/>
-        </StackPanel>
-        <Border Grid.Column="0" BorderThickness="0 0 1 0" 
-                BorderBrush="#0fffffff" Margin="0 0 0 10"/>
-        
-        <Border Grid.Column="1"
-            d:DataContext="{d:DesignInstance }">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition/>
-                    <RowDefinition Height="40"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="50"/>
-                </Grid.ColumnDefinitions>
-                
-                <StackPanel Grid.Row="1" Grid.Column="1" x:Name="Tabs">
-                    <tabs:HomeTab x:Name="HomeTab"/>
-                    <tabs:LibraryTab x:Name="LibraryTab"/>
-                </StackPanel>
-            </Grid>
-        </Border>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <Border Grid.Row="1" 
+                    Margin="10" 
+                    Background="#111729" 
+                    CornerRadius="5"
+                    BorderThickness="1"
+                    BorderBrush="#202a47">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="70"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Grid Grid.Row="0" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="40"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Grid.Column="0" 
+                                   Text="ACCOUNTS"
+                                   Foreground="#c9cddc"
+                                   FontFamily="./Fonts/#Roboto" 
+                                   FontWeight="600"
+                                   VerticalAlignment="Center"
+                                   Margin="5 0"/>
+                        <Button Content="✚" Grid.Column="2"/>
+                    </Grid>
+                    
+                    <ScrollViewer Grid.Row="1" Margin="0 5 0 0">
+                        <StackPanel>
+                            <userControls:AccountEntry/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </templates:BoundlessWindow>
