@@ -23,9 +23,14 @@
         Style="{StaticResource MyBoundlessWindowStyle}">
     <Grid Background="#090f19">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="290"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*" MaxWidth="330"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
         
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
@@ -34,8 +39,9 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             
+            <!-- Start account manager-->
             <Border Grid.Row="1" 
-                    Margin="10" 
+                    Margin="10 5" 
                     Background="#111729" 
                     CornerRadius="5"
                     BorderThickness="1"
@@ -44,7 +50,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"/>
                         <RowDefinition/>
-                        <RowDefinition Height="70"/>
+                        <RowDefinition Height="55"/>
                     </Grid.RowDefinitions>
                     
                     <Grid Grid.Row="0" VerticalAlignment="Center">
@@ -61,7 +67,16 @@
                                    FontWeight="600"
                                    VerticalAlignment="Center"
                                    Margin="5 0"/>
-                        <Button Content="✚" Grid.Column="2"/>
+                        <Button Grid.Column="2" 
+                                Width="30" 
+                                Height="30" 
+                                Padding="5"
+                                Background="#111729"
+                                BorderBrush="#202a47">
+                            <StackPanel>
+                                <ui:SymbolIcon Symbol="Add24" Filled="True" Foreground="#2e5ecc"/>
+                            </StackPanel>
+                        </Button>
                     </Grid>
                     
                     <ScrollViewer Grid.Row="1" Margin="0 5 0 0">
@@ -69,8 +84,47 @@
                             <userControls:AccountEntry/>
                         </StackPanel>
                     </ScrollViewer>
+                    
+                    <Grid Grid.Row="2">
+                        <Button Height="40"
+                                Margin="5 0"
+                                Padding="0 -10"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Background="#111729"
+                                BorderBrush="#202a47"
+                                BorderThickness="2">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="Add24" Filled="True" Foreground="#2e5ecc" Margin="5"/>
+                                <TextBlock Text="Add Account" Margin="5" Foreground="#2e5ecc"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Border>
+            <!-- End account manager-->
+            
+            <Border Grid.Row="2" 
+                    Margin="10 5" 
+                    Background="#111729" 
+                    CornerRadius="5"
+                    BorderThickness="1"
+                    BorderBrush="#202a47">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="80"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0">
+                        <userControls:NavButton Icon="PlayCircle28" Text="Launch Fortnite" Margin="0 3"/>
+                        <userControls:NavButton Icon="Person24" Text="Cosmetics" Margin="0 3" IsActive="True"/>
+                        <userControls:NavButton Icon="DataBarVertical24" Text="Stats" Margin="0 3"/>
+                        <userControls:NavButton Icon="Settings28" Text="Settings" Margin="0 3"/>
+                    </StackPanel>
                 </Grid>
             </Border>
         </Grid>
+        
     </Grid>
 </templates:BoundlessWindow>

@@ -7,7 +7,7 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d"
              d:DesignHeight="75" d:DesignWidth="250">
-    <Border Background="#292f51"
+    <Border Background="#3a4377"
             BorderBrush="#333b6a"
             BorderThickness="1"
             CornerRadius="5">

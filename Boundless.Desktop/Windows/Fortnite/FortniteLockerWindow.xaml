@@ -31,12 +31,12 @@
         </Grid.ColumnDefinitions>
         
         <StackPanel Grid.Column="0" Background="#0a101d">
-            <userControls:NavButton Label="News" Icon="Person24"
+            <!--<userControls:NavButton Label="News" Icon="Person24"
                                     Width="50" Height="50"
                                     Margin="0 5"/>
             <userControls:NavButton Label="Library" Icon="Backpack24" 
                                     Width="50" Height="50"
-                                    Margin="0 5"/>
+                                    Margin="0 5"/>-->
             <!--<userControls:NavButton Label="Plugins" Icon="Person"
                                     Width="50" Height="50"
                                     Margin="0 5"/>-->

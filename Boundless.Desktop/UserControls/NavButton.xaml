@@ -6,21 +6,42 @@
              xmlns:local="clr-namespace:Boundless.Desktop.UserControls"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d"
-             d:DesignHeight="40" d:DesignWidth="40">
-    <Border Padding="0 2" CornerRadius="8" 
-            BorderBrush="Transparent" BorderThickness=" 0 0 0 0">
-        <Border.Style>
-            <Style TargetType="Border">
-                <Setter Property="Background" Value="Transparent"></Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#0fffffff"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-        </Border.Style>
-        <StackPanel VerticalAlignment="Center">
-            <ui:SymbolIcon Name="LabelIcon" Symbol="Games24" Foreground="White" FontSize="20"/>
-        </StackPanel>
-    </Border>
+             d:DesignHeight="50" d:DesignWidth="280">
+    <Button Name="_btn"
+            Height="50"
+            Margin="5 0"
+            Padding="0 -10"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Left"
+            VerticalAlignment="Center"
+            Background="Transparent"
+            BorderBrush="#3a4377"
+            BorderThickness="0">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <ui:SymbolIcon Name="_labelIcon" 
+                           Grid.Column="0"
+                           Symbol="Accessibility24" 
+                           Filled="False" 
+                           FontSize="20"
+                           Foreground="#c9cddc" 
+                           Margin="20 0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"/>
+            <TextBlock Name="_textBlock" 
+                       Grid.Column="1"
+                       Text="Add Account" 
+                       Margin="5 0" 
+                       Foreground="#c9cddc"
+                       FontFamily="./Fonts/#Roboto" 
+                       FontSize="16"
+                       FontWeight="400"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"/>
+        </Grid>
+    </Button>
 </UserControl>

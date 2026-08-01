@@ -58,17 +58,17 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="templates:BoundlessWindow">
                             <Grid>
-                                <Border CornerRadius="8" Name="Border2" Background="#121212"/>
+                                <Border CornerRadius="8" Name="Border2" Background="#090f19"/>
                                 <Grid>
                                     <Grid.OpacityMask>
                                         <VisualBrush Visual="{Binding ElementName=Border2}" />
                                     </Grid.OpacityMask>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="28"/>
+                                        <RowDefinition Height="40"/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
 
-                                    <Grid x:Name="TopBar" Background="#121212">
+                                    <Grid x:Name="TopBar" Background="#090f19">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="80"/>
                                             <ColumnDefinition/>
@@ -76,7 +76,6 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Border Grid.Column="0" 
-                                                Background="#101010" 
                                                 Width="80" Height="28"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center">
@@ -84,15 +83,11 @@
                                                        Foreground="White"
                                                        FontSize="12"/>
                                         </Border>
-                                        <Border Grid.Column="0" 
-                                                BorderThickness="0 0 1 0" 
-                                                BorderBrush="#0fffffff"
-                                                Margin="0 10 0 0"/>
 
                                         <StackPanel Grid.Column="2" Orientation="Horizontal">
                                             <Button Content="—" Width="46" Foreground="White" Style="{StaticResource WindowButtonStyle}" x:Name="MinimizeBtn"/>
                                             <Button Content="▢" Width="46" Style="{StaticResource WindowButtonStyle}" x:Name="MaximizeBtn"/>
-                                            <Button Content="✕" Width="46"  Style="{StaticResource CloseButtonStyle}" x:Name="ExitBtn"/>
+                                            <Button Content="✕" Width="46"  Style="{StaticResource WindowButtonStyle}" x:Name="ExitBtn"/>
                                         </StackPanel>
                                     </Grid>
 
