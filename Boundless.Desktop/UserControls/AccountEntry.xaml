@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Boundless.Desktop.UserControls"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d"
-             d:DesignHeight="75" d:DesignWidth="250">
+             d:DesignHeight="75" d:DesignWidth="250"
+             Margin="0 2">
     <Border Background="#3a4377"
             BorderBrush="#333b6a"
             BorderThickness="1"

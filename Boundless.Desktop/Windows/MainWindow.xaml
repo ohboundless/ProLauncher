@@ -11,7 +11,7 @@
         xmlns:userControls="clr-namespace:Boundless.Desktop.UserControls"
         xmlns:tabs="clr-namespace:Boundless.Desktop.UserControls.Tabs"
         mc:Ignorable="d"
-        Height="800" Width="1250"
+        Height="850" Width="1300"
         WindowStartupLocation="CenterScreen" 
         ResizeMode="NoResize"
         WindowStyle="None"
@@ -19,8 +19,9 @@
         UseLayoutRounding="True"
         MinWidth="950"
         MinHeight="600"
-        Title=""
-        Style="{StaticResource MyBoundlessWindowStyle}">
+        Title="Pro Launcher"
+        Style="{StaticResource MyBoundlessWindowStyle}"
+        Loaded="MainWindow_OnLoaded">
     <Grid Background="#090f19">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MaxWidth="330"/>
@@ -34,7 +35,7 @@
         
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="120"/>
+                <RowDefinition Height="100"/>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -79,9 +80,13 @@
                         </Button>
                     </Grid>
                     
+                    <!-- Account entries -->
                     <ScrollViewer Grid.Row="1" Margin="0 5 0 0">
-                        <StackPanel>
-                            <userControls:AccountEntry/>
+                        <StackPanel Name="AccountsPanel">
+                            <TextBlock Name="NoAccountsFoundTextBlock"
+                                       Text="No accounts found." 
+                                       Foreground="#919191" 
+                                       Margin="0 8"/>
                         </StackPanel>
                     </ScrollViewer>
                     
@@ -93,7 +98,8 @@
                                 VerticalAlignment="Center"
                                 Background="#111729"
                                 BorderBrush="#202a47"
-                                BorderThickness="2">
+                                BorderThickness="2"
+                                Click="LoadAccount_OnClick">
                             <StackPanel Orientation="Horizontal">
                                 <ui:SymbolIcon Symbol="Add24" Filled="True" Foreground="#2e5ecc" Margin="5"/>
                                 <TextBlock Text="Add Account" Margin="5" Foreground="#2e5ecc"/>
@@ -109,7 +115,8 @@
                     Background="#111729" 
                     CornerRadius="5"
                     BorderThickness="1"
-                    BorderBrush="#202a47">
+                    BorderBrush="#202a47"
+                    MinHeight="350">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
