@@ -55,7 +55,8 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="25"
-                Foreground="White">
+                Foreground="White"
+                MouseDown="More_OnMouseDown">
                 <TextBlock.LayoutTransform>
                     <RotateTransform Angle="90"/>
                 </TextBlock.LayoutTransform>

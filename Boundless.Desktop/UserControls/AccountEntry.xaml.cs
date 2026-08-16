@@ -99,4 +99,9 @@ public partial class AccountEntry : UserControl
         Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame["Fortnite"] = Account.Id;
         Configuration.SaveConfig();
     }
+
+    private void More_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        
+    }
 }
