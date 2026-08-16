@@ -124,7 +124,8 @@
                     </Grid.RowDefinitions>
                     
                     <StackPanel Grid.Row="0">
-                        <userControls:NavButton Icon="PlayCircle28" Text="Launch Fortnite" Margin="0 3"/>
+                        <userControls:NavButton Icon="PlayCircle28" Text="Launch Fortnite" Margin="0 3"
+                                                Click="LaunchFortnite_OnClick"/>
                         <userControls:NavButton Icon="Person24" Text="Cosmetics" Margin="0 3" IsActive="True"/>
                         <userControls:NavButton Icon="DataBarVertical24" Text="Stats" Margin="0 3"/>
                         <userControls:NavButton Icon="Settings28" Text="Settings" Margin="0 3"/>

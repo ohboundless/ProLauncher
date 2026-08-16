@@ -13,6 +13,7 @@ public class FortniteAccount : IGameAccount
     public string Icon { get; set; }
     public string Id { get; set; }
     public string Username { get; set; }
+    public DateTime? LastLaunchTime { get; set; }
     
     [JsonProperty("device_auth")]
     public FortniteDeviceAuth DeviceAuth { get; set; }

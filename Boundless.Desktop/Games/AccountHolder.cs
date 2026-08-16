@@ -2,6 +2,7 @@ using System.Data;
 using System.IO;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Games.EpicGames.Fortnite;
+using Boundless.Desktop.Utils;
 using Newtonsoft.Json;
 
 namespace Boundless.Desktop.Games;
@@ -26,6 +27,13 @@ public class AccountHolder<T>
     public async Task AddAccountAsync(T account)
     {
         await LoadAsync();
+
+        if (_accounts!.Find(x => x.Id == account.Id) != null)
+        {
+            Log("Accounts", LogLevel.Info, $"Account with id {account.Id} is already managed.");
+            return;
+        }
+        
         _accounts!.Add(account);
         await SaveAsync();
     }

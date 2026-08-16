@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Games;
+using Boundless.Desktop.Games.EpicGames;
 using Boundless.Desktop.Games.EpicGames.Fortnite;
 using Boundless.Desktop.Templates;
 using Boundless.Desktop.UserControls;
@@ -42,11 +43,27 @@ public partial class MainWindow : BoundlessWindow
             return;
         }
 
+
         NoAccountsFoundTextBlock.Visibility = Visibility.Collapsed;
-        
-        foreach (var account in accounts)
+
+        var ordered = accounts.OrderByDescending(x => x.LastLaunchTime);
+        var accountIds = Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame;
+        accountIds.TryGetValue("Fortnite", out var currentAccount);
+
+        foreach (var account in ordered)
         {
-            var entry = new AccountEntry(account);
+            var entry = new AccountEntry(account, AccountsPanel);
+            if (currentAccount == null)
+            {
+                entry.IsActive = true;
+                currentAccount = account.Id;
+                accountIds.Add("Fortnite", account.Id);
+            }
+            else if (account.Id == currentAccount)
+            {
+                entry.IsActive = true;
+            }
+            
             AccountsPanel.Children.Add(entry);
         }
     }
@@ -55,5 +72,37 @@ public partial class MainWindow : BoundlessWindow
     {
         await FortniteHandler.StartAuthorization();
         LoadAccounts();
+    }
+
+    private async void LaunchFortnite_OnClick(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            EpicInstallations.PopulateInstallations(); // TODO probably put somewhere else
+
+            if (!Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame.TryGetValue("Fortnite", out var current))
+            {
+                Log("Launcher", LogLevel.Error, "Cannot launch Fortnite, no active account found!");
+                // TODO maybe UI message
+                return;
+            }
+
+            var account = Accounts.Fortnite.Accounts?.FirstOrDefault(x => x.Id == current);
+
+            if (account == null)
+            {
+                Log("Launcher", LogLevel.Error, $"Unable to launch! Could not find account with id: {current}");
+                // TODO UI message
+                return;
+            }
+            
+            await FortniteHandler.LaunchFortnite(account);
+            LoadAccounts();
+        }
+        catch (Exception ex)
+        {
+            // TODO handle
+            Log("Launcher", LogLevel.Error, ex.ToString());
+        }
     }
 }

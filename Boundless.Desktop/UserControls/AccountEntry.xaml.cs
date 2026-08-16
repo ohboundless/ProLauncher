@@ -1,5 +1,9 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Boundless.Desktop.Config;
 using Boundless.Desktop.Games.EpicGames.Fortnite;
 
 namespace Boundless.Desktop.UserControls;
@@ -7,11 +11,37 @@ namespace Boundless.Desktop.UserControls;
 public partial class AccountEntry : UserControl
 {
     public FortniteAccount Account;
-    
-    public AccountEntry(FortniteAccount account)
+    private StackPanel _panel;
+
+    private bool _isActive;
+
+    public bool IsActive
     {
-        Account = account;
+        get => _isActive;
+        set
+        {
+            if (value)
+            {
+                Container.Background = new SolidColorBrush(Color.FromRgb(58, 67, 119));
+                Container.BorderThickness = new Thickness(1);
+            }
+            else
+            {
+                Container.Background = new SolidColorBrush(Colors.Transparent);
+                Container.BorderThickness = new Thickness(0);
+            }
+
+            _isActive = value;
+        }
+    }
+    
+    public AccountEntry(FortniteAccount account, StackPanel panel)
+    {
         InitializeComponent();
+        IsActive = false;
+        _panel = panel;
+        
+        Account = account;
         Populate();
     }
 
@@ -19,6 +49,46 @@ public partial class AccountEntry : UserControl
     {
         AccountName.Text = Account.Username;
         AccountIcon.Source = new BitmapImage(new Uri(Account.Icon));
-        LastPlayTime.Text = $"Last launched {new Random().Next(1, 365)}d ago";
+        LastPlayTime.Text = BuildLastLaunchedString(Account.LastLaunchTime);
+    }
+
+    private string BuildLastLaunchedString(DateTime? dateTime)
+    {
+        if (!dateTime.HasValue)
+        {
+            return "Never launched";
+        }
+
+        var result = "Last launched ";
+        var now = DateTime.Now;
+        var timeSince = now.Subtract(dateTime.Value);
+        
+        if (TimeSpan.FromDays(1) > timeSince) // Today
+        {
+            result += "today";
+        }
+        else if (TimeSpan.FromDays(365) > timeSince) // Less than a year
+        {
+            result += $"{timeSince.Days}d ago";
+        }
+        else // More than a year
+        {
+            result += $"{timeSince.Days / 365} year(s) ago";
+        }
+
+        return result;
+    }
+
+    private void AccountEntry_OnClick(object sender, MouseButtonEventArgs e)
+    {
+        foreach (var child in _panel.Children)
+        {
+            if (child is AccountEntry entry)
+                entry.IsActive = false;
+        }
+
+        IsActive = true;
+        Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame["Fortnite"] = Account.Id;
+        Configuration.SaveConfig();
     }
 }

@@ -177,6 +177,8 @@ public static class FortniteHandler
                         $"-AUTH_TYPE=exchangecode -epicapp=Fortnite -epicenv=Prod -EpicPortal -epicuserid={exchanged.AccountId}"
         });
 
+        account.LastLaunchTime = DateTime.Now;
+        await Accounts.Fortnite.SaveAsync();
         GameList.LaunchedGames.Add(new LaunchedGame("Fortnite", proc));
     }
 

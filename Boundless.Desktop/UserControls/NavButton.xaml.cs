@@ -2,10 +2,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Wpf.Ui.Controls;
+using Button = Wpf.Ui.Controls.Button;
 
 namespace Boundless.Desktop.UserControls;
 
-public partial class NavButton : UserControl
+public partial class NavButton : Button
 {
     public string Text
     {
@@ -30,13 +31,13 @@ public partial class NavButton : UserControl
             {
                 _labelIcon.Filled = true;
                 _textBlock.FontWeight = FontWeight.FromOpenTypeWeight(500);
-                _btn.Background = new SolidColorBrush(Color.FromRgb(58, 67, 119));
+                Background = new SolidColorBrush(Color.FromRgb(58, 67, 119));
             }
             else
             {
                 _labelIcon.Filled = false;
                 _textBlock.FontWeight = FontWeight.FromOpenTypeWeight(400);
-                _btn.Background = new SolidColorBrush(Colors.Transparent);
+                Background = new SolidColorBrush(Colors.Transparent);
             }
         }
     }
