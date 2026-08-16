@@ -63,9 +63,17 @@ public partial class AccountEntry : UserControl
         var now = DateTime.Now;
         var timeSince = now.Subtract(dateTime.Value);
         
-        if (TimeSpan.FromDays(1) > timeSince) // Today
+        if (TimeSpan.FromMinutes(1) > timeSince) // Less than a minute
         {
-            result += "today";
+            result += $"{timeSince.Seconds}s ago";
+        }
+        else if (TimeSpan.FromHours(1) > timeSince) // Less than a hour
+        {
+            result += $"{timeSince.Minutes} min ago";
+        }
+        else if (TimeSpan.FromDays(1) > timeSince) // Less than a day
+        {
+            result += $"{timeSince.Hours}h ago";
         }
         else if (TimeSpan.FromDays(365) > timeSince) // Less than a year
         {
