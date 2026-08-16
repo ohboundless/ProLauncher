@@ -1,4 +1,3 @@
-using Boundless.Desktop.Config;
 using Newtonsoft.Json;
 using static Boundless.Desktop.Config.Configuration;
 

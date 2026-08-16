@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Boundless.Desktop.Utils;
 
 namespace Boundless.Desktop;
 

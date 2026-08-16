@@ -1,6 +1,4 @@
 global using static Boundless.Desktop.Utils.Globals;
-using System.IO;
-using System.Windows.Media.Media3D;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Windows;
 using RestSharp;

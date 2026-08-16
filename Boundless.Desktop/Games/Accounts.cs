@@ -1,5 +1,4 @@
 using Boundless.Desktop.Games.EpicGames.Fortnite;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Boundless.Desktop.Games;
 

@@ -1,11 +1,7 @@
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using Boundless.Desktop.Games.EpicGames;
 using Boundless.Desktop.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace Boundless.Desktop.Games.EpicGames.Fortnite;
