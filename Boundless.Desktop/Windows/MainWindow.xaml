@@ -115,7 +115,7 @@
                     CornerRadius="5"
                     BorderThickness="1"
                     BorderBrush="#202a47"
-                    MinHeight="350">
+                    MinHeight="300">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition/>

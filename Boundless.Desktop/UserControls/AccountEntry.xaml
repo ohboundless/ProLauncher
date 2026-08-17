@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Boundless.Desktop.UserControls"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d"
-             d:DesignHeight="75" d:DesignWidth="250"
+             Height="76"
+             d:DesignHeight="76" d:DesignWidth="250"
              Margin="0 2">
     <Border Name="Container"
             Background="#3a4377"
@@ -14,11 +15,20 @@
             BorderThickness="1"
             CornerRadius="5"
             MouseUp="AccountEntry_OnClick">
+        <Border.ContextMenu>
+            <ContextMenu Background="#2c3252">
+                <MenuItem Header="Launch"></MenuItem>
+                <MenuItem Header="Delete"></MenuItem>
+                <Separator/>
+                <MenuItem Header="Properties"></MenuItem>
+            </ContextMenu>
+        </Border.ContextMenu>
+        
         <Grid Margin="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="70"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="30"/>
             </Grid.ColumnDefinitions>
             
             <Grid Grid.Column="0" Width="60" Height="60">
@@ -49,18 +59,6 @@
                                FontWeight="400"/>
                 </StackPanel>
             </Grid>
-            
-            <TextBlock Grid.Column="2" 
-                Text="..."
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                FontSize="25"
-                Foreground="White"
-                MouseDown="More_OnMouseDown">
-                <TextBlock.LayoutTransform>
-                    <RotateTransform Angle="90"/>
-                </TextBlock.LayoutTransform>
-            </TextBlock>
         </Grid>
     </Border>
 </UserControl>

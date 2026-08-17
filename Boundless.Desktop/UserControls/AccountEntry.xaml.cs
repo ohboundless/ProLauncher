@@ -23,12 +23,12 @@ public partial class AccountEntry : UserControl
             if (value)
             {
                 Container.Background = new SolidColorBrush(Color.FromRgb(58, 67, 119));
-                Container.BorderThickness = new Thickness(1);
+                Container.BorderBrush = new SolidColorBrush(Color.FromRgb(51, 59, 106));
             }
             else
             {
                 Container.Background = new SolidColorBrush(Colors.Transparent);
-                Container.BorderThickness = new Thickness(0);
+                Container.BorderBrush = new SolidColorBrush(Colors.Transparent);
             }
 
             _isActive = value;
@@ -100,8 +100,12 @@ public partial class AccountEntry : UserControl
         Configuration.SaveConfig();
     }
 
-    private void More_OnMouseDown(object sender, MouseButtonEventArgs e)
+    private void MoreButton_OnClick(object sender, RoutedEventArgs e)
     {
-        
+        if (sender is Button { ContextMenu: not null } button)
+        {
+            button.ContextMenu.PlacementTarget = button;
+            button.ContextMenu.IsOpen = true;
+        }
     }
 }
