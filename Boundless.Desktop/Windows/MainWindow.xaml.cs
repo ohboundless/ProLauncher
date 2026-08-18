@@ -64,7 +64,17 @@ public partial class MainWindow : BoundlessWindow
 
     private async void LoadAccount_OnClick(object sender, RoutedEventArgs e)
     {
-        await FortniteHandler.StartAuthorization();
+        try
+        {
+            await FortniteHandler.StartAuthorization();
+        }
+        catch (Exception ex)
+        {
+            // TODO handle error
+            Log("Accounts", LogLevel.Error, "Failed to authorize account!");
+            Log("Accounts", LogLevel.Error, ex.ToString());
+        }
+
         LoadAccounts();
     }
 

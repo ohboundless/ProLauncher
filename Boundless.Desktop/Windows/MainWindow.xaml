@@ -32,6 +32,7 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         
+        <!-- Start sidebar -->
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
@@ -39,7 +40,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             
-            <!-- Start account manager-->
+            <!-- Start account manager -->
             <Border Grid.Row="1" 
                     Margin="10 5" 
                     Background="#111729" 
@@ -107,8 +108,9 @@
                     </Grid>
                 </Grid>
             </Border>
-            <!-- End account manager-->
+            <!-- End account manager -->
             
+            <!-- Start nav menu -->
             <Border Grid.Row="2" 
                     Margin="10 5" 
                     Background="#111729" 
@@ -131,7 +133,121 @@
                     </StackPanel>
                 </Grid>
             </Border>
+            <!-- End nav menu -->
         </Grid>
+        <!-- End sidebar -->
         
+        <!-- Start account -->
+        <Border Grid.Row="0" 
+                Grid.Column="1"
+                Background="#111729" 
+                CornerRadius="5"
+                BorderThickness="1"
+                BorderBrush="#202a47"
+                Margin="5 5 10 5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="150"/>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Start account details -->
+                    <Grid Grid.Row="0" Margin="20 10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Column="0">
+                            <Grid Width="110" Height="110">
+                                <Border CornerRadius="8" Background="#222123" Name="Border1">
+                                </Border>
+                                <StackPanel>
+                                    <Image
+                                        Name="AccountIcon"
+                                        Source="https://fortnite-api.com/images/cosmetics/br/character_sweetletter/smallicon.png"/>
+                                    <StackPanel.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=Border1}" />
+                                    </StackPanel.OpacityMask>
+                                </StackPanel>
+                            </Grid>
+                            
+                            <StackPanel VerticalAlignment="Center" Margin="25">
+                                <TextBlock x:Name="AccountUsername"
+                                           Text="Account Username"
+                                           Foreground="White"
+                                           FontSize="20"
+                                           FontWeight="Bold"/>
+                                <TextBlock x:Name="EpicUsername"
+                                           Text="Epic Games Username"
+                                           Foreground="#b3b3b3"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                        <Border Grid.Column="1"
+                                Background="#05ffffff"
+                                CornerRadius="5" Margin="10 25"
+                                BorderBrush="#202a47"
+                                BorderThickness="1"
+                                HorizontalAlignment="Right"
+                                Width="Auto">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" 
+                                            VerticalAlignment="Center" 
+                                            Margin="20 0">
+                                    <Image Source="pack://application:,,,/Images/Icons/T_UI_UniversalXP_Icon_LevelUp_Standard_256.png"
+                                           Width="42"/>
+                                    <StackPanel Margin="5 0" VerticalAlignment="Center">
+                                        <TextBlock Text="Account Level" Foreground="#c9c9c9" FontSize="12"/>
+                                        <TextBlock Text="1,784" Foreground="White" FontSize="15" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                
+                                <Border VerticalAlignment="Center" 
+                                        BorderBrush="#202a47" 
+                                        BorderThickness="1 0 0 0"
+                                        Height="40"/>
+
+                                <StackPanel Orientation="Horizontal" 
+                                            VerticalAlignment="Center" 
+                                            Margin="20 0">
+                                    <Image Source="pack://application:,,,/Images/Icons/T_UI_Nexus_FigmentPass_L.png"
+                                           Width="42"/>
+                                    <StackPanel Margin="5 0" VerticalAlignment="Center">
+                                        <TextBlock Text="Battle Pass" Foreground="#c9c9c9" FontSize="12"/>
+                                        <TextBlock Text="Level 89" Foreground="White" FontSize="15" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                
+                                <Border VerticalAlignment="Center" 
+                                        BorderBrush="#202a47" 
+                                        BorderThickness="1 0 0 0"
+                                        Height="40"/>
+                                
+                                <StackPanel Orientation="Horizontal" 
+                                            VerticalAlignment="Center" 
+                                            Margin="20 0">
+                                    <Image Source="pack://application:,,,/Images/Icons/T-VBuck-64.png"
+                                           Width="42"/>
+                                    <StackPanel Margin="5 0" VerticalAlignment="Center">
+                                        <TextBlock Text="V-Bucks" Foreground="#c9c9c9" FontSize="12"/>
+                                        <TextBlock Text="2,750" Foreground="White" FontSize="15" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    <!-- End account details -->
+                    <Border Grid.Row="1" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
+                    
+                </Grid>
+        </Border>
+        <!-- End account -->
     </Grid>
 </templates:BoundlessWindow>

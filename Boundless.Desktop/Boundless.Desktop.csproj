@@ -34,8 +34,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Images\Splash.bmp" />
       <Resource Include="Images\Splash.bmp" />
+      <Resource Include="Images\Icons\T_UI_UniversalXP_Icon_LevelUp_Standard_256.png" />
+      <Resource Include="Images\Icons\T_UI_Nexus_FigmentPass_Default_L.png" />
+      <Resource Include="Images\Icons\T_UI_Nexus_FigmentPass_L.png" />
+      <Resource Include="Images\Icons\T-VBuck-64.png" />
     </ItemGroup>
 
     <ItemGroup>
