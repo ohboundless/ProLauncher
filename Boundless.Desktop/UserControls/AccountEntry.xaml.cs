@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Games.EpicGames.Fortnite;
+using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 
 namespace Boundless.Desktop.UserControls;
 
@@ -98,6 +99,9 @@ public partial class AccountEntry : UserControl
         IsActive = true;
         Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame["Fortnite"] = Account.Id;
         Configuration.SaveConfig();
+
+        // Callback
+        MainWindow.OnSetActiveAccount(Account);
     }
 
     private void MoreButton_OnClick(object sender, RoutedEventArgs e)

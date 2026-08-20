@@ -1,12 +1,16 @@
+using Boundless.Desktop.Games.EpicGames.Fortnite.API;
 using Newtonsoft.Json;
 using static Boundless.Desktop.Config.Configuration;
 
-namespace Boundless.Desktop.Games.EpicGames.Fortnite;
+namespace Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 
 public class FortniteAccount : IGameAccount
 {
     // Most recently loaded FortniteAccount
     public static FortniteAccount? Recent;
+
+    [JsonIgnore]
+    public FortniteProfile? ProfileData;
     
     public GameAccountType Type => GameAccountType.Fortnite;
     public string Icon { get; set; }
@@ -20,7 +24,7 @@ public class FortniteAccount : IGameAccount
     public FortniteAccount()
     { }
     
-    public FortniteAccount(FortniteHandler.FortniteToken token, FortniteDeviceAuth deviceAuth)
+    public FortniteAccount(FortniteToken token, FortniteDeviceAuth deviceAuth)
     {
         Id = token.AccountId;
         Username = token.DisplayName;

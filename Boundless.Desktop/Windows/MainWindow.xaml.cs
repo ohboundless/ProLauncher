@@ -1,8 +1,11 @@
 ﻿using System.Windows;
+using System.Windows.Media.Imaging;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Games;
 using Boundless.Desktop.Games.EpicGames;
 using Boundless.Desktop.Games.EpicGames.Fortnite;
+using Boundless.Desktop.Games.EpicGames.Fortnite.API;
+using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.Templates;
 using Boundless.Desktop.UserControls;
 using Boundless.Desktop.Utils;
@@ -36,8 +39,7 @@ public partial class MainWindow : BoundlessWindow
             NoAccountsFoundTextBlock.Visibility = Visibility.Visible;
             return;
         }
-
-
+        
         NoAccountsFoundTextBlock.Visibility = Visibility.Collapsed;
 
         var ordered = accounts.OrderByDescending(x => x.LastLaunchTime);
@@ -60,6 +62,20 @@ public partial class MainWindow : BoundlessWindow
             
             AccountsPanel.Children.Add(entry);
         }
+
+        var activeAccount = accounts.First(x => x.Id == currentAccount);
+        OnSetActiveAccount(activeAccount);
+    }
+
+    public async void OnSetActiveAccount(FortniteAccount account)
+    {
+        var profile = new FortniteProfile(account);
+        await profile.LoadCommonPublicProfile();
+        account.ProfileData = profile;
+        
+        AccountUsername.Text = account.Username; // TODO get actual player name
+        EpicUsername.Text = account.Username; // TODO get actual epic name
+        AccountIcon.Source = new BitmapImage(new Uri(account.Icon)); // TODO get account icon as currently equipped skin
     }
 
     private async void LoadAccount_OnClick(object sender, RoutedEventArgs e)

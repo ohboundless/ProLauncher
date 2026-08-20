@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Boundless.Desktop.Games.EpicGames.Fortnite;
+namespace Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 
 public class FortniteDeviceAuth
 {

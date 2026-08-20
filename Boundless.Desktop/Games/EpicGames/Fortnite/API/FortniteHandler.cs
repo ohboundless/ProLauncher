@@ -1,17 +1,17 @@
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.Utils;
 using RestSharp;
 
-namespace Boundless.Desktop.Games.EpicGames.Fortnite;
+namespace Boundless.Desktop.Games.EpicGames.Fortnite.API;
 
-[SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
 public static class FortniteHandler
 {
     #region API HANDLER
 
-    private static RestClient _client { get; } = new();
+    internal static RestClient _client { get; } = new();
 
     private const string TOKEN_URI = "https://account-public-service-prod.ol.epicgames.com/account/api/oauth/token";
     
@@ -57,13 +57,6 @@ public static class FortniteHandler
                 json["verification_uri_complete"]?.ToString() 
                ?? throw new NoNullAllowedException("Could not get 'verification_uri_complete'.")
                );
-    }
-
-    public class FortniteToken
-    {
-        public string Token;
-        public string AccountId;
-        public string DisplayName;
     }
 
     private static async Task<FortniteToken?> HandleTokenRequest(RestRequest request)
@@ -146,6 +139,11 @@ public static class FortniteHandler
 
         return response;
     }
+
+    public static async Task<FortniteToken?> GetAndroidAccessToken(FortniteAccount account)
+    {
+        return await GetTokenWithDeviceAuth(account.DeviceAuth);
+    }
     
     #endregion
     
@@ -155,7 +153,7 @@ public static class FortniteHandler
     {
         Log("Fortnite", LogLevel.Info, "Starting Fortnite launch process...");
 
-        var androidToken = await GetTokenWithDeviceAuth(account.DeviceAuth);
+        var androidToken = await GetAndroidAccessToken(account);
         var exchanged = await ExchangeToken(LAUNCHER_CLIENT, androidToken.Token);
         var exchangeCode = await GetExchangeCode(exchanged.Token);
         
