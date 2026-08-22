@@ -69,13 +69,19 @@ public partial class MainWindow : BoundlessWindow
 
     public async void OnSetActiveAccount(FortniteAccount account)
     {
+        // TODO clean
         var profile = new FortniteProfile(account);
-        await profile.LoadCommonPublicProfile();
-        account.ProfileData = profile;
+        await profile.LoadAthenaProfile();
+        await profile.LoadCommonCoreProfile();
+        account.ProfileData = profile; 
+        var profileData = await profile.GetProfileData();
         
         AccountUsername.Text = account.Username; // TODO get actual player name
         EpicUsername.Text = account.Username; // TODO get actual epic name
         AccountIcon.Source = new BitmapImage(new Uri(account.Icon)); // TODO get account icon as currently equipped skin
+        AccountLevel.Text = profileData.AccountLevel.ToString("N0");
+        BattlePassLevel.Text = profileData.BattlePassLevel.ToString("N0");
+        CurrencyQuantity.Text = profileData.Currency.ToString("N0");
     }
 
     private async void LoadAccount_OnClick(object sender, RoutedEventArgs e)
@@ -108,7 +114,6 @@ public partial class MainWindow : BoundlessWindow
             }
 
             var account = Accounts.Fortnite.Accounts?.FirstOrDefault(x => x.Id == current);
-
             if (account == null)
             {
                 Log("Launcher", LogLevel.Error, $"Unable to launch! Could not find account with id: {current}");

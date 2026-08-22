@@ -161,16 +161,17 @@ public static class FortniteHandler
             throw new ApplicationException("Unable to launch Fortnite because it is not installed.");
             
         var win64 = install.Path + @"\FortniteGame\Binaries\Win64";
+        var fileName = win64 + "\\FortniteLauncher.exe";
+        Log(LogCategory.Processes, LogLevel.Info, $"Launching {fileName}");
         
-        Log(LogCategory.Processes, LogLevel.Info, "Launching ");
         var proc = Process.Start(new ProcessStartInfo
         {
-            FileName = win64 + "\\FortniteLauncher.exe",
+            FileName = fileName,
             WorkingDirectory = win64,
             Arguments = $"-AUTH_LOGIN=unused -AUTH_PASSWORD={exchangeCode} " +
                         $"-AUTH_TYPE=exchangecode -epicapp=Fortnite -epicenv=Prod -EpicPortal -epicuserid={exchanged.AccountId}"
         });
-
+        
         account.LastLaunchTime = DateTime.Now;
         await Accounts.Fortnite.SaveAsync();
         GameList.LaunchedGames.Add(new LaunchedGame("Fortnite", proc));

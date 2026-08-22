@@ -205,7 +205,7 @@
                                            Width="42"/>
                                     <StackPanel Margin="5 0" VerticalAlignment="Center">
                                         <TextBlock Text="Account Level" Foreground="#c9c9c9" FontSize="12"/>
-                                        <TextBlock Text="1,784" Foreground="White" FontSize="15" FontWeight="Bold"/>
+                                        <TextBlock Name="AccountLevel" Text="1,784" Foreground="White" FontSize="15" FontWeight="Bold"/>
                                     </StackPanel>
                                 </StackPanel>
                                 
@@ -221,7 +221,7 @@
                                            Width="42"/>
                                     <StackPanel Margin="5 0" VerticalAlignment="Center">
                                         <TextBlock Text="Battle Pass" Foreground="#c9c9c9" FontSize="12"/>
-                                        <TextBlock Text="Level 89" Foreground="White" FontSize="15" FontWeight="Bold"/>
+                                        <TextBlock Name="BattlePassLevel" Text="Level 89" Foreground="White" FontSize="15" FontWeight="Bold"/>
                                     </StackPanel>
                                 </StackPanel>
                                 
@@ -237,7 +237,7 @@
                                            Width="42"/>
                                     <StackPanel Margin="5 0" VerticalAlignment="Center">
                                         <TextBlock Text="V-Bucks" Foreground="#c9c9c9" FontSize="12"/>
-                                        <TextBlock Text="2,750" Foreground="White" FontSize="15" FontWeight="Bold"/>
+                                        <TextBlock Name="CurrencyQuantity" Text="2,750" Foreground="White" FontSize="15" FontWeight="Bold"/>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
