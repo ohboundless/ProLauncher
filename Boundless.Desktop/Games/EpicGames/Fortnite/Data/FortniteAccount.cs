@@ -9,8 +9,7 @@ public class FortniteAccount : IGameAccount
     // Most recently loaded FortniteAccount
     public static FortniteAccount? Recent;
 
-    [JsonIgnore]
-    public FortniteProfile? ProfileData;
+    public FortniteProfileData? ProfileData;
     
     public GameAccountType Type => GameAccountType.Fortnite;
     public string Icon { get; set; }

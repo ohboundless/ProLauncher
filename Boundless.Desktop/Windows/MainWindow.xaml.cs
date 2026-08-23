@@ -67,21 +67,21 @@ public partial class MainWindow : BoundlessWindow
         OnSetActiveAccount(activeAccount);
     }
 
-    public async void OnSetActiveAccount(FortniteAccount account)
+    public async void OnSetActiveAccount(FortniteAccount account, bool reloadData = false)
     {
-        // TODO clean
-        var profile = new FortniteProfile(account);
-        await profile.LoadAthenaProfile();
-        await profile.LoadCommonCoreProfile();
-        account.ProfileData = profile; 
-        var profileData = await profile.GetProfileData();
+        if (account.ProfileData == null || reloadData)
+        {
+            account.ProfileData = await new FortniteProfile(account).LoadProfileData();
+            await Accounts.Fortnite.SaveAsync();
+        }
         
         AccountUsername.Text = account.Username; // TODO get actual player name
         EpicUsername.Text = account.Username; // TODO get actual epic name
         AccountIcon.Source = new BitmapImage(new Uri(account.Icon)); // TODO get account icon as currently equipped skin
-        AccountLevel.Text = profileData.AccountLevel.ToString("N0");
-        BattlePassLevel.Text = profileData.BattlePassLevel.ToString("N0");
-        CurrencyQuantity.Text = profileData.Currency.ToString("N0");
+        AccountLevel.Text = account.ProfileData.AccountLevel.ToString("N0");
+        // TODO has upgraded BattlePass?
+        BattlePassLevel.Text = account.ProfileData.BattlePassLevel.ToString("N0");
+        CurrencyQuantity.Text = account.ProfileData.Currency.ToString("N0");
     }
 
     private async void LoadAccount_OnClick(object sender, RoutedEventArgs e)

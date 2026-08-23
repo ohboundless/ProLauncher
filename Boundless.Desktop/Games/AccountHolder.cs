@@ -67,6 +67,8 @@ public class AccountHolder<T>
     public static async Task SaveAsync<T>(string name, AccountHolder<T> holder) 
         where T : IGameAccount
     {
+        Log("AccountHolder", LogLevel.Info, $"Saving accounts for '{name}'");
+        
         var text = JsonConvert.SerializeObject(holder.Accounts, Formatting.Indented);
         Directory.CreateDirectory(_directory);
         await File.WriteAllTextAsync($"{_directory}\\{name}.json", text);
