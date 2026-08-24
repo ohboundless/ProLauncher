@@ -98,6 +98,34 @@ public class FortniteProfile(FortniteAccount account)
         
         var result = new List<AthenaCosmetic>();
 
+        foreach (JProperty child in items)
+        {
+            var item = child.Value;
+            var templateId = item["templateId"]?.Value<string>();
+            
+            if (templateId!.StartsWith("AthenaCharacter")
+                || templateId.StartsWith("AthenaBackpack")
+                || templateId.StartsWith("AthenaPickaxe")
+                || templateId.StartsWith("AthenaDance")
+                || templateId.StartsWith("AthenaGlider")
+                || templateId.StartsWith("AthenaItemWrap")
+                || templateId.StartsWith("AthenaLoadingScreen")
+                || templateId.StartsWith("CosmeticMimosa")
+                || templateId.StartsWith("CosmeticShoes")
+                || templateId.StartsWith("AthenaMusicPack")
+                || templateId.StartsWith("AthenaSkyDiveContrail"))
+            {
+                var cosmetic = item.ToObject<AthenaCosmetic>();
+                if (cosmetic == null)
+                {
+                    Log("FortniteProfiles", LogLevel.Warn, $"Unable to parse {templateId}. Skipping...");
+                    continue;
+                }
+                
+                result.Add(cosmetic);
+            }
+        }
+        
         return result;
     }
 }

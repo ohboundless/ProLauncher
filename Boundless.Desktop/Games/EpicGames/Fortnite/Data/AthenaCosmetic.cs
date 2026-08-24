@@ -1,19 +1,31 @@
-﻿namespace Boundless.Desktop.Games.EpicGames.Fortnite.Data;
+﻿using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+
+namespace Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 
 public class AthenaVariant
 {
-    public string Channel;
-    public string Active;
-    public string[] Owned;
+    [JsonProperty("channel")]
+    public string Channel { get; set; }
+    
+    [JsonProperty("active")]
+    public string Active { get; set; }
+    
+    [JsonProperty("owned")]
+    public string[] Owned { get; set; }
 }
 
 public class AthenaCosmeticAttributes
 {
-    public AthenaVariant[] Variants;
+    [JsonProperty("variants")]
+    public AthenaVariant[] Variants { get; set; }
 }
 
 public class AthenaCosmetic
 {
-    public string TemplateId;
-    public AthenaCosmeticAttributes Attributes;
+    [JsonProperty("templateId")]
+    public string TemplateId { get; set; }
+    
+    [JsonProperty("attributes")]
+    public AthenaCosmeticAttributes Attributes { get; set; }
 }

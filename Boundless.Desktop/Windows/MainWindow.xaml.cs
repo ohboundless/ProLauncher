@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Games;
@@ -129,5 +130,10 @@ public partial class MainWindow : BoundlessWindow
             // TODO handle
             Log("Launcher", LogLevel.Error, ex.ToString());
         }
+    }
+    
+    private void TopBarButton_OnMouseUp(object sender, MouseButtonEventArgs e)
+    {
+        
     }
 }

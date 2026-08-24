@@ -151,7 +151,6 @@
                         <RowDefinition Height="60"/>
                         <RowDefinition Height="100"/>
                         <RowDefinition/>
-                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     
                     <!-- Start account details -->
@@ -246,6 +245,51 @@
                     <!-- End account details -->
                     <Border Grid.Row="1" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
                     
+                    <!-- Cosmetic tab buttons -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20 0" Name="TopBar">
+                        <StackPanel.Resources>
+                            <ControlTemplate x:Key="topBarRadioButton" TargetType="RadioButton">
+                                <Border x:Name="border" BorderThickness="0 0 0 3"
+                                        Height="47"
+                                        Padding="20 0"
+                                        Background="Transparent">
+                                    <TextBlock x:Name="textBlock" 
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Foreground="#c9cddc"
+                                               FontFamily="./Fonts/#Roboto" 
+                                               FontSize="16"
+                                               FontWeight="600">
+                                        <ContentPresenter/>
+                                    </TextBlock>
+                                </Border>               
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="BorderBrush" TargetName="border" Value="#3a4377"></Setter>
+                                        <Setter Property="Foreground" TargetName="textBlock" Value="#3a4377"></Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </StackPanel.Resources>
+                        <RadioButton Template="{StaticResource topBarRadioButton}">OUTFITS</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}">BACKBLINGS</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}">PICKAXES</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}">EMOTES</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}">GLIDERS</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}">WRAPS</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}">MORE</RadioButton>
+                    </StackPanel>
+                    
+                    <!-- Cosmetic tab panels -->
+                    <StackPanel Grid.Row="3" Name="Tabs">
+                        <userControls:CosmeticTab x:Name="Outfits" Visibility="Visible"/>
+                        <userControls:CosmeticTab x:Name="Backblings" Visibility="Collapsed"/>
+                        <userControls:CosmeticTab x:Name="Pickaxes"  Visibility="Collapsed"/>
+                        <userControls:CosmeticTab x:Name="Emotes" Visibility="Collapsed"/>
+                        <userControls:CosmeticTab x:Name="Gliders" Visibility="Collapsed"/>
+                        <userControls:CosmeticTab x:Name="Wraps" Visibility="Collapsed"/>
+                        <userControls:CosmeticTab x:Name="More" Visibility="Collapsed"/>
+                    </StackPanel>
                 </Grid>
         </Border>
         <!-- End account -->
