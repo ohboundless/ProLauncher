@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Data;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Boundless.Desktop.Config;
@@ -18,6 +20,9 @@ namespace Boundless.Desktop.Windows;
 /// </summary>
 public partial class MainWindow : BoundlessWindow
 {
+    private FortniteAccount? _activeAccount;
+    private CosmeticTab? _cosmeticTab;
+    
     public MainWindow()
     {
         Globals.MainWindow = this;
@@ -83,9 +88,12 @@ public partial class MainWindow : BoundlessWindow
         // TODO has upgraded BattlePass?
         BattlePassLevel.Text = account.ProfileData.BattlePassLevel.ToString("N0");
         CurrencyQuantity.Text = account.ProfileData.Currency.ToString("N0");
+        _activeAccount = account;
+
+        LoadCosmetics();
     }
 
-    private async void LoadAccount_OnClick(object sender, RoutedEventArgs e)
+    private async void AddAccount_OnClick(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -131,9 +139,51 @@ public partial class MainWindow : BoundlessWindow
             Log("Launcher", LogLevel.Error, ex.ToString());
         }
     }
-    
-    private void TopBarButton_OnMouseUp(object sender, MouseButtonEventArgs e)
+
+    private void TopBarRadioButton_OnChecked(object sender, RoutedEventArgs e)
     {
+        var s = sender as RadioButton;
+        var name = s?.Content?.ToString()?.CapitalizeWord();
         
+        if (name == null)
+            return;
+        
+        foreach (CosmeticTab tab in Tabs.Children)
+        {
+            if (tab.Name != name)
+            {
+                tab.Visibility = Visibility.Collapsed;
+                continue;
+            }
+
+            _cosmeticTab = tab;
+            tab.Visibility = Visibility.Visible;
+        }
+
+        LoadCosmetics();
+    }
+
+    private void LoadCosmetics()
+    {
+        if (_cosmeticTab == null || _activeAccount == null)
+            return;
+        
+        var athenaType = _cosmeticTab.Name switch
+        {
+            "Outfits" => "AthenaCharacter",
+            "Backblings" => "AthenaBackpack",
+            "Pickaxes" => "AthenaPickaxe",
+            "Emotes" => "AthenaDance",
+            "Gliders" => "AthenaGlider",
+            "Wraps" => "AthenaItemWrap",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        var myCosmetics = _activeAccount.ProfileData?.Cosmetics;
+        if (myCosmetics == null)
+            throw new NoNullAllowedException("Profile data was null.");
+
+        var cosmeticsToLoad = myCosmetics.Where(cosmetic => cosmetic.TemplateId.StartsWith(athenaType)).ToList();
+        _cosmeticTab.ProcessCosmeticsAsync(cosmeticsToLoad);
     }
 }

@@ -18,7 +18,7 @@ public class AthenaVariant
 public class AthenaCosmeticAttributes
 {
     [JsonProperty("variants")]
-    public AthenaVariant[] Variants { get; set; }
+    public AthenaVariant[]? Variants { get; set; }
 }
 
 public class AthenaCosmetic
@@ -27,5 +27,7 @@ public class AthenaCosmetic
     public string TemplateId { get; set; }
     
     [JsonProperty("attributes")]
-    public AthenaCosmeticAttributes Attributes { get; set; }
+    public AthenaCosmeticAttributes? Attributes { get; set; }
+
+    public string GetCosmeticId() => TemplateId.Split(":").Last(); // AthenaCharacter:CID...
 }

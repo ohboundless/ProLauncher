@@ -99,7 +99,7 @@
                                 Background="#111729"
                                 BorderBrush="#202a47"
                                 BorderThickness="2"
-                                Click="LoadAccount_OnClick">
+                                Click="AddAccount_OnClick">
                             <StackPanel Orientation="Horizontal">
                                 <ui:SymbolIcon Symbol="Add24" Filled="True" Foreground="#2e5ecc" Margin="5"/>
                                 <TextBlock Text="Add Account" Margin="5" Foreground="#2e5ecc"/>
@@ -271,25 +271,33 @@
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </StackPanel.Resources>
-                        <RadioButton Template="{StaticResource topBarRadioButton}">OUTFITS</RadioButton>
-                        <RadioButton Template="{StaticResource topBarRadioButton}">BACKBLINGS</RadioButton>
-                        <RadioButton Template="{StaticResource topBarRadioButton}">PICKAXES</RadioButton>
-                        <RadioButton Template="{StaticResource topBarRadioButton}">EMOTES</RadioButton>
-                        <RadioButton Template="{StaticResource topBarRadioButton}">GLIDERS</RadioButton>
-                        <RadioButton Template="{StaticResource topBarRadioButton}">WRAPS</RadioButton>
-                        <RadioButton Template="{StaticResource topBarRadioButton}">MORE</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}" 
+                                     Checked="TopBarRadioButton_OnChecked" IsChecked="True">OUTFITS</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}" 
+                                     Checked="TopBarRadioButton_OnChecked">BACKBLINGS</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}" 
+                                     Checked="TopBarRadioButton_OnChecked">PICKAXES</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}" 
+                                     Checked="TopBarRadioButton_OnChecked">EMOTES</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}" 
+                                     Checked="TopBarRadioButton_OnChecked">GLIDERS</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}" 
+                                     Checked="TopBarRadioButton_OnChecked">WRAPS</RadioButton>
+                        <!--TODO <RadioButton Template="{StaticResource topBarRadioButton}">MORE</RadioButton>-->
                     </StackPanel>
                     
                     <!-- Cosmetic tab panels -->
-                    <StackPanel Grid.Row="3" Name="Tabs">
-                        <userControls:CosmeticTab x:Name="Outfits" Visibility="Visible"/>
-                        <userControls:CosmeticTab x:Name="Backblings" Visibility="Collapsed"/>
-                        <userControls:CosmeticTab x:Name="Pickaxes"  Visibility="Collapsed"/>
-                        <userControls:CosmeticTab x:Name="Emotes" Visibility="Collapsed"/>
-                        <userControls:CosmeticTab x:Name="Gliders" Visibility="Collapsed"/>
-                        <userControls:CosmeticTab x:Name="Wraps" Visibility="Collapsed"/>
-                        <userControls:CosmeticTab x:Name="More" Visibility="Collapsed"/>
-                    </StackPanel>
+                    <ScrollViewer Grid.Row="3">
+                        <StackPanel Name="Tabs">
+                            <userControls:CosmeticTab x:Name="Outfits" Visibility="Visible"/>
+                            <userControls:CosmeticTab x:Name="Backblings" Visibility="Collapsed"/>
+                            <userControls:CosmeticTab x:Name="Pickaxes"  Visibility="Collapsed"/>
+                            <userControls:CosmeticTab x:Name="Emotes" Visibility="Collapsed"/>
+                            <userControls:CosmeticTab x:Name="Gliders" Visibility="Collapsed"/>
+                            <userControls:CosmeticTab x:Name="Wraps" Visibility="Collapsed"/>
+                            <!--TODO <userControls:CosmeticTab x:Name="More" Visibility="Collapsed"/>-->
+                        </StackPanel>
+                    </ScrollViewer>
                 </Grid>
         </Border>
         <!-- End account -->
