@@ -39,7 +39,7 @@ public static class EpicInstallations
         foreach (var installation in installations)
         {
             var appName = installation["AppName"]?.ToString() ?? 
-                          throw new NullReferenceException("'AppName' was null.");;
+                          throw new NullReferenceException("'AppName' was null.");
 
             if (!Apps.Contains(appName))
             {

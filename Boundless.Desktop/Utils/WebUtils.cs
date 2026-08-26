@@ -23,12 +23,18 @@ public static class WebUtils
         return json;
     }
     
-    public static async Task<T> GetJsonAsync<T>(this RestClient client, RestRequest request)
+    public static async Task<T?> GetJsonAsync<T>(this RestClient client, RestRequest request)
     {
-        Log(LogCategory.Http, LogLevel.Info, $"Getting JSON from '{client.BuildUri(request).AbsoluteUri}'");
+        var uri = client.BuildUri(request).AbsoluteUri;
+        Log(LogCategory.Http, LogLevel.Info, $"Getting JSON from '{uri}'");
         var text = await client.GetTextAsync(request);
+        if (text == null)
+        {
+            Log(LogCategory.Http, LogLevel.Error, $"Could not get text from '{uri}'");
+            return default;
+        }
+        
         var json = JsonConvert.DeserializeObject<T>(text);
-
         return json;
     }
 

@@ -16,7 +16,7 @@ public static class FortniteApiCache
     private static string ImagePath => FolderPath + "\\Images";
     private static string FilePath => FolderPath + "\\cosmetics.json";
 
-    public static List<BRCosmeticModel> Cosmetics { get; private set; } = new();
+    public static List<CosmeticData> Cosmetics { get; private set; } = new();
 
     private static RestClient _client = new();
 
@@ -24,15 +24,17 @@ public static class FortniteApiCache
     {
         if (!File.Exists(FilePath))
         {
-            Log("FortniteAPICache", LogLevel.Info,
+            Log("FortniteApiCache", LogLevel.Info,
                 "Data cache for fortnite-api.com did not exist. Creating one now...");
             Save();
             return;
         }
         
         var text = File.ReadAllText(FilePath);
-        Cosmetics = JsonConvert.DeserializeObject<List<BRCosmeticModel>>(text) ??
+        Cosmetics = JsonConvert.DeserializeObject<List<CosmeticData>>(text) ??
                     throw new JsonException($"Could not deserialize: \n\"{text}\"");
+
+        Log("FortniteApiCache", LogLevel.Info, $"Loaded cosmetics cache. ({FilePath})");
     }
 
     public static void Save()
@@ -42,18 +44,22 @@ public static class FortniteApiCache
         
         var json = JsonConvert.SerializeObject(Cosmetics, Formatting.Indented);
         File.WriteAllText(FilePath, json);
+
+        Log("FortniteApiCache", LogLevel.Info, $"Saved cosmetics cache. ({FilePath})");
     }
 
-    public static bool TryGetCosmetic(string cosmeticId, out BRCosmeticModel? cosmeticModel)
+    public static bool TryGetCosmetic(string cosmeticId, out CosmeticData? cosmeticModel)
     {
         if (Cosmetics == null)
             throw new NoNullAllowedException("Cosmetics cache not loaded.");
 
         foreach (var cosmetic in Cosmetics)
         {
-            if (cosmetic.Data.Id.ToLower() != cosmeticId)
+            if (cosmetic.Id.ToLower() != cosmeticId)
                 continue;
 
+            Log("FortniteApiCache", LogLevel.Info, $"Found cached cosmetic: {cosmeticId}");
+            
             cosmeticModel = cosmetic;
             return true;
         }
@@ -62,16 +68,17 @@ public static class FortniteApiCache
         return false;
     }
 
-    public static void SaveCosmetic(BRCosmeticModel model)
+    public static void CacheCosmetic(BRCosmeticModel data)
     {
-        Cosmetics.Add(model);
+        Log("FortniteApiCache", LogLevel.Info, $"Caching cosmetic with id: {data.Data.Id}");
+        Cosmetics.Add(data.Data);
     }
 
-    private static string GetImagePath(this BRCosmeticModel cosmeticModel) => $"{ImagePath}\\{cosmeticModel.Data.Id}.png";
+    private static string GetImagePath(this CosmeticData cosmeticData) => $"{ImagePath}\\{cosmeticData.Id}.png";
 
-    public static bool TryGetCachedIcon(this BRCosmeticModel cosmeticModel, out Uri? source)
+    public static bool TryGetCachedIcon(this CosmeticData cosmeticData, out Uri? source)
     {
-        var path = cosmeticModel.GetImagePath();
+        var path = cosmeticData.GetImagePath();
         if (File.Exists(path))
         {
             source = new Uri(path, UriKind.Absolute);
@@ -82,7 +89,7 @@ public static class FortniteApiCache
         return false;
     }
 
-    public static async Task SaveIconAsync(this BRCosmeticModel cosmeticModel, string uri)
+    public static async Task CacheIconAsync(this CosmeticData cosmeticData, string uri)
     {
         var request = new RestRequest(uri);
         var data = await _client.DownloadDataAsync(request);
@@ -90,7 +97,7 @@ public static class FortniteApiCache
         if (data == null)
             throw new HttpRequestException($"Unable to download '{uri}'");
 
-        var path = cosmeticModel.GetImagePath();
+        var path = cosmeticData.GetImagePath();
         await File.WriteAllBytesAsync(path, data);
     }
 }

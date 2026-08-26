@@ -70,18 +70,21 @@
 
                                     <Grid x:Name="TopBar" Background="#090f19">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="200"/>
                                             <ColumnDefinition/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Border Grid.Column="0" 
-                                                Width="80" Height="28"
+                                        <Border Grid.Column="0"
                                                 HorizontalAlignment="Left"
-                                                VerticalAlignment="Center">
+                                                VerticalAlignment="Center"
+                                                Margin="15 5 0 0"
+                                                Height="Auto">
                                             <TextBlock Text="{TemplateBinding Title}" 
                                                        Foreground="White"
-                                                       FontSize="12"/>
+                                                       FontSize="12"
+                                                       FontFamily="./Fonts/#Roboto" 
+                                                       FontWeight="500"/>
                                         </Border>
 
                                         <StackPanel Grid.Column="2" Orientation="Horizontal">

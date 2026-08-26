@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Boundless.Desktop.API;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Games;
 using Boundless.Desktop.Games.EpicGames;
@@ -22,6 +23,7 @@ public partial class MainWindow : BoundlessWindow
 {
     private FortniteAccount? _activeAccount;
     private CosmeticTab? _cosmeticTab;
+    private CancellationTokenSource? _currentCancellationSource;
     
     public MainWindow()
     {
@@ -140,6 +142,18 @@ public partial class MainWindow : BoundlessWindow
         }
     }
 
+    private CancellationTokenSource HandleCancellation()
+    {
+        if (_currentCancellationSource != null)
+        {
+            Log("MainWindow", LogLevel.Info, "Requesting cancellation...");
+            _currentCancellationSource.Cancel();
+            _currentCancellationSource = null;
+        }
+        
+        return _currentCancellationSource = new CancellationTokenSource();
+    }
+
     private void TopBarRadioButton_OnChecked(object sender, RoutedEventArgs e)
     {
         var s = sender as RadioButton;
@@ -153,13 +167,14 @@ public partial class MainWindow : BoundlessWindow
             if (tab.Name != name)
             {
                 tab.Visibility = Visibility.Collapsed;
+                tab.Panel.Children.Clear(); // Clear cosmetics
                 continue;
             }
 
             _cosmeticTab = tab;
             tab.Visibility = Visibility.Visible;
         }
-
+        
         LoadCosmetics();
     }
 
@@ -167,9 +182,10 @@ public partial class MainWindow : BoundlessWindow
     {
         if (_cosmeticTab == null || _activeAccount == null)
             return;
-        
+
         var athenaType = _cosmeticTab.Name switch
         {
+            "Cosmetics" => "*", // All
             "Outfits" => "AthenaCharacter",
             "Backblings" => "AthenaBackpack",
             "Pickaxes" => "AthenaPickaxe",
@@ -179,11 +195,27 @@ public partial class MainWindow : BoundlessWindow
             _ => throw new ArgumentOutOfRangeException()
         };
 
+        _cosmeticTab.Panel.Children.Clear(); // Clear cosmetics
         var myCosmetics = _activeAccount.ProfileData?.Cosmetics;
         if (myCosmetics == null)
             throw new NoNullAllowedException("Profile data was null.");
 
-        var cosmeticsToLoad = myCosmetics.Where(cosmetic => cosmetic.TemplateId.StartsWith(athenaType)).ToList();
-        _cosmeticTab.ProcessCosmeticsAsync(cosmeticsToLoad);
+        FortniteApiCache.Load();
+        var cancellationToken = HandleCancellation().Token;
+
+        if (athenaType == "*") // All
+        {
+            _cosmeticTab.ProcessCosmeticsAsync(myCosmetics, cancellationToken);
+        }
+        else
+        {
+            var cosmeticsToLoad =
+                myCosmetics.Where(cosmetic => cosmetic.TemplateId.StartsWith(athenaType)).ToList();
+            _cosmeticTab.ProcessCosmeticsAsync(cosmeticsToLoad, cancellationToken);
+        }
+
+        // Clear cache
+        FortniteApiCache.Save();
+        FortniteApiCache.Cosmetics.Clear();
     }
 }

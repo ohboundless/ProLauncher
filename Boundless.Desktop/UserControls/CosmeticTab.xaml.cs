@@ -1,6 +1,9 @@
 ﻿using System.Windows.Controls;
+using Boundless.Desktop.API;
+using Boundless.Desktop.API.Models;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.Models;
+using Boundless.Desktop.Utils;
 
 namespace Boundless.Desktop.UserControls;
 
@@ -11,20 +14,30 @@ public partial class CosmeticTab : UserControl
         InitializeComponent();
     }
 
-    public void ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics)
+    public async void ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics, CancellationToken cancellationToken)
     {
-        Panel.Children.Clear();
-
-        Task.Run(async () =>
+        try
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var models = new List<CosmeticItemModel>();
-            foreach (var model in cosmetics.Select(cosmetic => new CosmeticItemModel(cosmetic)))
+            foreach (var cosmetic in cosmetics)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var model = new CosmeticItemModel(cosmetic);
                 await model.LoadAsync();
+
+                if (model.IsNull)
+                {
+                    Log("CosmeticTab", LogLevel.Error, $"({cosmetic.TemplateId}) Unable to load model. Skipping...");
+                    continue;
+                }
+
                 models.Add(model);
             }
 
-            models = models.OrderByDescending(x => x.Rarity).ToList();
+            models = models.OrderByDescending(x => x.Rarity).ThenBy(x => x.Data?.Type.ParseCosmeticType()).ToList();
             var controls = models.Select(model => new CosmeticItem(model));
 
             Dispatcher.Invoke(() =>
@@ -34,6 +47,15 @@ public partial class CosmeticTab : UserControl
                     Panel.Children.Add(control);
                 }
             });
-        });
+        }
+        catch (OperationCanceledException)
+        {
+            Log("CosmeticsLoading", LogLevel.Error, "Loading canceled...");
+        }
+        catch (Exception ex)
+        {
+            Log("CosmeticsLoading", LogLevel.Error, ex.ToString());
+            // TODO popup
+        }
     }
 }

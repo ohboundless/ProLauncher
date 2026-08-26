@@ -2,6 +2,7 @@
 using Boundless.Desktop.API;
 using Boundless.Desktop.API.Models;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
+using Boundless.Desktop.Utils;
 
 namespace Boundless.Desktop.Models;
 
@@ -9,9 +10,11 @@ public class CosmeticItemModel
 {
     public AthenaCosmetic Cosmetic { get; }
     public string CosmeticId { get;}
-    public BRCosmeticModel Model { get; private set; }
+    public CosmeticData? Data { get; private set; }
     public EFortRarity Rarity { get; private set; }
     public Uri IconUri { get; private set; }
+
+    public bool IsNull => Data == null;
     
     public CosmeticItemModel(AthenaCosmetic cosmetic)
     {
@@ -22,22 +25,34 @@ public class CosmeticItemModel
     public async Task LoadAsync()
     {
         if (FortniteApiCache.TryGetCosmetic(CosmeticId, out var model))
-            Model = model;
+            Data = model;
         else
         {
-            Model = await FortniteApi.GetBRCosmeticAsync(CosmeticId);
-            FortniteApiCache.SaveCosmetic(Model);
-            FortniteApiCache.Save();
+            var cosmeticModel = await FortniteApi.GetBRCosmeticAsync(CosmeticId);
+            if (cosmeticModel.Status != 200)
+            {
+                Log("CosmeticItemModel", LogLevel.Error, $"({cosmeticModel.Status}): '{cosmeticModel.Error}'");
+                return;
+            }
+            
+            Data = cosmeticModel.Data;
+            FortniteApiCache.CacheCosmetic(cosmeticModel);
         }
         
-        Rarity = IsTranscendent(out var channel, out var tag) ? EFortRarity.Transcendent : Model.GetRarity();
+        Rarity = IsTranscendent(out var channel, out var tag) ? EFortRarity.Transcendent : Data.GetRarity();
 
-        if (Model.TryGetCachedIcon(out var iconUri))
+        if (Data.TryGetCachedIcon(out var iconUri))
             IconUri = iconUri;
         else
         {
-            var uri = Model.GetIcon(channel, tag);
-            await Model.SaveIconAsync(uri);
+            var uri = Data.GetIcon(channel, tag);
+            if (uri == null) // Fallback icon
+            {
+                IconUri = new Uri("pack://application:,,,/Images/Icons/CID_Random.png");
+                return;
+            }
+            
+            await Data.CacheIconAsync(uri);
             IconUri = new Uri(uri);
         }
     }

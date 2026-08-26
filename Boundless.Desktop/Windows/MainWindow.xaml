@@ -18,7 +18,7 @@
         UseLayoutRounding="True"
         MinWidth="950"
         MinHeight="600"
-        Title="Pro Launcher"
+        Title="Fortnite Account Manager"
         Style="{StaticResource MyBoundlessWindowStyle}"
         Loaded="MainWindow_OnLoaded">
     <Grid Background="#090f19">
@@ -35,7 +35,7 @@
         <!-- Start sidebar -->
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="0"/>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -148,8 +148,8 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="150"/>
-                        <RowDefinition Height="60"/>
-                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="52"/>
+                        <RowDefinition Height="75"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     
@@ -251,6 +251,7 @@
                             <ControlTemplate x:Key="topBarRadioButton" TargetType="RadioButton">
                                 <Border x:Name="border" BorderThickness="0 0 0 3"
                                         Height="47"
+                                        Margin="0 5 0 0"
                                         Padding="20 0"
                                         Background="Transparent">
                                     <TextBlock x:Name="textBlock" 
@@ -272,7 +273,9 @@
                             </ControlTemplate>
                         </StackPanel.Resources>
                         <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Checked="TopBarRadioButton_OnChecked" IsChecked="True">OUTFITS</RadioButton>
+                                     Checked="TopBarRadioButton_OnChecked" IsChecked="True">COSMETICS</RadioButton>
+                        <RadioButton Template="{StaticResource topBarRadioButton}" 
+                                     Checked="TopBarRadioButton_OnChecked">OUTFITS</RadioButton>
                         <RadioButton Template="{StaticResource topBarRadioButton}" 
                                      Checked="TopBarRadioButton_OnChecked">BACKBLINGS</RadioButton>
                         <RadioButton Template="{StaticResource topBarRadioButton}" 
@@ -286,10 +289,60 @@
                         <!--TODO <RadioButton Template="{StaticResource topBarRadioButton}">MORE</RadioButton>-->
                     </StackPanel>
                     
+                    <Border Grid.Row="2" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
+                    
+                    <!-- Search bar, filter, and sorting -->
+                    <Border Grid.Row="2" Background="#0f000000">
+                        <StackPanel Orientation="Horizontal" Margin="20 10" VerticalAlignment="Center">
+                            <!--TODO FIX TEXTBOX FOCUS STYLE-->
+                            <ui:TextBox PlaceholderText="Search cosmetics..." 
+                                        Width="265" BorderBrush="#202a47" 
+                                        BorderThickness="1"
+                                        Background="#0affffff"
+                                        FocusVisualStyle="{x:Null}"
+                                        IconPlacement="Right">
+                                <ui:TextBox.Icon>
+                                    <ui:SymbolIcon Symbol="Search24"/>
+                                </ui:TextBox.Icon>
+                            </ui:TextBox>
+                            
+                            <Button Height="40" Padding="10 0" Margin="10 0">
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon Symbol="Filter24"/>
+                                    <TextBlock Margin="5 0 0 0"
+                                               FontFamily="./Fonts/#Roboto" 
+                                               FontSize="14"
+                                               FontWeight="600">Filter</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            
+                            <ComboBox Height="40" ItemsSource="{Binding MyStringList}" 
+                                      ItemStringFormat="Prefix: {0}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Sort: " Foreground="White" />
+                                            <TextBlock Text="{Binding}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                                
+                                <ComboBoxItem Content="Default" 
+                                              IsSelected="True"/>
+                                <ComboBoxItem Content="Name"/>
+                                <ComboBoxItem Content="Rarity"/>
+                                <ComboBoxItem Content="Rarity"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Border>
+                        
+                    <Border Grid.Row="3" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
+                    
                     <!-- Cosmetic tab panels -->
-                    <ScrollViewer Grid.Row="3">
+                    <ScrollViewer Grid.Row="3" Margin="15 10">
                         <StackPanel Name="Tabs">
-                            <userControls:CosmeticTab x:Name="Outfits" Visibility="Visible"/>
+                            <userControls:CosmeticTab x:Name="Cosmetics" Visibility="Visible"/>
+                            <userControls:CosmeticTab x:Name="Outfits" Visibility="Collapsed"/>
                             <userControls:CosmeticTab x:Name="Backblings" Visibility="Collapsed"/>
                             <userControls:CosmeticTab x:Name="Pickaxes"  Visibility="Collapsed"/>
                             <userControls:CosmeticTab x:Name="Emotes" Visibility="Collapsed"/>

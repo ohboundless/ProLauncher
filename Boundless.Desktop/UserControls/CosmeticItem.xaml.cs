@@ -36,9 +36,7 @@ public partial class CosmeticItem : UserControl
         SetRarity(_model.Rarity);
         Icon.Source = new BitmapImage(_model.IconUri);
     }
-
-    private void SetIcon(string uri) => Icon.Source = new BitmapImage(new Uri(uri));
-
+    
     private void SetRarity(EFortRarity rarity)
     {
         var colors = rarity switch

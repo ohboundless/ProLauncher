@@ -10,49 +10,63 @@ public static class FortniteApi
     private const string BASE_URI = "https://fortnite-api.com/";
     private static RestClient _client = new(BASE_URI);
     
-    public static async Task<BRCosmeticModel> GetBRCosmeticAsync(string cosmeticId)
+    public static async Task<BRCosmeticModel?> GetBRCosmeticAsync(string cosmeticId)
     {
         var request = new RestRequest("v2/cosmetics/br/" + cosmeticId);
         return await _client.GetJsonAsync<BRCosmeticModel>(request);
     }
 
     // TODO series
-    public static EFortRarity GetRarity(this BRCosmeticModel model)
+    public static EFortRarity GetRarity(this CosmeticData data)
     {
-        return Enum.TryParse<EFortRarity>(model.Data.Rarity.DisplayValue, out var rarity) ? rarity : EFortRarity.Common;
+        return Enum.TryParse<EFortRarity>(data.Rarity.DisplayValue, out var rarity) ? rarity : EFortRarity.Common;
     }
 
-    public static string GetName(this BRCosmeticModel model, string? channel, string? tag)
+    public static string GetName(this CosmeticData data, string? channel, string? tag)
     {
-        var name = model.Data.Name;
+        var name = data.Name;
         if (channel == null || tag == null)
             return name;
         
-        var option = model.GetOption(channel, tag);
+        var option = data.GetOption(channel, tag);
         if (option != null)
             return $"{name} ({option.Name.CapitalizeWord()}";
         
-        Log("FortniteAPI", LogLevel.Error, $"Unable to get name and style for {model.Data.Id} using channel '{channel}' and tag '{tag}'");
+        Log("FortniteAPI", LogLevel.Error, $"Unable to get name and style for {data.Id} using channel '{channel}' and tag '{tag}'");
         return string.Empty;
     }
 
-    public static string GetIcon(this BRCosmeticModel model, string? channel, string? tag)
+    public static string? GetIcon(this CosmeticData data, string? channel, string? tag)
     {
-        if (channel == null || tag == null) 
-            return model.Data.Images.Icon;
+        if (channel == null || tag == null)
+        {
+            var images = data.Images;
+            if (images.Icon != null)
+                return images.Icon;
 
-        var option = model.GetOption(channel, tag);
+            Log("FortniteApi", LogLevel.Warn, $"Large icon for {data.Id} is null. Falling back to small icon...");
+
+            if (images.SmallIcon != null) 
+                return images.SmallIcon;
+            
+            Log("FortniteApi", LogLevel.Warn,
+                $"Small icon for {data.Id} is null. Unable to retrieve icon. Returning null...");
+            return null;
+
+        }
+
+        var option = data.GetOption(channel, tag);
         if (option != null)
             return option.Image;
             
         
-        Log("FortniteAPI", LogLevel.Error, $"Unable to get icon for {model.Data.Id} using channel '{channel}' and tag '{tag}'");
+        Log("FortniteAPI", LogLevel.Error, $"Unable to get icon for {data.Id} using channel '{channel}' and tag '{tag}'");
         return string.Empty;
     }
 
-    private static Options? GetOption(this BRCosmeticModel model, string channel, string tag)
+    private static CosmeticVariantOptions? GetOption(this CosmeticData data, string channel, string tag)
     {
-        foreach (var variant in model.Data.Variants)
+        foreach (var variant in data.Variants)
         {
             if (variant.Channel != channel)
                 continue;
