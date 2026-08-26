@@ -5,15 +5,15 @@ using System.Windows.Media.Imaging;
 using Boundless.Desktop.API;
 using Boundless.Desktop.API.Models;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
+using Boundless.Desktop.Models;
 
 namespace Boundless.Desktop.UserControls;
 
 public partial class CosmeticItem : UserControl
 {
-    private AthenaCosmetic _cosmetic;
-
+    private CosmeticItemModel _model;
+    
     private EFortRarity _rarity;
-
     public EFortRarity Rarity
     {
         get => _rarity;
@@ -24,28 +24,20 @@ public partial class CosmeticItem : UserControl
         }
     }
 
-    public CosmeticItem(AthenaCosmetic athenaCosmetic)
+    public CosmeticItem(CosmeticItemModel model)
     {
-        _cosmetic = athenaCosmetic;
+        _model = model;
         InitializeComponent();
+        ProcessModel();
     }
 
-    // TODO make this entire thing a model then process it here
-    public async Task LoadCosmeticAsync()
+    private void ProcessModel()
     {
-        var id = _cosmetic.GetCosmeticId();
-        var model = await FortniteAPI.GetBRCosmeticAsync(id);
-        var rarity = IsTranscendent(out var channel, out var tag) ? EFortRarity.Transcendent : model.GetRarity();
-        
-        // TODO tooltip name
-        SetIcon(model.GetIcon(channel, tag));
-        Rarity = rarity;
+        SetRarity(_model.Rarity);
+        Icon.Source = new BitmapImage(_model.IconUri);
     }
 
-    private void SetIcon(string uri)
-    {
-        Icon.Source = new BitmapImage(new Uri(uri));
-    }
+    private void SetIcon(string uri) => Icon.Source = new BitmapImage(new Uri(uri));
 
     private void SetRarity(EFortRarity rarity)
     {
@@ -63,38 +55,6 @@ public partial class CosmeticItem : UserControl
         };
 
         Border.Background = new RadialGradientBrush(colors[0], colors[1]);
-        BorderBrush = new SolidColorBrush(colors[0]);
-    }
-
-    private bool IsTranscendent(out string? channel, out string? tag)
-    {
-        var id = _cosmetic.GetCosmeticId();
-        if (RareCosmetics.IsRare(id, null, null))
-        {
-            channel = null;
-            tag = null;
-            return true;
-        }
-
-        var variants = _cosmetic.Attributes?.Variants;
-        if (variants != null)
-        {
-            foreach (var variant in variants)
-            {
-                foreach (var style in variant.Owned)
-                {
-                    if (!RareCosmetics.IsRare(id, variant.Channel, style))
-                        continue;
-
-                    channel = variant.Channel;
-                    tag = style;
-                    return true;
-                }
-            }
-        }
-
-        channel = null;
-        tag = null;
-        return false;
+        Border.BorderBrush = new SolidColorBrush(colors[0]);
     }
 }

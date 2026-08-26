@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
+using Boundless.Desktop.Models;
 
 namespace Boundless.Desktop.UserControls;
 
@@ -10,24 +11,29 @@ public partial class CosmeticTab : UserControl
         InitializeComponent();
     }
 
-    public async void ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics)
+    public void ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics)
     {
         Panel.Children.Clear();
-        
-        // TODO buffer with scroll bar
-        // TODO make this a model
-        var controls = new List<CosmeticItem>();
-        foreach (var cosmetic in cosmetics)
-        {
-            var control = new CosmeticItem(cosmetic);
-            await control.LoadCosmeticAsync();
-            controls.Add(control);
-        }
 
-       controls = controls.OrderByDescending(x => x.Rarity).ToList();
-       foreach (var control in controls)
-       {
-           Panel.Children.Add(control);
-       }
+        Task.Run(async () =>
+        {
+            var models = new List<CosmeticItemModel>();
+            foreach (var model in cosmetics.Select(cosmetic => new CosmeticItemModel(cosmetic)))
+            {
+                await model.LoadAsync();
+                models.Add(model);
+            }
+
+            models = models.OrderByDescending(x => x.Rarity).ToList();
+            var controls = models.Select(model => new CosmeticItem(model));
+
+            Dispatcher.Invoke(() =>
+            {
+                foreach (var control in controls)
+                {
+                    Panel.Children.Add(control);
+                }
+            });
+        });
     }
 }

@@ -5,7 +5,7 @@ using static Boundless.Desktop.Utils.WebUtils;
 
 namespace Boundless.Desktop.API;
 
-public static class FortniteAPI
+public static class FortniteApi
 {
     private const string BASE_URI = "https://fortnite-api.com/";
     private static RestClient _client = new(BASE_URI);

@@ -1,4 +1,5 @@
 global using static Boundless.Desktop.Utils.Globals;
+using Boundless.Desktop.API;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Windows;
 using RestSharp;
@@ -21,5 +22,8 @@ public static class Globals
         Log(LogCategory.Startup, LogLevel.Info, $"Opened log file ({now.ToLongDateString()} - {now.ToLongTimeString()})");
         
         Configuration.InitializeConfig();
+        
+        // Cache
+        FortniteApiCache.Load();
     }
 }
