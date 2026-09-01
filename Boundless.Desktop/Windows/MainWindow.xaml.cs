@@ -77,6 +77,7 @@ public partial class MainWindow : BoundlessWindow
 
     public async void OnSetActiveAccount(FortniteAccount account, bool reloadData = false)
     {
+        // TODO error handling
         if (account.ProfileData == null || reloadData)
         {
             account.ProfileData = await new FortniteProfile(account).LoadProfileData();
@@ -213,9 +214,5 @@ public partial class MainWindow : BoundlessWindow
                 myCosmetics.Where(cosmetic => cosmetic.TemplateId.StartsWith(athenaType)).ToList();
             _cosmeticTab.ProcessCosmeticsAsync(cosmeticsToLoad, cancellationToken);
         }
-
-        // Clear cache
-        FortniteApiCache.Save();
-        FortniteApiCache.Cosmetics.Clear();
     }
 }

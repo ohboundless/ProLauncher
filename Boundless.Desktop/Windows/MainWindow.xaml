@@ -331,7 +331,7 @@
                                               IsSelected="True"/>
                                 <ComboBoxItem Content="Name"/>
                                 <ComboBoxItem Content="Rarity"/>
-                                <ComboBoxItem Content="Rarity"/>
+                                <ComboBoxItem Content="Date Added"/>
                             </ComboBox>
                         </StackPanel>
                     </Border>

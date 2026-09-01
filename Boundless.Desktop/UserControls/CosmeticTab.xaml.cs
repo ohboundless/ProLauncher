@@ -23,7 +23,14 @@ public partial class CosmeticTab : UserControl
             var models = new List<CosmeticItemModel>();
             foreach (var cosmetic in cosmetics)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    // Clear cache
+                    FortniteApiCache.Save();
+                    FortniteApiCache.Cosmetics.Clear();
+                    
+                    cancellationToken.ThrowIfCancellationRequested();
+                }
 
                 var model = new CosmeticItemModel(cosmetic);
                 await model.LoadAsync();
@@ -47,6 +54,10 @@ public partial class CosmeticTab : UserControl
                     Panel.Children.Add(control);
                 }
             });
+            
+            // Clear cache
+            FortniteApiCache.Save();
+            FortniteApiCache.Cosmetics.Clear();
         }
         catch (OperationCanceledException)
         {
