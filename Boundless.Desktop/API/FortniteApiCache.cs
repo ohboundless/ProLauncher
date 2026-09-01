@@ -14,7 +14,7 @@ public static class FortniteApiCache
 {
     private static string FolderPath => Configuration.DirectoryName + "\\Cache";
     private static string ImagePath => FolderPath + "\\Images";
-    private static string FilePath => FolderPath + "\\cosmetics.json";
+    private static string FilePath => FolderPath + "\\Cosmetics.json";
 
     public static List<CosmeticData> Cosmetics { get; private set; } = new();
 
