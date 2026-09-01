@@ -335,13 +335,11 @@
                             </ComboBox>
                         </StackPanel>
                     </Border>
-                    
+                        
                     <Border Grid.Row="3" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
                     
                     <!-- Cosmetic tab panels -->
-                    <ScrollViewer Grid.Row="3" Margin="15 10" 
-                                  x:Name="TabScrollViewer"
-                                  ScrollChanged="TabScrollViewer_OnScrollChanged">
+                    <ScrollViewer Grid.Row="3" Margin="15 10">
                         <StackPanel Name="Tabs">
                             <userControls:CosmeticTab x:Name="Cosmetics" Visibility="Visible"/>
                             <userControls:CosmeticTab x:Name="Outfits" Visibility="Collapsed"/>

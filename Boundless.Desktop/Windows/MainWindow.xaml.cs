@@ -215,18 +215,4 @@ public partial class MainWindow : BoundlessWindow
             _cosmeticTab.ProcessCosmeticsAsync(cosmeticsToLoad, cancellationToken);
         }
     }
-
-    private bool _isLoadingBuffer = false;
-    private void TabScrollViewer_OnScrollChanged(object sender, ScrollChangedEventArgs e)
-    {
-        if (_isLoadingBuffer)
-            return;
-        
-        if (TabScrollViewer.ScrollableHeight - TabScrollViewer.ContentVerticalOffset < 300)
-        {
-            _isLoadingBuffer = true;
-            _cosmeticTab?.LoadCosmeticsBuffer();
-            _isLoadingBuffer = false;
-        }
-    }
 }
