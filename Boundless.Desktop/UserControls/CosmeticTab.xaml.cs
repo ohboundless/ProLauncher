@@ -9,9 +9,32 @@ namespace Boundless.Desktop.UserControls;
 
 public partial class CosmeticTab : UserControl
 {
+    private List<CosmeticItemModel> _unloadedModels = new();
+    private List<CosmeticItemModel> _loadedModels = new();
+    
     public CosmeticTab()
     {
         InitializeComponent();
+    }
+
+    public void LoadCosmeticsBuffer(int size = 50)
+    {
+        var models = _unloadedModels.Take(size);
+        var controls = models.Select(x => new CosmeticItem(x));
+        
+        Dispatcher.Invoke(() =>
+        {
+            foreach (var control in controls)
+            {
+                Panel.Children.Add(control);
+            }
+        });
+
+        foreach (var model in models)
+        {
+            _unloadedModels.RemoveAt(0); // Pop
+            _loadedModels.Add(model);
+        }
     }
 
     public async void ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics, CancellationToken cancellationToken)
@@ -20,7 +43,6 @@ public partial class CosmeticTab : UserControl
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var models = new List<CosmeticItemModel>();
             foreach (var cosmetic in cosmetics)
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -41,19 +63,11 @@ public partial class CosmeticTab : UserControl
                     continue;
                 }
 
-                models.Add(model);
+                _unloadedModels.Add(model);
             }
 
-            models = models.OrderByDescending(x => x.Rarity).ThenBy(x => x.Data?.Type.ParseCosmeticType()).ToList();
-            var controls = models.Select(model => new CosmeticItem(model));
-
-            Dispatcher.Invoke(() =>
-            {
-                foreach (var control in controls)
-                {
-                    Panel.Children.Add(control);
-                }
-            });
+            _unloadedModels = _unloadedModels.OrderByDescending(x => x.Rarity).ThenBy(x => x.Data?.Type.ParseCosmeticType()).ToList();
+            LoadCosmeticsBuffer(150);
             
             // Clear cache
             FortniteApiCache.Save();
