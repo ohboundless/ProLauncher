@@ -14,7 +14,7 @@ public partial class CosmeticTab : UserControl
         InitializeComponent();
     }
 
-    public async void ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics, CancellationToken cancellationToken)
+    public async Task ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics, Action<double> progressCallback, CancellationToken cancellationToken)
     {
         try
         {
@@ -23,15 +23,12 @@ public partial class CosmeticTab : UserControl
             var models = new List<CosmeticItemModel>();
             foreach (var cosmetic in cosmetics)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    // Clear cache
-                    FortniteApiCache.Save();
-                    FortniteApiCache.Cosmetics.Clear();
-                    
-                    cancellationToken.ThrowIfCancellationRequested();
-                }
+                cancellationToken.ThrowIfCancellationRequested();
 
+                // TODO all weird null cosmetics
+                if (cosmetic.TemplateId == "AthenaCharacter:CID_DefaultOutfit")
+                    continue;
+                
                 var model = new CosmeticItemModel(cosmetic);
                 await model.LoadAsync();
 
@@ -42,6 +39,7 @@ public partial class CosmeticTab : UserControl
                 }
 
                 models.Add(model);
+                progressCallback(Convert.ToDouble(models.Count) / cosmetics.Count);
             }
 
             models = models.OrderByDescending(x => x.Rarity).ThenBy(x => x.Data?.Type.ParseCosmeticType()).ToList();
@@ -54,19 +52,20 @@ public partial class CosmeticTab : UserControl
                     Panel.Children.Add(control);
                 }
             });
-            
-            // Clear cache
-            FortniteApiCache.Save();
-            FortniteApiCache.Cosmetics.Clear();
         }
         catch (OperationCanceledException)
         {
-            Log("CosmeticsLoading", LogLevel.Error, "Loading canceled...");
+            Log("CosmeticsLoading", LogLevel.Error, "Loading canceled.");
         }
         catch (Exception ex)
         {
             Log("CosmeticsLoading", LogLevel.Error, ex.ToString());
             // TODO popup
+        }
+        finally
+        {
+            Log("CosmeticsLoading", LogLevel.Error, "Flushing cosmetics cache...");
+            FortniteApiCache.Flush();
         }
     }
 }

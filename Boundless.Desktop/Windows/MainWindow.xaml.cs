@@ -200,19 +200,36 @@ public partial class MainWindow : BoundlessWindow
         var myCosmetics = _activeAccount.ProfileData?.Cosmetics;
         if (myCosmetics == null)
             throw new NoNullAllowedException("Profile data was null.");
-
-        FortniteApiCache.Load();
+        
         var cancellationToken = HandleCancellation().Token;
-
+        
+        Tabs.Visibility = Visibility.Collapsed;
+        CosmeticProgressRing.Visibility = Visibility.Visible;
+        
         if (athenaType == "*") // All
         {
-            _cosmeticTab.ProcessCosmeticsAsync(myCosmetics, cancellationToken);
+            _cosmeticTab.ProcessCosmeticsAsync(myCosmetics, UpdateCosmeticsLoadingProgress, cancellationToken);
         }
         else
         {
             var cosmeticsToLoad =
                 myCosmetics.Where(cosmetic => cosmetic.TemplateId.StartsWith(athenaType)).ToList();
-            _cosmeticTab.ProcessCosmeticsAsync(cosmeticsToLoad, cancellationToken);
+            _cosmeticTab.ProcessCosmeticsAsync(cosmeticsToLoad, UpdateCosmeticsLoadingProgress, cancellationToken);
         }
+    }
+
+    private void UpdateCosmeticsLoadingProgress(double progress)
+    {
+        var percentage = progress * 100.0;
+        Dispatcher.Invoke(() =>
+        {
+            CosmeticProgressRing.Progress = percentage;
+            
+            if (percentage >= 100.0)
+            {
+                CosmeticProgressRing.Visibility = Visibility.Collapsed;
+                Tabs.Visibility = Visibility.Visible;
+            }
+        });
     }
 }

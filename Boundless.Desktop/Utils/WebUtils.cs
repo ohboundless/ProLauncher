@@ -38,9 +38,9 @@ public static class WebUtils
         return json;
     }
 
-    public static dynamic GetJson(this RestClient client, RestRequest request)
+    public static T? GetJson<T>(this RestClient client, RestRequest request)
     {
-        return client.GetJsonAsync(request).GetAwaiter().GetResult();
+        return client.GetJsonAsync<T>(request).GetAwaiter().GetResult();
     }
     
     public static void StartUrl(string url)

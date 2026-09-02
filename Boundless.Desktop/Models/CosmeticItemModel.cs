@@ -9,7 +9,7 @@ namespace Boundless.Desktop.Models;
 public class CosmeticItemModel
 {
     public AthenaCosmetic Cosmetic { get; }
-    public string CosmeticId { get;}
+    public string CosmeticId { get; }
     public CosmeticData? Data { get; private set; }
     public EFortRarity Rarity { get; private set; }
     public Uri IconUri { get; private set; }

@@ -39,8 +39,9 @@
       <Resource Include="Images\Icons\T_UI_Nexus_FigmentPass_Default_L.png" />
       <Resource Include="Images\Icons\T_UI_Nexus_FigmentPass_L.png" />
       <Resource Include="Images\Icons\T-VBuck-64.png" />
-      <None Remove="Images\Icons\CID_Random.png" />
-      <Resource Include="Images\Icons\CID_Random.png" />
+      <None Remove="Images\Icons\T_Ui_Outfit_256.png" />
+      <None Remove="Images\Icons\T_Ui_Outfit_256.png" />
+      <Resource Include="Images\Icons\T_Ui_Outfit_256.png" />
     </ItemGroup>
 
     <ItemGroup>

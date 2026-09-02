@@ -16,7 +16,7 @@ public static class FortniteApiCache
     private static string ImagePath => FolderPath + "\\Images";
     private static string FilePath => FolderPath + "\\Cosmetics.json";
 
-    public static List<CosmeticData> Cosmetics { get; private set; } = new();
+    public static List<CosmeticData>? Cosmetics { get; private set; }
 
     private static RestClient _client = new();
 
@@ -26,26 +26,28 @@ public static class FortniteApiCache
         {
             Log("FortniteApiCache", LogLevel.Info,
                 "Data cache for fortnite-api.com did not exist. Creating one now...");
-            Save();
+            Flush();
             return;
         }
-        
+
         var text = File.ReadAllText(FilePath);
         Cosmetics = JsonConvert.DeserializeObject<List<CosmeticData>>(text) ??
                     throw new JsonException($"Could not deserialize: \n\"{text}\"");
 
         Log("FortniteApiCache", LogLevel.Info, $"Loaded cosmetics cache. ({FilePath})");
     }
-
-    public static void Save()
+    
+    public static void Flush()
     {
         Directory.CreateDirectory(FolderPath);
         Directory.CreateDirectory(ImagePath);
         
         var json = JsonConvert.SerializeObject(Cosmetics, Formatting.Indented);
         File.WriteAllText(FilePath, json);
-
-        Log("FortniteApiCache", LogLevel.Info, $"Saved cosmetics cache. ({FilePath})");
+        
+        Cosmetics.Clear();
+        Cosmetics = null;
+        Log("FortniteApiCache", LogLevel.Info, $"Flushed cosmetics cache. ({FilePath})");
     }
 
     public static bool TryGetCosmetic(string cosmeticId, out CosmeticData? cosmeticModel)
@@ -70,6 +72,9 @@ public static class FortniteApiCache
 
     public static void CacheCosmetic(BRCosmeticModel data)
     {
+        if (Cosmetics == null)
+            Load();
+        
         Log("FortniteApiCache", LogLevel.Info, $"Caching cosmetic with id: {data.Data.Id}");
         Cosmetics.Add(data.Data);
     }
