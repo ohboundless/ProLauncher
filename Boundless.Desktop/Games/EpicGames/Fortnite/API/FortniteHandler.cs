@@ -1,6 +1,7 @@
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Boundless.Desktop.Exceptions;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.Utils;
 using RestSharp;
@@ -158,7 +159,7 @@ public static class FortniteHandler
         var exchangeCode = await GetExchangeCode(exchanged.Token);
         
         if (!EpicInstallations.Installs.TryGetValue("Fortnite", out var install))
-            throw new ApplicationException("Unable to launch Fortnite because it is not installed.");
+            throw new LaunchFortniteException("Unable to launch Fortnite because it is not installed.");
             
         var win64 = install.Path + @"\FortniteGame\Binaries\Win64";
         var fileName = win64 + "\\FortniteLauncher.exe";
@@ -183,9 +184,9 @@ public static class FortniteHandler
     /// Launch a DeviceAuthorization url to link Epic Games account
     /// </summary>
     /// <exception cref="TimeoutException"></exception>
-    public static async Task StartAuthorization()
+    public static async Task StartAuthorization(CancellationToken cancellationToken)
     {
-        Log("Fortnite", LogLevel.Info, "Starting device authorization...");
+        Log("FortniteHandler", LogLevel.Info, "Starting device authorization...");
         var auth = await GetDeviceAuth();
         WebUtils.StartUrl(auth.Uri);
 
@@ -200,6 +201,8 @@ public static class FortniteHandler
             await Task.Delay(10000); // 10 seconds
             token = await GetToken(SWITCH_CLIENT, "device_code", auth.DeviceCode);
             retryCount++;
+            
+            cancellationToken.ThrowIfCancellationRequested();
         }
 
         var androidToken = await ExchangeToken(ANDROID_CLIENT, token.Token);

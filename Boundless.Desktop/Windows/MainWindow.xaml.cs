@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Boundless.Desktop.API;
+using Boundless.Desktop.Commands;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Games;
 using Boundless.Desktop.Games.EpicGames;
@@ -21,7 +22,8 @@ namespace Boundless.Desktop.Windows;
 /// </summary>
 public partial class MainWindow : BoundlessWindow
 {
-    private FortniteAccount? _activeAccount;
+    public FortniteAccount? ActiveAccount { get; private set; }
+    
     private CosmeticTab? _cosmeticTab;
     private CancellationTokenSource? _currentCancellationSource;
     
@@ -36,7 +38,7 @@ public partial class MainWindow : BoundlessWindow
         LoadAccounts();
     }
 
-    private async void LoadAccounts()
+    public async void LoadAccounts()
     {
         AccountsPanel.Children.Clear();
 
@@ -91,56 +93,9 @@ public partial class MainWindow : BoundlessWindow
         // TODO has upgraded BattlePass?
         BattlePassLevel.Text = account.ProfileData.BattlePassLevel.ToString("N0");
         CurrencyQuantity.Text = account.ProfileData.Currency.ToString("N0");
-        _activeAccount = account;
+        ActiveAccount = account;
 
         LoadCosmetics();
-    }
-
-    private async void AddAccount_OnClick(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            await FortniteHandler.StartAuthorization();
-        }
-        catch (Exception ex)
-        {
-            // TODO handle error
-            Log("Accounts", LogLevel.Error, "Failed to authorize account!");
-            Log("Accounts", LogLevel.Error, ex.ToString());
-        }
-
-        LoadAccounts();
-    }
-
-    private async void LaunchFortnite_OnClick(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            EpicInstallations.PopulateInstallations(); // TODO probably put somewhere else
-
-            if (!Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame.TryGetValue("Fortnite", out var current))
-            {
-                Log("Launcher", LogLevel.Error, "Cannot launch Fortnite, no active account found!");
-                // TODO maybe UI message
-                return;
-            }
-
-            var account = Accounts.Fortnite.Accounts?.FirstOrDefault(x => x.Id == current);
-            if (account == null)
-            {
-                Log("Launcher", LogLevel.Error, $"Unable to launch! Could not find account with id: {current}");
-                // TODO UI message
-                return;
-            }
-            
-            await FortniteHandler.LaunchFortnite(account);
-            LoadAccounts();
-        }
-        catch (Exception ex)
-        {
-            // TODO handle
-            Log("Launcher", LogLevel.Error, ex.ToString());
-        }
     }
 
     private CancellationTokenSource HandleCancellation()
@@ -181,7 +136,7 @@ public partial class MainWindow : BoundlessWindow
 
     private void LoadCosmetics()
     {
-        if (_cosmeticTab == null || _activeAccount == null)
+        if (_cosmeticTab == null || ActiveAccount == null)
             return;
 
         var athenaType = _cosmeticTab.Name switch
@@ -197,7 +152,7 @@ public partial class MainWindow : BoundlessWindow
         };
 
         _cosmeticTab.Panel.Children.Clear(); // Clear cosmetics
-        var myCosmetics = _activeAccount.ProfileData?.Cosmetics;
+        var myCosmetics = ActiveAccount.ProfileData?.Cosmetics;
         if (myCosmetics == null)
             throw new NoNullAllowedException("Profile data was null.");
         
@@ -231,5 +186,15 @@ public partial class MainWindow : BoundlessWindow
                 Tabs.Visibility = Visibility.Visible;
             }
         });
+    }
+
+    private void LaunchFortnite_OnClick(object sender, RoutedEventArgs e)
+    {
+        StaticCommands.LaunchFortniteCommand.Execute(null);
+    }
+    
+    private void AddAccount_OnClick(object sender, RoutedEventArgs e)
+    {
+        StaticCommands.AddAccountCommand.Execute(null);
     }
 }

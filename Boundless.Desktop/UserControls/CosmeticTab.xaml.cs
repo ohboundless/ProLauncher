@@ -9,6 +9,8 @@ namespace Boundless.Desktop.UserControls;
 
 public partial class CosmeticTab : UserControl
 {
+    public static bool IsProcessing;
+    
     public CosmeticTab()
     {
         InitializeComponent();
@@ -16,10 +18,15 @@ public partial class CosmeticTab : UserControl
 
     public async Task ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics, Action<double> progressCallback, CancellationToken cancellationToken)
     {
+        while (IsProcessing)
+        {
+            await Task.Delay(100, cancellationToken);
+        }
+
+        IsProcessing = true;
+        
         try
         {
-            cancellationToken.ThrowIfCancellationRequested();
-
             var models = new List<CosmeticItemModel>();
             foreach (var cosmetic in cosmetics)
             {
@@ -52,6 +59,8 @@ public partial class CosmeticTab : UserControl
                     Panel.Children.Add(control);
                 }
             });
+
+            progressCallback(1.0);
         }
         catch (OperationCanceledException)
         {
@@ -66,6 +75,7 @@ public partial class CosmeticTab : UserControl
         {
             Log("CosmeticsLoading", LogLevel.Error, "Flushing cosmetics cache...");
             FortniteApiCache.Flush();
+            IsProcessing = false;
         }
     }
 }

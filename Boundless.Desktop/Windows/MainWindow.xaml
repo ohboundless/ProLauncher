@@ -9,6 +9,7 @@
         xmlns:templates="clr-namespace:Boundless.Desktop.Templates"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:userControls="clr-namespace:Boundless.Desktop.UserControls"
+        xmlns:popups="clr-namespace:Boundless.Desktop.UserControls.Popups"
         mc:Ignorable="d"
         Height="850" Width="1300"
         WindowStartupLocation="CenterScreen" 
@@ -73,7 +74,8 @@
                                 Height="30" 
                                 Padding="5"
                                 Background="#111729"
-                                BorderBrush="#202a47">
+                                BorderBrush="#202a47"
+                                Click="AddAccount_OnClick">
                             <StackPanel>
                                 <ui:SymbolIcon Symbol="Add24" Filled="True" Foreground="#2e5ecc"/>
                             </StackPanel>
@@ -359,5 +361,12 @@
                 </Grid>
         </Border>
         <!-- End account -->
+        
+        <popups:PopupContainer Visibility="Collapsed"
+                               Grid.Row="0" 
+                               Grid.Column="0" 
+                               Grid.RowSpan="2"
+                               Grid.ColumnSpan="2"
+                               x:Name="PopupContainer"/>
     </Grid>
 </templates:BoundlessWindow>

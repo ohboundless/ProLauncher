@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Boundless.Desktop.UserControls"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:commands="clr-namespace:Boundless.Desktop.Commands"
              mc:Ignorable="d"
              Height="76"
              d:DesignHeight="76" d:DesignWidth="250"
@@ -17,7 +18,7 @@
             MouseUp="AccountEntry_OnClick">
         <Border.ContextMenu>
             <ContextMenu Background="#2c3252">
-                <MenuItem Header="Launch"></MenuItem>
+                <MenuItem Header="Launch" Command="{x:Static commands:StaticCommands.LaunchFortniteCommand}"></MenuItem>
                 <MenuItem Header="Delete"></MenuItem>
                 <Separator/>
                 <MenuItem Header="Properties"></MenuItem>

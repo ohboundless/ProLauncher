@@ -53,7 +53,7 @@ public static class FortniteApiCache
     public static bool TryGetCosmetic(string cosmeticId, out CosmeticData? cosmeticModel)
     {
         if (Cosmetics == null)
-            throw new NoNullAllowedException("Cosmetics cache not loaded.");
+            Load();
 
         foreach (var cosmetic in Cosmetics)
         {
