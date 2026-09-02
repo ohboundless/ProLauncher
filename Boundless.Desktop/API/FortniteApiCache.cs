@@ -45,7 +45,7 @@ public static class FortniteApiCache
         var json = JsonConvert.SerializeObject(Cosmetics, Formatting.Indented);
         File.WriteAllText(FilePath, json);
         
-        Cosmetics.Clear();
+        Cosmetics?.Clear();
         Cosmetics = null;
         Log("FortniteApiCache", LogLevel.Info, $"Flushed cosmetics cache. ({FilePath})");
     }
