@@ -54,8 +54,17 @@ public partial class MainWindow : BoundlessWindow
 
         var ordered = accounts.OrderByDescending(x => x.LastLaunchTime);
         var accountIds = Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame;
-        accountIds.TryGetValue("Fortnite", out var currentAccount);
 
+        if (accountIds.TryGetValue("Fortnite", out var currentAccount))
+        {
+            // If the current account doesn't exist
+            if (ordered.FirstOrDefault(x => x.Id == currentAccount) == null)
+            {
+                currentAccount = null;
+                accountIds.Remove("Fortnite");
+            }
+        }
+        
         foreach (var account in ordered)
         {
             var entry = new AccountEntry(account, AccountsPanel);
@@ -123,7 +132,7 @@ public partial class MainWindow : BoundlessWindow
             if (tab.Name != name)
             {
                 tab.Visibility = Visibility.Collapsed;
-                tab.Panel.Children.Clear(); // Clear cosmetics
+                //tab.Panel.Children.Clear(); // Clear cosmetics
                 continue;
             }
 
@@ -151,7 +160,7 @@ public partial class MainWindow : BoundlessWindow
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        _cosmeticTab.Panel.Children.Clear(); // Clear cosmetics
+        //_cosmeticTab.Panel.Children.Clear(); // Clear cosmetics
         var myCosmetics = ActiveAccount.ProfileData?.Cosmetics;
         if (myCosmetics == null)
             throw new NoNullAllowedException("Profile data was null.");

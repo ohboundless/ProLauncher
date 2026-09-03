@@ -28,14 +28,12 @@ public class AddAccountCommand : ICommand
         }
 
         var cancellationSource = new CancellationTokenSource();
-        AddAccount(cancellationSource.Token);
-        
-        new WaitingForLoginPopup(cancellationSource.Cancel);
+        AddAccount(cancellationSource.Token, new WaitingForLoginPopup(cancellationSource.Cancel));
     }
 
     public event EventHandler? CanExecuteChanged;
 
-    private async void AddAccount(CancellationToken cancellationToken)
+    private async void AddAccount(CancellationToken cancellationToken, WaitingForLoginPopup popup)
     {
         _isActive = true;
         
@@ -56,6 +54,8 @@ public class AddAccountCommand : ICommand
         finally
         {
             _isActive = false;
+            popup.RemovePopup();
+            MainWindow.Topmost = true;
         }
     }
 }

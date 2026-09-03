@@ -16,25 +16,45 @@ public static class FortniteApiCache
     private static string ImagePath => FolderPath + "\\Images";
     private static string FilePath => FolderPath + "\\Cosmetics.json";
 
-    public static List<CosmeticData>? Cosmetics { get; private set; }
+    public static List<CosmeticData>? Cosmetics { get; private set; } = new();
 
     private static RestClient _client = new();
 
-    public static void Load()
+    public static void Load(bool isFirstTime = true)
     {
-        if (!File.Exists(FilePath))
+        try
         {
-            Log("FortniteApiCache", LogLevel.Info,
-                "Data cache for fortnite-api.com did not exist. Creating one now...");
-            Flush();
-            return;
+            if (!File.Exists(FilePath))
+            {
+                Log("FortniteApiCache", LogLevel.Info,
+                    "Data cache for fortnite-api.com did not exist. Creating one now...");
+                Flush();
+                return;
+            }
+
+            var text = File.ReadAllText(FilePath);
+            Cosmetics = JsonConvert.DeserializeObject<List<CosmeticData>>(text) ??
+                        throw new JsonException($"Could not deserialize: \n\"{text}\"");
+
+            Log("FortniteApiCache", LogLevel.Info, $"Loaded cosmetics cache. ({FilePath})");
         }
+        catch (Exception ex)
+        {
+            if (!isFirstTime)
+            {
+                Log("FortniteApiCache", LogLevel.Fatal, "Unable to load FortniteApiCache. Resetting...");
+                Log("FortniteApiCache", LogLevel.Fatal, ex.ToString());
 
-        var text = File.ReadAllText(FilePath);
-        Cosmetics = JsonConvert.DeserializeObject<List<CosmeticData>>(text) ??
-                    throw new JsonException($"Could not deserialize: \n\"{text}\"");
-
-        Log("FortniteApiCache", LogLevel.Info, $"Loaded cosmetics cache. ({FilePath})");
+                throw new ApplicationException("Unable to load FortniteApiCache!");
+            }
+            
+            Log("FortniteApiCache", LogLevel.Error, "Unable to load FortniteApiCache. Resetting...");
+            
+            if (File.Exists(FilePath))
+                File.Delete(FilePath);
+            
+            Load(false);
+        }
     }
     
     public static void Flush()

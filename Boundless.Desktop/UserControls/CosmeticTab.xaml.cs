@@ -1,4 +1,9 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using Boundless.Desktop.API;
 using Boundless.Desktop.API.Models;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
@@ -7,13 +12,37 @@ using Boundless.Desktop.Utils;
 
 namespace Boundless.Desktop.UserControls;
 
-public partial class CosmeticTab : UserControl
+public partial class CosmeticTab : UserControl, INotifyPropertyChanged
 {
     public static bool IsProcessing;
+    
+    private ObservableCollection<CosmeticItemModel> _cosmetics = new();
+
+    public ObservableCollection<CosmeticItemModel> Cosmetics
+    {
+        get => _cosmetics;
+        set
+        {
+            _cosmetics = value;
+            OnPropertyChanged(nameof(Cosmetics));
+        }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged(
+        string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(
+            this,
+            new PropertyChangedEventArgs(propertyName)
+        );
+    }
     
     public CosmeticTab()
     {
         InitializeComponent();
+        DataContext = this;
     }
 
     public async Task ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics, Action<double> progressCallback, CancellationToken cancellationToken)
@@ -50,14 +79,10 @@ public partial class CosmeticTab : UserControl
             }
 
             models = models.OrderByDescending(x => x.Rarity).ThenBy(x => x.Data?.Type.ParseCosmeticType()).ToList();
-            var controls = models.Select(model => new CosmeticItem(model));
 
-            Dispatcher.Invoke(() =>
+            await Dispatcher.InvokeAsync(() =>
             {
-                foreach (var control in controls)
-                {
-                    Panel.Children.Add(control);
-                }
+                Cosmetics = new ObservableCollection<CosmeticItemModel>(models);
             });
 
             progressCallback(1.0);
@@ -78,4 +103,48 @@ public partial class CosmeticTab : UserControl
             IsProcessing = false;
         }
     }
+
+    // From ChatGPT cause I cba
+    #region SCROLL_BAR_FIX
+    private void ListBox_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        if (sender is not ListBox listBox)
+            return;
+
+        var scrollViewer = FindVisualChild<ScrollViewer>(listBox);
+
+        if (scrollViewer == null)
+            return;
+
+        const double scrollAmount = 55;
+
+        if (e.Delta > 0)
+            scrollViewer.ScrollToVerticalOffset(
+                Math.Max(0, scrollViewer.VerticalOffset - scrollAmount));
+        else
+            scrollViewer.ScrollToVerticalOffset(
+                scrollViewer.VerticalOffset + scrollAmount);
+
+        e.Handled = true;
+    }
+
+    private static T? FindVisualChild<T>(DependencyObject obj)
+        where T : DependencyObject
+    {
+        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+        {
+            var child = VisualTreeHelper.GetChild(obj, i);
+
+            if (child is T result)
+                return result;
+
+            var descendant = FindVisualChild<T>(child);
+
+            if (descendant != null)
+                return descendant;
+        }
+
+        return null;
+    }
+    #endregion
 }

@@ -18,10 +18,10 @@
             MouseUp="AccountEntry_OnClick">
         <Border.ContextMenu>
             <ContextMenu Background="#2c3252">
-                <MenuItem Header="Launch" Command="{x:Static commands:StaticCommands.LaunchFortniteCommand}"></MenuItem>
-                <MenuItem Header="Delete"></MenuItem>
+                <MenuItem Header="Launch" Command="{x:Static commands:StaticCommands.LaunchFortniteCommand}"/>
+                <MenuItem Header="Delete" Command="{x:Static commands:StaticCommands.RemoveAccountCommand}"/>
                 <Separator/>
-                <MenuItem Header="Properties"></MenuItem>
+                <MenuItem Header="Properties"/>
             </ContextMenu>
         </Border.ContextMenu>
         

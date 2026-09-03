@@ -29,4 +29,17 @@ public static class StaticCommands
             return _addAccountCommand;
         }
     }
+    
+    private static RemoveAccountCommand _removeAccountCommand;
+    public static RemoveAccountCommand RemoveAccountCommand
+    {
+        get
+        {
+            if (_removeAccountCommand != null)
+                return _removeAccountCommand;
+
+            _removeAccountCommand = new RemoveAccountCommand();
+            return _removeAccountCommand;
+        }
+    }
 }

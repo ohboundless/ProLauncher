@@ -341,23 +341,21 @@
                     <Border Grid.Row="3" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
                     
                     <!-- Cosmetic tab panels -->
-                    <ScrollViewer Grid.Row="3" Margin="15 10">
-                        <Grid>
-                            <ui:ProgressRing Name="CosmeticProgressRing" Foreground="#3a4377" 
-                                             Visibility="Collapsed" 
-                                             Margin="0 0 0 50"/>
-                            <StackPanel Name="Tabs">
-                                <userControls:CosmeticTab x:Name="Cosmetics" Visibility="Visible"/>
-                                <userControls:CosmeticTab x:Name="Outfits" Visibility="Collapsed"/>
-                                <userControls:CosmeticTab x:Name="Backblings" Visibility="Collapsed"/>
-                                <userControls:CosmeticTab x:Name="Pickaxes"  Visibility="Collapsed"/>
-                                <userControls:CosmeticTab x:Name="Emotes" Visibility="Collapsed"/>
-                                <userControls:CosmeticTab x:Name="Gliders" Visibility="Collapsed"/>
-                                <userControls:CosmeticTab x:Name="Wraps" Visibility="Collapsed"/>
-                                <!--TODO <userControls:CosmeticTab x:Name="More" Visibility="Collapsed"/>-->
-                            </StackPanel>
+                    <Grid Grid.Row="3" Margin="15 10">
+                        <ui:ProgressRing Name="CosmeticProgressRing" Foreground="#3a4377" 
+                                         Visibility="Collapsed" 
+                                         Margin="0 0 0 50"/>
+                        <Grid Name="Tabs">
+                            <userControls:CosmeticTab x:Name="Cosmetics" Visibility="Visible"/>
+                            <userControls:CosmeticTab x:Name="Outfits" Visibility="Collapsed"/>
+                            <userControls:CosmeticTab x:Name="Backblings" Visibility="Collapsed"/>
+                            <userControls:CosmeticTab x:Name="Pickaxes"  Visibility="Collapsed"/>
+                            <userControls:CosmeticTab x:Name="Emotes" Visibility="Collapsed"/>
+                            <userControls:CosmeticTab x:Name="Gliders" Visibility="Collapsed"/>
+                            <userControls:CosmeticTab x:Name="Wraps" Visibility="Collapsed"/>
+                            <!--TODO <userControls:CosmeticTab x:Name="More" Visibility="Collapsed"/>-->
                         </Grid>
-                    </ScrollViewer>
+                    </Grid>
                 </Grid>
         </Border>
         <!-- End account -->

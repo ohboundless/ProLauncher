@@ -58,6 +58,8 @@ public partial class MessagePopup : UserControl
     private void Ok_OnClick(object sender, RoutedEventArgs e)
     {
         ConfirmAction?.Invoke();
-        ParentGrid.RemovePopup(this);
+        RemovePopup();
     }
+    
+    public void RemovePopup() => ParentGrid.RemovePopup(this);
 }

@@ -4,7 +4,56 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Boundless.Desktop.UserControls"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:controls="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1000">
-    <WrapPanel x:Name="Panel"/>
+    <ListBox ItemsSource="{Binding Cosmetics}"
+             BorderThickness="0"
+             Padding="0"
+             Margin="0"
+             Background="Transparent"
+             ScrollViewer.CanContentScroll="True"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             ScrollViewer.VerticalScrollBarVisibility="Auto"
+             VirtualizingPanel.IsVirtualizing="True"
+             VirtualizingPanel.VirtualizationMode="Recycling"
+             PreviewMouseWheel="ListBox_OnPreviewMouseWheel">
+
+        <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="VerticalContentAlignment" Value="Top"/>
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <ContentPresenter
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ListBox.ItemContainerStyle>
+        
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <controls:VirtualizingWrapPanel
+                    Orientation="Horizontal"
+                    StretchItems="False"/>
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <local:CosmeticItem/>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+
+    </ListBox>
 </UserControl>
