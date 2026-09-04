@@ -9,19 +9,22 @@
              Background="Transparent"
              Margin="5">
     <Grid>
-        <Border x:Name="Border"
+        <Border x:Name="MaskBorder"
                 CornerRadius="10"
-                BorderBrush="{Binding BorderColor}"
-                BorderThickness="3"
-                Background="{Binding BackgroundRadial}">
-        </Border>
+                Background="{Binding BackgroundRadial}" />
         
         <Image Source="{Binding IconSource}" 
                VerticalAlignment="Bottom"
-               Width="100">
+               Width="100"
+               Margin="1">
             <Image.OpacityMask>
-                <VisualBrush Visual="{Binding ElementName=Border}" />
+                <VisualBrush Visual="{Binding ElementName=MaskBorder}" />
             </Image.OpacityMask>
         </Image>
+        
+        <Border CornerRadius="10"
+                BorderBrush="{Binding BorderColor}"
+                BorderThickness="3"
+                IsHitTestVisible="False"/>
     </Grid>
 </UserControl>

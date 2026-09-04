@@ -62,12 +62,13 @@ public partial class CosmeticTab : UserControl, INotifyPropertyChanged
                 cancellationToken.ThrowIfCancellationRequested();
 
                 // TODO all weird null cosmetics
-                if (cosmetic.TemplateId == "AthenaCharacter:CID_DefaultOutfit")
+                if (cosmetic.TemplateId == "AthenaCharacter:cid_defaultoutfit")
                     continue;
                 
                 var model = new CosmeticItemModel(cosmetic);
                 await model.LoadAsync();
-
+                progressCallback(Convert.ToDouble(models.Count) / cosmetics.Count);
+                
                 if (model.IsNull)
                 {
                     Log("CosmeticTab", LogLevel.Error, $"({cosmetic.TemplateId}) Unable to load model. Skipping...");
@@ -75,7 +76,6 @@ public partial class CosmeticTab : UserControl, INotifyPropertyChanged
                 }
 
                 models.Add(model);
-                progressCallback(Convert.ToDouble(models.Count) / cosmetics.Count);
             }
 
             models = models.OrderByDescending(x => x.Rarity).ThenBy(x => x.Data?.Type.ParseCosmeticType()).ToList();
@@ -85,7 +85,7 @@ public partial class CosmeticTab : UserControl, INotifyPropertyChanged
                 Cosmetics = new ObservableCollection<CosmeticItemModel>(models);
             });
 
-            progressCallback(1.0);
+            progressCallback(1.0); // Just in case
         }
         catch (OperationCanceledException)
         {
