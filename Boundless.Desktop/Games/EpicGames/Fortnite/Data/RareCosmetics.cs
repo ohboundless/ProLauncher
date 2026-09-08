@@ -15,10 +15,14 @@ public static class RareCosmetics
 {
     private static RareCosmetic[] List = new[]
     {
+        // Rare styles
         new RareStyle("CID_017_Athena_Commando_M", "Parts", "Stage2"),
         new RareStyle("CID_028_Athena_Commando_F", "Material", "Mat3"),
         new RareStyle("CID_029_Athena_Commando_F_Halloween", "Material", "Mat3"),
         new RareStyle("CID_030_Athena_Commando_M_Halloween", "ClothingColor", "Mat1"),
+        new RareStyle("CID_116_Athena_Commando_M_CarbideBlack", "Emissive", "Emissive2"),
+        
+        // Rare characters
         new RareCosmetic("CID_035_Athena_Commando_M_Medieval"),
         new RareCosmetic("CID_052_Athena_Commando_F_PSBlue"),
         new RareCosmetic("CID_084_Athena_Commando_M_Assassin"),
@@ -26,7 +30,6 @@ public static class RareCosmetics
         new RareCosmetic("CID_089_Athena_Commando_M_RetroGrey"),
         new RareCosmetic("CID_113_Athena_Commando_M_BlueAce"),
         new RareCosmetic("CID_114_Athena_Commando_F_TacticalWoodland"),
-        new RareStyle("CID_116_Athena_Commando_M_CarbideBlack", "Emissive", "Emissive2"), // TODO double check rarity
         new RareCosmetic("CID_138_Athena_Commando_M_PSBurnout"),
         new RareCosmetic("CID_095_Athena_Commando_M_Founder"),
         new RareCosmetic("CID_096_Athena_Commando_F_Founder"),
@@ -48,8 +51,43 @@ public static class RareCosmetics
         new RareCosmetic("CID_757_Athena_Commando_F_WildCat"),
         new RareCosmetic("CID_783_Athena_Commando_M_AquaJacket"),
         new RareCosmetic("CID_926_Athena_Commando_F_StreetFashionDiamond"),
-        new RareCosmetic("CID_A_101_Athena_Commando_M_TacticalWoodlandBlue")
-        // Maybe more idk
+        new RareCosmetic("CID_A_101_Athena_Commando_M_TacticalWoodlandBlue"),
+        new RareCosmetic("Character_EmailStamp"),
+        new RareCosmetic("Character_UnbrokenTrash"),
+        new RareCosmetic("Character_CoolSuitable"),
+        new RareCosmetic("Character_AsterOrder"),
+        new RareCosmetic("Character_CrownOrder"),
+        new RareCosmetic("Character_SummerUnsuitable"),
+        new RareCosmetic("Character_SmoothSuede"),
+        new RareCosmetic("Character_FitVapor"),
+        new RareCosmetic("Character_SnowNinjaDark"),
+        new RareCosmetic("Character_SnowSoldierFashion"),
+        new RareCosmetic("Character_Scribble"),
+        new RareCosmetic("Character_BlueJet"),
+        new RareCosmetic("Character_MasterKeyOrder"),
+        new RareCosmetic("CID_A_421_Athena_Commando_F_BlizzardBomber"),
+        new RareCosmetic("CID_A_297_Athena_Commando_F_Network"),
+        new RareCosmetic("CID_850_Athena_Commando_F_SkullBriteCube"),
+        new RareCosmetic("CID_516_Athena_Commando_M_BlackWidowRogue"),
+
+        // Emotes
+        new RareCosmetic("EID_ChewyStave"),
+        new RareCosmetic("EID_TouchLine"),
+        new RareCosmetic("EID_FlyPie"),
+        new RareCosmetic("EID_HiccupPanic"),
+        new RareCosmetic("EID_WishingStar"),
+        new RareCosmetic("EID_EyeSpire"),
+        new RareCosmetic("EID_Avian"),
+        new RareCosmetic("EID_Mic_SpinSlide"),
+        new RareCosmetic("EID_Drum_Pullups"),
+        new RareCosmetic("EID_Bass_KyleThrowBass"),
+        new RareCosmetic("EID_Mic_SlipTheMic"),
+        new RareCosmetic("EID_Potassium"),
+        new RareCosmetic("EID_GroovingSparkle"),
+        new RareCosmetic("EID_Hoppin"),
+        new RareCosmetic("EID_PlayerEleven"),
+        new RareCosmetic("EID_KPopDance03"),
+        new RareCosmetic("EID_HipHop01")
     };
 
     public static bool IsRare(string id, string? channel, string? tag)
