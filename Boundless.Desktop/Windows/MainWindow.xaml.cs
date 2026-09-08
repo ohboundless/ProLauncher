@@ -7,6 +7,7 @@ using Boundless.Desktop.Config;
 using Boundless.Desktop.Games;
 using Boundless.Desktop.Games.EpicGames.Fortnite.API;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
+using Boundless.Desktop.Models;
 using Boundless.Desktop.Templates;
 using Boundless.Desktop.UserControls;
 using Boundless.Desktop.Utils;
@@ -21,25 +22,6 @@ namespace Boundless.Desktop.Windows;
 public partial class MainWindow : BoundlessWindow
 {
     public FortniteAccount? ActiveAccount { get; private set; }
-    
-    #region PROPERTY BINDINGS
-    
-    public static readonly DependencyProperty CosmeticTabProperty =
-        DependencyProperty.Register(
-            nameof(CosmeticTab),
-            typeof(CosmeticTab),
-            typeof(MainWindow),
-            new PropertyMetadata(null));
-
-    public CosmeticTab? CosmeticTab
-    {
-        get => (CosmeticTab?)GetValue(CosmeticTabProperty);
-        set => SetValue(CosmeticTabProperty, value);
-    }
-    
-    #endregion
-    
-    private CancellationTokenSource? _currentCancellationSource;
     
     public MainWindow()
     {
@@ -119,86 +101,9 @@ public partial class MainWindow : BoundlessWindow
         BattlePassLevel.Text = account.ProfileData.BattlePassLevel.ToString("N0");
         CurrencyQuantity.Text = account.ProfileData.Currency.ToString("N0");
         ActiveAccount = account;
-
-        LoadCosmetics();
     }
-
-    private CancellationTokenSource HandleCancellation()
-    {
-        if (_currentCancellationSource != null)
-        {
-            Log("MainWindow", LogLevel.Info, "Requesting cancellation...");
-            _currentCancellationSource.Cancel();
-            _currentCancellationSource = null;
-        }
-        
-        return _currentCancellationSource = new CancellationTokenSource();
-    }
-
-    private void TopBarRadioButton_OnChecked(object sender, RoutedEventArgs e)
-    {
-        var s = sender as RadioButton;
-        var name = s?.Content?.ToString()?.CapitalizeWord();
-        
-        if (name == null)
-            return;
-        
-        foreach (CosmeticTab tab in Tabs.Children)
-        {
-            if (tab.Name != name)
-            {
-                tab.Visibility = Visibility.Collapsed;
-                //tab.Panel.Children.Clear(); // Clear cosmetics
-                continue;
-            }
-
-            CosmeticTab = tab;
-            tab.Visibility = Visibility.Visible;
-        }
-        
-        LoadCosmetics();
-    }
-
-    private void LoadCosmetics()
-    {
-        if (CosmeticTab == null || ActiveAccount == null)
-            return;
-
-        var athenaType = CosmeticTab.Name switch
-        {
-            "Cosmetics" => "*", // All
-            "Outfits" => "AthenaCharacter",
-            "Backblings" => "AthenaBackpack",
-            "Pickaxes" => "AthenaPickaxe",
-            "Emotes" => "AthenaDance",
-            "Gliders" => "AthenaGlider",
-            "Wraps" => "AthenaItemWrap",
-            _ => throw new ArgumentOutOfRangeException()
-        };
-
-        //_cosmeticTab.Panel.Children.Clear(); // Clear cosmetics
-        var myCosmetics = ActiveAccount.ProfileData?.Cosmetics;
-        if (myCosmetics == null)
-            throw new NoNullAllowedException("Profile data was null.");
-        
-        var cancellationToken = HandleCancellation().Token;
-        
-        Tabs.Visibility = Visibility.Collapsed;
-        CosmeticProgressRing.Visibility = Visibility.Visible;
-        
-        if (athenaType == "*") // All
-        {
-            CosmeticTab.ProcessCosmeticsAsync(myCosmetics, UpdateCosmeticsLoadingProgress, cancellationToken);
-        }
-        else
-        {
-            var cosmeticsToLoad =
-                myCosmetics.Where(cosmetic => cosmetic.TemplateId.StartsWith(athenaType)).ToList();
-            CosmeticTab.ProcessCosmeticsAsync(cosmeticsToLoad, UpdateCosmeticsLoadingProgress, cancellationToken);
-        }
-    }
-
-    private void UpdateCosmeticsLoadingProgress(double progress)
+    
+    public void UpdateCosmeticsLoadingProgress(double progress)
     {
         var percentage = progress * 100.0;
         Dispatcher.Invoke(() =>
@@ -208,7 +113,7 @@ public partial class MainWindow : BoundlessWindow
             if (percentage >= 100.0)
             {
                 CosmeticProgressRing.Visibility = Visibility.Collapsed;
-                Tabs.Visibility = Visibility.Visible;
+                CosmeticTab.Visibility = Visibility.Visible;
             }
         });
     }

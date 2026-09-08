@@ -10,6 +10,8 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:userControls="clr-namespace:Boundless.Desktop.UserControls"
         xmlns:popups="clr-namespace:Boundless.Desktop.UserControls.Popups"
+        xmlns:converters="clr-namespace:Boundless.Desktop.Utils.Converters"
+        xmlns:viewModels="clr-namespace:Boundless.Desktop.ViewModels"
         mc:Ignorable="d"
         Height="850" Width="1300"
         WindowStartupLocation="CenterScreen" 
@@ -248,7 +250,9 @@
                     <Border Grid.Row="1" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
                     
                     <!-- Cosmetic tab buttons -->
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20 0" Name="TopBar">
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20 0" 
+                                DataContext="{Binding ElementName=CosmeticTab,
+                                Path=CosmeticsViewModel}">
                         <StackPanel.Resources>
                             <ControlTemplate x:Key="topBarRadioButton" TargetType="RadioButton">
                                 <Border x:Name="border" BorderThickness="0 0 0 3"
@@ -273,21 +277,50 @@
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
+                            <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
                         </StackPanel.Resources>
                         <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Checked="TopBarRadioButton_OnChecked" IsChecked="True">COSMETICS</RadioButton>
+                                     Content="ALL"
+                                     IsChecked="{Binding SelectedFilter,
+                                         Mode=TwoWay, 
+                                         Converter={StaticResource EnumToBooleanConverter},
+                                         ConverterParameter={x:Static viewModels:CosmeticFilter.All}}"/>
                         <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Checked="TopBarRadioButton_OnChecked">OUTFITS</RadioButton>
+                                     Content="OUTFITS"
+                                     IsChecked="{Binding SelectedFilter,
+                                         Mode=TwoWay, 
+                                         Converter={StaticResource EnumToBooleanConverter},
+                                         ConverterParameter={x:Static viewModels:CosmeticFilter.Outfits}}"/>
                         <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Checked="TopBarRadioButton_OnChecked">BACKBLINGS</RadioButton>
+                                     Content="BACKBLINGS"
+                                     IsChecked="{Binding SelectedFilter,
+                                         Mode=TwoWay, 
+                                         Converter={StaticResource EnumToBooleanConverter},
+                                         ConverterParameter={x:Static viewModels:CosmeticFilter.Backblings}}"/>
                         <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Checked="TopBarRadioButton_OnChecked">PICKAXES</RadioButton>
+                                     Content="PICKAXES"
+                                     IsChecked="{Binding SelectedFilter,
+                                         Mode=TwoWay, 
+                                         Converter={StaticResource EnumToBooleanConverter},
+                                         ConverterParameter={x:Static viewModels:CosmeticFilter.Pickaxes}}"/>
                         <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Checked="TopBarRadioButton_OnChecked">EMOTES</RadioButton>
+                                     Content="EMOTES"
+                                     IsChecked="{Binding SelectedFilter,
+                                         Mode=TwoWay, 
+                                         Converter={StaticResource EnumToBooleanConverter},
+                                         ConverterParameter={x:Static viewModels:CosmeticFilter.Emotes}}"/>
                         <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Checked="TopBarRadioButton_OnChecked">GLIDERS</RadioButton>
+                                     Content="GLIDERS"
+                                     IsChecked="{Binding SelectedFilter,
+                                         Mode=TwoWay, 
+                                         Converter={StaticResource EnumToBooleanConverter},
+                                         ConverterParameter={x:Static viewModels:CosmeticFilter.Gliders}}"/>
                         <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Checked="TopBarRadioButton_OnChecked">WRAPS</RadioButton>
+                                     Content="WRAPS"
+                                     IsChecked="{Binding SelectedFilter,
+                                         Mode=TwoWay, 
+                                         Converter={StaticResource EnumToBooleanConverter},
+                                         ConverterParameter={x:Static viewModels:CosmeticFilter.Wraps}}"/>
                         <!--TODO <RadioButton Template="{StaticResource topBarRadioButton}">MORE</RadioButton>-->
                     </StackPanel>
                     
@@ -303,8 +336,9 @@
                                         Background="#0affffff"
                                         FocusVisualStyle="{x:Null}"
                                         IconPlacement="Right"
-                                        Text="{Binding CosmeticTab.CosmeticsViewModel.SearchText, 
-                                                                    UpdateSourceTrigger=PropertyChanged}">
+                                        Text="{Binding ElementName=CosmeticTab,
+                                            Path=CosmeticsViewModel.SearchText, 
+                                            UpdateSourceTrigger=PropertyChanged}">
                                 <ui:TextBox.Icon>
                                     <ui:SymbolIcon Symbol="Search24"/>
                                 </ui:TextBox.Icon>
@@ -344,19 +378,17 @@
                     
                     <!-- Cosmetic tab panels -->
                     <Grid Grid.Row="3" Margin="15 10">
+                        <Grid.Resources>
+                            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+                        </Grid.Resources>
                         <ui:ProgressRing Name="CosmeticProgressRing" Foreground="#3a4377" 
-                                         Visibility="Collapsed" 
-                                         Margin="0 0 0 50"/>
-                        <Grid Name="Tabs">
-                            <userControls:CosmeticTab x:Name="Cosmetics" Visibility="Visible"/>
-                            <userControls:CosmeticTab x:Name="Outfits" Visibility="Collapsed"/>
-                            <userControls:CosmeticTab x:Name="Backblings" Visibility="Collapsed"/>
-                            <userControls:CosmeticTab x:Name="Pickaxes"  Visibility="Collapsed"/>
-                            <userControls:CosmeticTab x:Name="Emotes" Visibility="Collapsed"/>
-                            <userControls:CosmeticTab x:Name="Gliders" Visibility="Collapsed"/>
-                            <userControls:CosmeticTab x:Name="Wraps" Visibility="Collapsed"/>
-                            <!--TODO <userControls:CosmeticTab x:Name="More" Visibility="Collapsed"/>-->
-                        </Grid>
+                                         Visibility="{Binding ElementName=CosmeticTab,
+                                         Path=CosmeticsViewModel.IsProcessing,
+                                         FallbackValue=False,
+                                         Converter={StaticResource BoolToVisibilityConverter}}" 
+                                         Margin="0 0 0 50">
+                        </ui:ProgressRing>
+                        <userControls:CosmeticTab x:Name="CosmeticTab"/>
                     </Grid>
                 </Grid>
         </Border>

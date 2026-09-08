@@ -1,86 +1,32 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Boundless.Desktop.API;
-using Boundless.Desktop.API.Models;
-using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
-using Boundless.Desktop.Models;
-using Boundless.Desktop.Utils;
 using Boundless.Desktop.ViewModels;
 
 namespace Boundless.Desktop.UserControls;
 
 public partial class CosmeticTab : UserControl
 {
-    private static bool _isProcessing;
-    public CosmeticsViewModel CosmeticsViewModel { get; } = new();
-    
+    public static readonly DependencyProperty CosmeticsViewModelProperty =
+        DependencyProperty.Register(
+            nameof(CosmeticsViewModel),
+            typeof(CosmeticsViewModel),
+            typeof(CosmeticTab),
+            new PropertyMetadata(null));
+
+    public CosmeticsViewModel? CosmeticsViewModel
+    {
+        get => (CosmeticsViewModel?)GetValue(CosmeticsViewModelProperty);
+        set => SetValue(CosmeticsViewModelProperty, value);
+    }
+
     public CosmeticTab()
     {
         InitializeComponent();
-        DataContext = CosmeticsViewModel;
-    }
-
-    public async Task ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics, Action<double> progressCallback, CancellationToken cancellationToken)
-    {
-        while (_isProcessing)
-        {
-            await Task.Delay(100, cancellationToken);
-        }
-
-        _isProcessing = true;
         
-        try
-        {
-            var models = new List<CosmeticItemModel>();
-            foreach (var cosmetic in cosmetics)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                // TODO all weird null cosmetics
-                if (cosmetic.TemplateId == "AthenaCharacter:cid_defaultoutfit")
-                    continue;
-                
-                var model = new CosmeticItemModel(cosmetic);
-                await model.LoadAsync();
-                progressCallback(Convert.ToDouble(models.Count) / cosmetics.Count);
-                
-                if (model.IsNull)
-                {
-                    Log("CosmeticTab", LogLevel.Error, $"({cosmetic.TemplateId}) Unable to load model. Skipping...");
-                    continue;
-                }
-
-                models.Add(model);
-            }
-
-            models = models.OrderByDescending(x => x.Rarity).ThenBy(x => x.Data?.Type.ParseCosmeticType()).ToList();
-
-            await Dispatcher.InvokeAsync(() =>
-            {
-                CosmeticsViewModel.Cosmetics = new ObservableCollection<CosmeticItemModel>(models);
-            });
-
-            progressCallback(1.0); // Just in case
-        }
-        catch (OperationCanceledException)
-        {
-            Log("CosmeticsLoading", LogLevel.Error, "Loading canceled.");
-        }
-        catch (Exception ex)
-        {
-            Log("CosmeticsLoading", LogLevel.Error, ex.ToString());
-            // TODO popup
-        }
-        finally
-        {
-            Log("CosmeticsLoading", LogLevel.Error, "Flushing cosmetics cache...");
-            FortniteApiCache.Flush();
-            _isProcessing = false;
-        }
+        CosmeticsViewModel = new CosmeticsViewModel();
+        DataContext = CosmeticsViewModel;
     }
 
     // From ChatGPT cause I cba
