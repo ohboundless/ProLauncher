@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace Boundless.Desktop.Utils.Converters;
 
-public class EnumToBooleanConverter : IValueConverter
+public class EnumToIsCheckedConverter : IValueConverter
 {
     public object Convert(
         object? value,

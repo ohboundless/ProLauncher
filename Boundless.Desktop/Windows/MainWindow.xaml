@@ -67,7 +67,6 @@
                         <TextBlock Grid.Column="0" 
                                    Text="ACCOUNTS"
                                    Foreground="#c9cddc"
-                                   FontFamily="./Fonts/#Roboto" 
                                    FontWeight="600"
                                    VerticalAlignment="Center"
                                    Margin="5 0"/>
@@ -253,8 +252,10 @@
                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20 0" 
                                 DataContext="{Binding ElementName=CosmeticTab,
                                 Path=CosmeticsViewModel}">
+                        
                         <StackPanel.Resources>
-                            <ControlTemplate x:Key="topBarRadioButton" TargetType="RadioButton">
+                            
+                            <ControlTemplate x:Key="TopBarRadioButton" TargetType="RadioButton">
                                 <Border x:Name="border" BorderThickness="0 0 0 3"
                                         Height="47"
                                         Margin="0 5 0 0"
@@ -264,7 +265,6 @@
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
                                                Foreground="#c9cddc"
-                                               FontFamily="./Fonts/#Roboto" 
                                                FontSize="16"
                                                FontWeight="600">
                                         <ContentPresenter/>
@@ -277,51 +277,52 @@
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
-                            <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+                            <converters:EnumToIsCheckedConverter x:Key="EnumToBooleanConverter"/>
+                            
+                            <Style TargetType="RadioButton">
+                                <Setter Property="Template"
+                                        Value="{StaticResource TopBarRadioButton}"/>
+                            </Style>
+                            
                         </StackPanel.Resources>
-                        <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Content="ALL"
+                        
+                        <RadioButton Content="ALL"
                                      IsChecked="{Binding SelectedFilter,
                                          Mode=TwoWay, 
                                          Converter={StaticResource EnumToBooleanConverter},
                                          ConverterParameter={x:Static viewModels:CosmeticFilter.All}}"/>
-                        <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Content="OUTFITS"
+                        <RadioButton Content="OUTFITS"
                                      IsChecked="{Binding SelectedFilter,
                                          Mode=TwoWay, 
                                          Converter={StaticResource EnumToBooleanConverter},
                                          ConverterParameter={x:Static viewModels:CosmeticFilter.Outfits}}"/>
-                        <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Content="BACKBLINGS"
+                        <RadioButton Content="BACKBLINGS"
                                      IsChecked="{Binding SelectedFilter,
                                          Mode=TwoWay, 
                                          Converter={StaticResource EnumToBooleanConverter},
                                          ConverterParameter={x:Static viewModels:CosmeticFilter.Backblings}}"/>
-                        <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Content="PICKAXES"
+                        <RadioButton Content="PICKAXES"
                                      IsChecked="{Binding SelectedFilter,
                                          Mode=TwoWay, 
                                          Converter={StaticResource EnumToBooleanConverter},
                                          ConverterParameter={x:Static viewModels:CosmeticFilter.Pickaxes}}"/>
-                        <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Content="EMOTES"
+                        <RadioButton Content="EMOTES"
                                      IsChecked="{Binding SelectedFilter,
                                          Mode=TwoWay, 
                                          Converter={StaticResource EnumToBooleanConverter},
                                          ConverterParameter={x:Static viewModels:CosmeticFilter.Emotes}}"/>
-                        <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Content="GLIDERS"
+                        <RadioButton Content="GLIDERS"
                                      IsChecked="{Binding SelectedFilter,
                                          Mode=TwoWay, 
                                          Converter={StaticResource EnumToBooleanConverter},
                                          ConverterParameter={x:Static viewModels:CosmeticFilter.Gliders}}"/>
-                        <RadioButton Template="{StaticResource topBarRadioButton}" 
-                                     Content="WRAPS"
+                        <RadioButton Content="WRAPS"
                                      IsChecked="{Binding SelectedFilter,
                                          Mode=TwoWay, 
                                          Converter={StaticResource EnumToBooleanConverter},
                                          ConverterParameter={x:Static viewModels:CosmeticFilter.Wraps}}"/>
                         <!--TODO <RadioButton Template="{StaticResource topBarRadioButton}">MORE</RadioButton>-->
+                        
                     </StackPanel>
                     
                     <Border Grid.Row="2" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
@@ -348,14 +349,13 @@
                                 <StackPanel Orientation="Horizontal">
                                     <ui:SymbolIcon Symbol="Filter24"/>
                                     <TextBlock Margin="5 0 0 0"
-                                               FontFamily="./Fonts/#Roboto" 
                                                FontSize="14"
                                                FontWeight="600">Filter</TextBlock>
                                 </StackPanel>
                             </Button>
                             
                             <ComboBox Height="40" ItemsSource="{Binding MyStringList}" 
-                                      ItemStringFormat="Prefix: {0}">
+                                      ItemStringFormat="Sort By: {0}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">

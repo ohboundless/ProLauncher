@@ -15,6 +15,11 @@
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             
+            <Style TargetType="{x:Type ui:TextBlock}">
+                <Setter Property="FontFamily"
+                        Value="./Fonts/#Roboto"/>
+            </Style>
+            
             <Style x:Key="WindowButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Foreground" Value="White"/>
@@ -83,7 +88,6 @@
                                             <TextBlock Text="{TemplateBinding Title}" 
                                                        Foreground="White"
                                                        FontSize="12"
-                                                       FontFamily="./Fonts/#Roboto" 
                                                        FontWeight="500"/>
                                         </Border>
 

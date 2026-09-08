@@ -10,6 +10,7 @@ using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.Models;
 using Boundless.Desktop.Templates;
 using Boundless.Desktop.UserControls;
+using Boundless.Desktop.UserControls.Popups;
 using Boundless.Desktop.Utils;
 using Boundless.Desktop.ViewModels;
 using TextBox = Wpf.Ui.Controls.TextBox;
@@ -86,13 +87,20 @@ public partial class MainWindow : BoundlessWindow
 
     public async void OnSetActiveAccount(FortniteAccount account, bool reloadData = false)
     {
-        // TODO error handling
-        if (account.ProfileData == null || reloadData)
+        try
         {
-            account.ProfileData = await new FortniteProfile(account).LoadProfileData();
-            await Accounts.Fortnite.SaveAsync();
+            if (account.ProfileData == null || reloadData)
+            {
+                account.ProfileData = await new FortniteProfile(account).LoadProfileData();
+                await Accounts.Fortnite.SaveAsync();
+            }
         }
-        
+        catch (Exception ex)
+        {
+            new ErrorPopup("MainWindow_OnSetActiveAccount", $"Unable to load profile data for {account.Username}.\nIf this issue persists please report this to the dev team.", ex);
+            return;
+        }
+
         AccountUsername.Text = account.Username; // TODO get actual player name
         EpicUsername.Text = account.Username; // TODO get actual epic name
         AccountIcon.Source = new BitmapImage(new Uri(account.Icon)); // TODO get account icon as currently equipped skin
@@ -101,6 +109,8 @@ public partial class MainWindow : BoundlessWindow
         BattlePassLevel.Text = account.ProfileData.BattlePassLevel.ToString("N0");
         CurrencyQuantity.Text = account.ProfileData.Currency.ToString("N0");
         ActiveAccount = account;
+        
+        CosmeticTab.CosmeticsViewModel?.OnTabSwitched();
     }
     
     public void UpdateCosmeticsLoadingProgress(double progress)

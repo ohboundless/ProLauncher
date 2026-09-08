@@ -23,7 +23,6 @@
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Center"
                        FontSize="25"
-                       FontFamily="./Fonts/#Roboto" 
                        FontWeight="600"
                        Foreground="White"
                        Padding="30 0"
@@ -34,7 +33,6 @@
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap"
                        TextAlignment="Center"
-                       FontFamily="./Fonts/#Roboto" 
                        Foreground="#dedede"
                        Padding="30 0"
                        x:Name="MessageTextBlock"/>

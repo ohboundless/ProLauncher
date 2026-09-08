@@ -50,12 +50,10 @@
                     <TextBlock Name="AccountName"
                                Text="Account Name"
                                Foreground="#c9cddc"
-                               FontFamily="./Fonts/#Roboto" 
                                FontWeight="500"/>
                     <TextBlock Name="LastPlayTime"
                                Text="Last launched 2d ago"
                                Foreground="#9799a3"
-                               FontFamily="./Fonts/#Roboto" 
                                FontSize="10"
                                FontWeight="400"/>
                 </StackPanel>

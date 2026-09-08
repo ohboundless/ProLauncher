@@ -37,7 +37,6 @@
                        Text="Add Account" 
                        Margin="5 0" 
                        Foreground="#c9cddc"
-                       FontFamily="./Fonts/#Roboto" 
                        FontSize="16"
                        FontWeight="400"
                        HorizontalAlignment="Left"
