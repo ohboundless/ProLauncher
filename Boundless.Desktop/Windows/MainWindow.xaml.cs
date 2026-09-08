@@ -1,19 +1,17 @@
 ﻿using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Boundless.Desktop.API;
 using Boundless.Desktop.Commands;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Games;
-using Boundless.Desktop.Games.EpicGames;
-using Boundless.Desktop.Games.EpicGames.Fortnite;
 using Boundless.Desktop.Games.EpicGames.Fortnite.API;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.Templates;
 using Boundless.Desktop.UserControls;
 using Boundless.Desktop.Utils;
+using Boundless.Desktop.ViewModels;
+using TextBox = Wpf.Ui.Controls.TextBox;
 
 namespace Boundless.Desktop.Windows;
 
@@ -24,13 +22,31 @@ public partial class MainWindow : BoundlessWindow
 {
     public FortniteAccount? ActiveAccount { get; private set; }
     
-    private CosmeticTab? _cosmeticTab;
+    #region PROPERTY BINDINGS
+    
+    public static readonly DependencyProperty CosmeticTabProperty =
+        DependencyProperty.Register(
+            nameof(CosmeticTab),
+            typeof(CosmeticTab),
+            typeof(MainWindow),
+            new PropertyMetadata(null));
+
+    public CosmeticTab? CosmeticTab
+    {
+        get => (CosmeticTab?)GetValue(CosmeticTabProperty);
+        set => SetValue(CosmeticTabProperty, value);
+    }
+    
+    #endregion
+    
     private CancellationTokenSource? _currentCancellationSource;
     
     public MainWindow()
     {
         Globals.MainWindow = this;
         InitializeComponent();
+
+        DataContext = this;
     }
 
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -136,7 +152,7 @@ public partial class MainWindow : BoundlessWindow
                 continue;
             }
 
-            _cosmeticTab = tab;
+            CosmeticTab = tab;
             tab.Visibility = Visibility.Visible;
         }
         
@@ -145,10 +161,10 @@ public partial class MainWindow : BoundlessWindow
 
     private void LoadCosmetics()
     {
-        if (_cosmeticTab == null || ActiveAccount == null)
+        if (CosmeticTab == null || ActiveAccount == null)
             return;
 
-        var athenaType = _cosmeticTab.Name switch
+        var athenaType = CosmeticTab.Name switch
         {
             "Cosmetics" => "*", // All
             "Outfits" => "AthenaCharacter",
@@ -172,13 +188,13 @@ public partial class MainWindow : BoundlessWindow
         
         if (athenaType == "*") // All
         {
-            _cosmeticTab.ProcessCosmeticsAsync(myCosmetics, UpdateCosmeticsLoadingProgress, cancellationToken);
+            CosmeticTab.ProcessCosmeticsAsync(myCosmetics, UpdateCosmeticsLoadingProgress, cancellationToken);
         }
         else
         {
             var cosmeticsToLoad =
                 myCosmetics.Where(cosmetic => cosmetic.TemplateId.StartsWith(athenaType)).ToList();
-            _cosmeticTab.ProcessCosmeticsAsync(cosmeticsToLoad, UpdateCosmeticsLoadingProgress, cancellationToken);
+            CosmeticTab.ProcessCosmeticsAsync(cosmeticsToLoad, UpdateCosmeticsLoadingProgress, cancellationToken);
         }
     }
 

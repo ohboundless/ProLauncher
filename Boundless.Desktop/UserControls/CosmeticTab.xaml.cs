@@ -9,50 +9,29 @@ using Boundless.Desktop.API.Models;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.Models;
 using Boundless.Desktop.Utils;
+using Boundless.Desktop.ViewModels;
 
 namespace Boundless.Desktop.UserControls;
 
-public partial class CosmeticTab : UserControl, INotifyPropertyChanged
+public partial class CosmeticTab : UserControl
 {
-    public static bool IsProcessing;
-    
-    private ObservableCollection<CosmeticItemModel> _cosmetics = new();
-
-    public ObservableCollection<CosmeticItemModel> Cosmetics
-    {
-        get => _cosmetics;
-        set
-        {
-            _cosmetics = value;
-            OnPropertyChanged(nameof(Cosmetics));
-        }
-    }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged(
-        string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(
-            this,
-            new PropertyChangedEventArgs(propertyName)
-        );
-    }
+    private static bool _isProcessing;
+    public CosmeticsViewModel CosmeticsViewModel { get; } = new();
     
     public CosmeticTab()
     {
         InitializeComponent();
-        DataContext = this;
+        DataContext = CosmeticsViewModel;
     }
 
     public async Task ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics, Action<double> progressCallback, CancellationToken cancellationToken)
     {
-        while (IsProcessing)
+        while (_isProcessing)
         {
             await Task.Delay(100, cancellationToken);
         }
 
-        IsProcessing = true;
+        _isProcessing = true;
         
         try
         {
@@ -82,7 +61,7 @@ public partial class CosmeticTab : UserControl, INotifyPropertyChanged
 
             await Dispatcher.InvokeAsync(() =>
             {
-                Cosmetics = new ObservableCollection<CosmeticItemModel>(models);
+                CosmeticsViewModel.Cosmetics = new ObservableCollection<CosmeticItemModel>(models);
             });
 
             progressCallback(1.0); // Just in case
@@ -100,12 +79,12 @@ public partial class CosmeticTab : UserControl, INotifyPropertyChanged
         {
             Log("CosmeticsLoading", LogLevel.Error, "Flushing cosmetics cache...");
             FortniteApiCache.Flush();
-            IsProcessing = false;
+            _isProcessing = false;
         }
     }
 
     // From ChatGPT cause I cba
-    #region SCROLL_BAR_FIX
+    #region SCROLL BAR FIX
     private void ListBox_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
     {
         if (sender is not ListBox listBox)

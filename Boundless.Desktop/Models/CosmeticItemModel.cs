@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Boundless.Desktop.API;
@@ -22,6 +23,7 @@ public class CosmeticItemModel
     public BitmapSource IconSource { get; set; }
     public Brush BackgroundRadial { get; set; }
     public Brush BorderColor { get; set; }
+    public Visibility Visibility { get; set; }
     
     public CosmeticItemModel(AthenaCosmetic cosmetic)
     {
