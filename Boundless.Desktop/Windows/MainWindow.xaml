@@ -128,8 +128,24 @@
                     </Grid.RowDefinitions>
                     
                     <StackPanel Grid.Row="0">
-                        <userControls:NavButton Icon="PlayCircle28" Text="Launch Fortnite" Margin="0 3"
-                                                Click="LaunchFortnite_OnClick"/>
+                        <userControls:NavButton Icon="PlayCircle28" 
+                                                Text="Launch Fortnite" 
+                                                Margin="0 3"
+                                                Click="LaunchFortnite_OnClick" 
+                                                x:Name="LaunchFortniteBtn"/>
+                        <Button Click="CloseFortnite_OnClick"
+                                HorizontalAlignment="Stretch"
+                                Margin="5 0"
+                                Padding="0 -10"
+                                Height="50"
+                                Background="#d1324a"
+                                Visibility="Collapsed"
+                                x:Name="CloseFortniteBtn">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="RecordStop20" Foreground="Black" FontSize="20"/>
+                                <TextBlock Text="Close Fortnite" Margin="10 0" Foreground="Black" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
                         <userControls:NavButton Icon="Person24" Text="Cosmetics" Margin="0 3" IsActive="True"/>
                         <userControls:NavButton Icon="DataBarVertical24" Text="Stats" Margin="0 3"/>
                         <userControls:NavButton Icon="Settings28" Text="Settings" Margin="0 3"/>

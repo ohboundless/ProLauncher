@@ -13,7 +13,7 @@ public class LaunchFortniteCommand : ICommand
 {
     public bool CanExecute(object? parameter)
     {
-        return GameList.LaunchedGames.FirstOrDefault(x => x.Name == "Fortnite") == null;
+        return !GameProcessList.IsFortniteRunning();
     }
 
     public void Execute(object? parameter)

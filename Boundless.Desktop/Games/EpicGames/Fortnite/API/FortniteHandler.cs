@@ -175,7 +175,6 @@ public static class FortniteHandler
         
         account.LastLaunchTime = DateTime.Now;
         await Accounts.Fortnite.SaveAsync();
-        GameList.LaunchedGames.Add(new LaunchedGame("Fortnite", proc));
     }
 
     #endregion

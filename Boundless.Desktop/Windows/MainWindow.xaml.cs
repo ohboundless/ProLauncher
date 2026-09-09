@@ -30,6 +30,9 @@ public partial class MainWindow : BoundlessWindow
         InitializeComponent();
 
         DataContext = this;
+        
+        // Loops
+        GameProcessList.FortniteProcessLoop();
     }
 
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -136,5 +139,10 @@ public partial class MainWindow : BoundlessWindow
     private void AddAccount_OnClick(object sender, RoutedEventArgs e)
     {
         StaticCommands.AddAccountCommand.Execute(null);
+    }
+
+    private void CloseFortnite_OnClick(object sender, RoutedEventArgs e)
+    {
+        GameProcessList.CloseFortnite();
     }
 }

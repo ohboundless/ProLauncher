@@ -34,7 +34,7 @@
             
             <Grid Grid.Column="0" Width="60" Height="60">
                 <Border CornerRadius="8" Background="#222123" Name="Border1">
-                </Border>
+                </Border> 
                 <StackPanel>
                     <Image
                            Name="AccountIcon"
@@ -42,7 +42,8 @@
                     <StackPanel.OpacityMask>
                         <VisualBrush Visual="{Binding ElementName=Border1}" />
                     </StackPanel.OpacityMask>
-                    </StackPanel>
+                </StackPanel>
+                
             </Grid>
             
             <Grid Grid.Column="1" Margin="10 0 0 0">
