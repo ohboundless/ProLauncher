@@ -1,0 +1,57 @@
+﻿using Boundless.Swapper.Core;
+using Boundless.Swapper.Cosmetics.Models;
+using CUE4Parse.FileProvider;
+using CUE4Parse.FileProvider.Objects;
+using CUE4Parse.UE4.Assets;
+
+namespace Boundless.Swapper.Cosmetics;
+
+public class CosmeticsLoader
+{
+    private SwapperCore _core;
+    private DefaultFileProvider _provider => _core.CUE4Parse.Provider;
+    
+    public CosmeticsLoader(SwapperCore core)
+    {
+        _core = core;
+    }
+
+    public List<BaseCosmetic> LoadGeneric<T>(params string[] paths) 
+        where T : BaseCosmetic
+    {
+        var cosmetics = new List<GameFile>();
+        
+        foreach (var kvp in _provider.Files)
+        {
+            if (!paths.Any(path => kvp.Key.StartsWith(path)))
+                continue;
+            
+            if (kvp.Key.Contains("/Tandem/"))
+                continue;
+            
+            cosmetics.Add(kvp.Value);
+        }
+
+        var models = new List<BaseCosmetic>();
+        
+        foreach (var cosmetic in cosmetics)
+        {
+            if (!_provider.TryLoadPackage(cosmetic, out var pkg))
+            {
+                // TODO logging
+                continue;
+            }
+
+            var obj = pkg.GetExport(cosmetic.Name);
+            var model = Activator.CreateInstance(typeof(T), obj);
+            models.Add((BaseCosmetic)model);
+        }
+
+        return models;
+    }
+
+    public List<BaseCosmetic> LoadCharacters()
+    {
+        return LoadGeneric<CharacterCosmetic>(CosmeticConstants.CharacterPaths);
+    }
+}

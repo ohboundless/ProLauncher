@@ -12,6 +12,7 @@
         xmlns:popups="clr-namespace:Boundless.Desktop.UserControls.Popups"
         xmlns:converters="clr-namespace:Boundless.Desktop.Utils.Converters"
         xmlns:viewModels="clr-namespace:Boundless.Desktop.ViewModels"
+        xmlns:tabs="clr-namespace:Boundless.Desktop.UserControls.Tabs"
         mc:Ignorable="d"
         Height="850" Width="1300"
         WindowStartupLocation="CenterScreen" 
@@ -122,11 +123,6 @@
                     BorderBrush="#202a47"
                     MinHeight="300">
                 <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition Height="80"/>
-                    </Grid.RowDefinitions>
-                    
                     <StackPanel Grid.Row="0">
                         <userControls:NavButton Icon="PlayCircle28" 
                                                 Text="Launch Fortnite" 
@@ -147,6 +143,8 @@
                             </StackPanel>
                         </Button>
                         <userControls:NavButton Icon="Person24" Text="Cosmetics" Margin="0 3" IsActive="True"/>
+                        <userControls:NavButton Icon="Person24" Text="Swapper" Margin="0 3"/>
+                        <userControls:NavButton Icon="Person24" Text="Lobby Bot" Margin="0 3"/>
                         <userControls:NavButton Icon="DataBarVertical24" Text="Stats" Margin="0 3"/>
                         <userControls:NavButton Icon="Settings28" Text="Settings" Margin="0 3"/>
                     </StackPanel>
@@ -165,247 +163,7 @@
                 BorderBrush="#202a47"
                 Margin="5 5 10 5">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="150"/>
-                        <RowDefinition Height="52"/>
-                        <RowDefinition Height="75"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    
-                    <!-- Start account details -->
-                    <Grid Grid.Row="0" Margin="20 10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <StackPanel Orientation="Horizontal"
-                                    Grid.Column="0">
-                            <Grid Width="110" Height="110">
-                                <Border CornerRadius="8" Background="#1f2845" Name="Border1">
-                                </Border>
-                                <StackPanel>
-                                    <Image
-                                        Name="AccountIcon"
-                                        Source="../Images/Icons/T_Ui_Outfit_256.png"/>
-                                    <StackPanel.OpacityMask>
-                                        <VisualBrush Visual="{Binding ElementName=Border1}" />
-                                    </StackPanel.OpacityMask>
-                                </StackPanel>
-                            </Grid>
-                            
-                            <StackPanel VerticalAlignment="Center" Margin="25">
-                                <TextBlock x:Name="AccountUsername"
-                                           Text="No account selected"
-                                           Foreground="White"
-                                           FontSize="20"
-                                           FontWeight="Bold"/>
-                                <TextBlock x:Name="EpicUsername"
-                                           Text="Please add an account to get started"
-                                           Foreground="#b3b3b3"
-                                           FontSize="14"
-                                           FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </StackPanel>
-                        
-                        <Border Grid.Column="1"
-                                Background="#05ffffff"
-                                CornerRadius="5" Margin="10 25"
-                                BorderBrush="#202a47"
-                                BorderThickness="1"
-                                HorizontalAlignment="Right"
-                                Width="Auto">
-                            <StackPanel Orientation="Horizontal">
-                                <StackPanel Orientation="Horizontal" 
-                                            VerticalAlignment="Center" 
-                                            Margin="20 0">
-                                    <Image Source="pack://application:,,,/Images/Icons/T_UI_UniversalXP_Icon_LevelUp_Standard_256.png"
-                                           Width="42"/>
-                                    <StackPanel Margin="5 0" VerticalAlignment="Center">
-                                        <TextBlock Text="Account Level" Foreground="#c9c9c9" FontSize="12"/>
-                                        <TextBlock Name="AccountLevel" Text="N/A" Foreground="White" FontSize="15" FontWeight="Bold"/>
-                                    </StackPanel>
-                                </StackPanel>
-                                
-                                <Border VerticalAlignment="Center" 
-                                        BorderBrush="#202a47" 
-                                        BorderThickness="1 0 0 0"
-                                        Height="40"/>
-
-                                <StackPanel Orientation="Horizontal" 
-                                            VerticalAlignment="Center" 
-                                            Margin="20 0">
-                                    <Image Source="pack://application:,,,/Images/Icons/T_UI_Nexus_FigmentPass_L.png"
-                                           Width="42"/>
-                                    <StackPanel Margin="5 0" VerticalAlignment="Center">
-                                        <TextBlock Text="Battle Pass" Foreground="#c9c9c9" FontSize="12"/>
-                                        <TextBlock Name="BattlePassLevel" Text="N/A" Foreground="White" FontSize="15" FontWeight="Bold"/>
-                                    </StackPanel>
-                                </StackPanel>
-                                
-                                <Border VerticalAlignment="Center" 
-                                        BorderBrush="#202a47" 
-                                        BorderThickness="1 0 0 0"
-                                        Height="40"/>
-                                
-                                <StackPanel Orientation="Horizontal" 
-                                            VerticalAlignment="Center" 
-                                            Margin="20 0">
-                                    <Image Source="pack://application:,,,/Images/Icons/T-VBuck-64.png"
-                                           Width="42"/>
-                                    <StackPanel Margin="5 0" VerticalAlignment="Center">
-                                        <TextBlock Text="V-Bucks" Foreground="#c9c9c9" FontSize="12"/>
-                                        <TextBlock Name="CurrencyQuantity" Text="N/A" Foreground="White" FontSize="15" FontWeight="Bold"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-                    <!-- End account details -->
-                    <Border Grid.Row="1" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
-                    
-                    <!-- Cosmetic tab buttons -->
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20 0" 
-                                DataContext="{Binding ElementName=CosmeticTab,
-                                Path=CosmeticsViewModel}">
-                        
-                        <StackPanel.Resources>
-                            
-                            <ControlTemplate x:Key="TopBarRadioButton" TargetType="RadioButton">
-                                <Border x:Name="border" BorderThickness="0 0 0 3"
-                                        Height="47"
-                                        Margin="0 5 0 0"
-                                        Padding="20 0"
-                                        Background="Transparent">
-                                    <TextBlock x:Name="textBlock" 
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Foreground="#c9cddc"
-                                               FontSize="16"
-                                               FontWeight="600">
-                                        <ContentPresenter/>
-                                    </TextBlock>
-                                </Border>               
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsChecked" Value="True">
-                                        <Setter Property="BorderBrush" TargetName="border" Value="#3a4377"></Setter>
-                                        <Setter Property="Foreground" TargetName="textBlock" Value="#3a4377"></Setter>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                            <converters:EnumToIsCheckedConverter x:Key="EnumToBooleanConverter"/>
-                            
-                            <Style TargetType="RadioButton">
-                                <Setter Property="Template"
-                                        Value="{StaticResource TopBarRadioButton}"/>
-                            </Style>
-                            
-                        </StackPanel.Resources>
-                        
-                        <RadioButton Content="ALL"
-                                     IsChecked="{Binding SelectedFilter,
-                                         Mode=TwoWay, 
-                                         Converter={StaticResource EnumToBooleanConverter},
-                                         ConverterParameter={x:Static viewModels:CosmeticFilter.All}}"/>
-                        <RadioButton Content="OUTFITS"
-                                     IsChecked="{Binding SelectedFilter,
-                                         Mode=TwoWay, 
-                                         Converter={StaticResource EnumToBooleanConverter},
-                                         ConverterParameter={x:Static viewModels:CosmeticFilter.Outfits}}"/>
-                        <RadioButton Content="BACKBLINGS"
-                                     IsChecked="{Binding SelectedFilter,
-                                         Mode=TwoWay, 
-                                         Converter={StaticResource EnumToBooleanConverter},
-                                         ConverterParameter={x:Static viewModels:CosmeticFilter.Backblings}}"/>
-                        <RadioButton Content="PICKAXES"
-                                     IsChecked="{Binding SelectedFilter,
-                                         Mode=TwoWay, 
-                                         Converter={StaticResource EnumToBooleanConverter},
-                                         ConverterParameter={x:Static viewModels:CosmeticFilter.Pickaxes}}"/>
-                        <RadioButton Content="EMOTES"
-                                     IsChecked="{Binding SelectedFilter,
-                                         Mode=TwoWay, 
-                                         Converter={StaticResource EnumToBooleanConverter},
-                                         ConverterParameter={x:Static viewModels:CosmeticFilter.Emotes}}"/>
-                        <RadioButton Content="GLIDERS"
-                                     IsChecked="{Binding SelectedFilter,
-                                         Mode=TwoWay, 
-                                         Converter={StaticResource EnumToBooleanConverter},
-                                         ConverterParameter={x:Static viewModels:CosmeticFilter.Gliders}}"/>
-                        <RadioButton Content="WRAPS"
-                                     IsChecked="{Binding SelectedFilter,
-                                         Mode=TwoWay, 
-                                         Converter={StaticResource EnumToBooleanConverter},
-                                         ConverterParameter={x:Static viewModels:CosmeticFilter.Wraps}}"/>
-                        <!--TODO <RadioButton Template="{StaticResource topBarRadioButton}">MORE</RadioButton>-->
-                        
-                    </StackPanel>
-                    
-                    <Border Grid.Row="2" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
-                    
-                    <!-- Search bar, filter, and sorting -->
-                    <Border Grid.Row="2" Background="#0f000000">
-                        <StackPanel Orientation="Horizontal" Margin="20 10" VerticalAlignment="Center">
-                            <!--TODO FIX TEXTBOX FOCUS STYLE-->
-                            <ui:TextBox PlaceholderText="Search cosmetics..." 
-                                        Width="265" BorderBrush="#202a47" 
-                                        BorderThickness="1"
-                                        Background="#0affffff"
-                                        FocusVisualStyle="{x:Null}"
-                                        IconPlacement="Right"
-                                        Text="{Binding ElementName=CosmeticTab,
-                                            Path=CosmeticsViewModel.SearchText, 
-                                            UpdateSourceTrigger=PropertyChanged}">
-                                <ui:TextBox.Icon>
-                                    <ui:SymbolIcon Symbol="Search24"/>
-                                </ui:TextBox.Icon>
-                            </ui:TextBox>
-                            
-                            <Button Height="40" Padding="10 0" Margin="10 0">
-                                <StackPanel Orientation="Horizontal">
-                                    <ui:SymbolIcon Symbol="Filter24"/>
-                                    <TextBlock Margin="5 0 0 0"
-                                               FontSize="14"
-                                               FontWeight="600">Filter</TextBlock>
-                                </StackPanel>
-                            </Button>
-                            
-                            <ComboBox Height="40" ItemsSource="{Binding MyStringList}" 
-                                      ItemStringFormat="Sort By: {0}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Sort: " Foreground="White" />
-                                            <TextBlock Text="{Binding}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                                
-                                <ComboBoxItem Content="Default" 
-                                              IsSelected="True"/>
-                                <ComboBoxItem Content="Name"/>
-                                <ComboBoxItem Content="Rarity"/>
-                                <ComboBoxItem Content="Date Added"/>
-                            </ComboBox>
-                        </StackPanel>
-                    </Border>
-                        
-                    <Border Grid.Row="3" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
-                    
-                    <!-- Cosmetic tab panels -->
-                    <Grid Grid.Row="3" Margin="15 10">
-                        <Grid.Resources>
-                            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-                        </Grid.Resources>
-                        <ui:ProgressRing Name="CosmeticProgressRing" Foreground="#3a4377" 
-                                         Visibility="{Binding ElementName=CosmeticTab,
-                                         Path=CosmeticsViewModel.IsProcessing,
-                                         FallbackValue=False,
-                                         Converter={StaticResource BoolToVisibilityConverter}}" 
-                                         Margin="0 0 0 50">
-                        </ui:ProgressRing>
-                        <userControls:CosmeticTab x:Name="CosmeticTab"/>
-                    </Grid>
+                    <tabs:AccountCosmeticsTab x:Name="AccountCosmeticsTab"/>
                 </Grid>
         </Border>
         <!-- End account -->

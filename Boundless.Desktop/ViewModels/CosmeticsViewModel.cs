@@ -161,13 +161,13 @@ public class CosmeticsViewModel: ViewModel
         var cancellationToken = HandleCancellation().Token;
         if (athenaType == "*") // All
         {
-            ProcessCosmeticsAsync(myCosmetics, MainWindow.UpdateCosmeticsLoadingProgress, cancellationToken);
+            ProcessCosmeticsAsync(myCosmetics, MainWindow.AccountCosmeticsTab.UpdateCosmeticsLoadingProgress, cancellationToken);
         }
         else
         {
             var cosmeticsToLoad =
                 myCosmetics.Where(cosmetic => cosmetic.TemplateId.StartsWith(athenaType)).ToList();
-            ProcessCosmeticsAsync(cosmeticsToLoad, MainWindow.UpdateCosmeticsLoadingProgress, cancellationToken);
+            ProcessCosmeticsAsync(cosmeticsToLoad, MainWindow.AccountCosmeticsTab.UpdateCosmeticsLoadingProgress, cancellationToken);
         }
     }
 
