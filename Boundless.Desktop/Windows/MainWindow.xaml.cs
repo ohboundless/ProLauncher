@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System.ComponentModel;
+using System.Data;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -11,6 +13,7 @@ using Boundless.Desktop.Models;
 using Boundless.Desktop.Templates;
 using Boundless.Desktop.UserControls;
 using Boundless.Desktop.UserControls.Popups;
+using Boundless.Desktop.UserControls.Tabs;
 using Boundless.Desktop.Utils;
 using Boundless.Desktop.ViewModels;
 using TextBox = Wpf.Ui.Controls.TextBox;
@@ -33,6 +36,30 @@ public partial class MainWindow : BoundlessWindow
         
         // Loops
         GameProcessList.FortniteProcessLoop();
+    }
+
+    private ActiveTab _selectedTab = ActiveTab.Cosmetics;
+    public ActiveTab SelectedTab
+    {
+        get => _selectedTab;
+        set
+        {
+            if (_selectedTab == value)
+                return;
+
+            _selectedTab = value;
+            switch (value)
+            {
+                case ActiveTab.Cosmetics:
+                    SwapperTab.Visibility = Visibility.Collapsed;
+                    AccountCosmeticsTab.Visibility = Visibility.Visible;
+                    break;
+                case ActiveTab.Swapper:
+                    SwapperTab.Visibility = Visibility.Visible;
+                    AccountCosmeticsTab.Visibility = Visibility.Collapsed;
+                    break;
+            }
+        }
     }
 
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -107,5 +134,25 @@ public partial class MainWindow : BoundlessWindow
     private void CloseFortnite_OnClick(object sender, RoutedEventArgs e)
     {
         GameProcessList.CloseFortnite();
+    }
+
+    private void CosmeticsTab_OnChecked(object sender, RoutedEventArgs e)
+    {
+        SelectedTab = ActiveTab.Cosmetics;
+    }
+    
+    private void SwapperTab_OnChecked(object sender, RoutedEventArgs e)
+    {
+        SelectedTab = ActiveTab.Swapper;
+    }
+    
+    private void LobbyBotTab_OnChecked(object sender, RoutedEventArgs e)
+    {
+        SelectedTab = ActiveTab.LobbyBot;
+    }
+    
+    private void StatsTab_OnChecked(object sender, RoutedEventArgs e)
+    {
+        SelectedTab = ActiveTab.Stats;
     }
 }

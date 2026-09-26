@@ -23,8 +23,9 @@ public static class GameProcessList
 
     public static void MarkIsRunning(bool isRunning)
     {
-        MainWindow.LaunchFortniteBtn.Visibility = isRunning ? Visibility.Collapsed : Visibility.Visible;
-        MainWindow.CloseFortniteBtn.Visibility = isRunning ? Visibility.Visible : Visibility.Collapsed;
+        // TODO fortnite button
+        /*MainWindow.LaunchFortniteBtn.Visibility = isRunning ? Visibility.Collapsed : Visibility.Visible;
+        MainWindow.CloseFortniteBtn.Visibility = isRunning ? Visibility.Visible : Visibility.Collapsed;*/
     }
 
     public static void CloseFortnite()

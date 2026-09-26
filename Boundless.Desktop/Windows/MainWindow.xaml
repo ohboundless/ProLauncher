@@ -123,34 +123,70 @@
                     BorderBrush="#202a47"
                     MinHeight="300">
                 <Grid Margin="10">
-                    <StackPanel Grid.Row="0">
-                        <userControls:NavButton Icon="PlayCircle28" 
-                                                Text="Launch Fortnite" 
-                                                Margin="0 3"
-                                                Click="LaunchFortnite_OnClick" 
-                                                x:Name="LaunchFortniteBtn"/>
-                        <Button Click="CloseFortnite_OnClick"
-                                HorizontalAlignment="Stretch"
-                                Margin="5 0"
-                                Padding="0 -10"
-                                Height="50"
-                                Background="#d1324a"
-                                Visibility="Collapsed"
-                                x:Name="CloseFortniteBtn">
-                            <StackPanel Orientation="Horizontal">
-                                <ui:SymbolIcon Symbol="RecordStop20" Foreground="Black" FontSize="20"/>
-                                <TextBlock Text="Close Fortnite" Margin="10 0" Foreground="Black" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <userControls:NavButton Icon="Person24" Text="Cosmetics" Margin="0 3" IsActive="True"/>
-                        <userControls:NavButton Icon="Person24" Text="Swapper" Margin="0 3"/>
-                        <userControls:NavButton Icon="Person24" Text="Lobby Bot" Margin="0 3"/>
-                        <userControls:NavButton Icon="DataBarVertical24" Text="Stats" Margin="0 3"/>
-                        <userControls:NavButton Icon="Settings28" Text="Settings" Margin="0 3"/>
+                     <StackPanel Margin="10 5">
+                        <StackPanel.Resources>
+                            
+                            <ControlTemplate x:Key="NavButton" TargetType="RadioButton">
+                                <Border x:Name="border"
+                                        Height="50"
+                                        Margin="0 3"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Background="Transparent"
+                                        BorderBrush="#3a4377"
+                                        BorderThickness="0"
+                                        CornerRadius="3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                        
+                                        <ui:SymbolIcon Name="labelIcon" 
+                                                       Grid.Column="0"
+                                                       Symbol="Accessibility24" 
+                                                       Filled="False" 
+                                                       FontSize="20"
+                                                       Foreground="#c9cddc" 
+                                                       Margin="20 0"
+                                                       HorizontalAlignment="Right"
+                                                       VerticalAlignment="Center"/>
+                                        <TextBlock Name="textBlock" 
+                                                   Grid.Column="1"
+                                                   Margin="5 0" 
+                                                   Foreground="#c9cddc"
+                                                   FontSize="16"
+                                                   FontWeight="400"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center">
+                                            <ContentPresenter/>
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>               
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="Background" TargetName="border" Value="#3a4377"></Setter>
+                                        <Setter Property="FontWeight" TargetName="textBlock" Value="Bold"></Setter>
+                                        <Setter Property="Filled" TargetName="labelIcon" Value="True"></Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                            
+                            <Style TargetType="RadioButton">
+                                <Setter Property="Template"
+                                        Value="{StaticResource NavButton}"/>
+                            </Style>
+                            
+                        </StackPanel.Resources>
+                        
+                        <RadioButton Content="Cosmetics" Checked="CosmeticsTab_OnChecked" IsChecked="True"/>
+                        <RadioButton Content="Swapper" Checked="SwapperTab_OnChecked"/>
+                        <RadioButton Content="Lobby Bot" Checked="CosmeticsTab_OnChecked"/>
+                        <RadioButton Content="Stats" Checked="CosmeticsTab_OnChecked"/>
+                        
                     </StackPanel>
                 </Grid>
             </Border>
-            <!-- End nav menu -->
         </Grid>
         <!-- End sidebar -->
         
@@ -163,7 +199,8 @@
                 BorderBrush="#202a47"
                 Margin="5 5 10 5">
                 <Grid>
-                    <tabs:AccountCosmeticsTab x:Name="AccountCosmeticsTab"/>
+                    <tabs:AccountCosmeticsTab x:Name="AccountCosmeticsTab" Visibility="Visible"/>
+                    <tabs:SwapperTab x:Name="SwapperTab" Visibility="Collapsed"/>
                 </Grid>
         </Border>
         <!-- End account -->
