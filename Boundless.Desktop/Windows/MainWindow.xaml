@@ -124,65 +124,29 @@
                     MinHeight="300">
                 <Grid Margin="10">
                      <StackPanel Margin="10 5">
-                        <StackPanel.Resources>
-                            
-                            <ControlTemplate x:Key="NavButton" TargetType="RadioButton">
-                                <Border x:Name="border"
-                                        Height="50"
-                                        Margin="0 3"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Background="Transparent"
-                                        BorderBrush="#3a4377"
-                                        BorderThickness="0"
-                                        CornerRadius="3">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
+                         
+                        <userControls:NavButton Content="Cosmetics" 
+                                                Symbol="Person24" 
+                                                Checked="CosmeticsTab_OnChecked" 
+                                                IsChecked="True"
+                                                GroupName="Nav"/>
+                        <userControls:NavButton Content="Swapper" 
+                                                Symbol="Person24" 
+                                                Checked="SwapperTab_OnChecked" 
+                                                GroupName="Nav"/>
+                        <userControls:NavButton Content="Lobby Bot" 
+                                                Symbol="Person24" 
+                                                Checked="SwapperTab_OnChecked" 
+                                                GroupName="Nav"/>
+                        <userControls:NavButton Content="Stats" 
+                                                Symbol="DataBarVertical24" 
+                                                Checked="SwapperTab_OnChecked" 
+                                                GroupName="Nav"/>
                         
-                                        <ui:SymbolIcon Name="labelIcon" 
-                                                       Grid.Column="0"
-                                                       Symbol="Accessibility24" 
-                                                       Filled="False" 
-                                                       FontSize="20"
-                                                       Foreground="#c9cddc" 
-                                                       Margin="20 0"
-                                                       HorizontalAlignment="Right"
-                                                       VerticalAlignment="Center"/>
-                                        <TextBlock Name="textBlock" 
-                                                   Grid.Column="1"
-                                                   Margin="5 0" 
-                                                   Foreground="#c9cddc"
-                                                   FontSize="16"
-                                                   FontWeight="400"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Center">
-                                            <ContentPresenter/>
-                                        </TextBlock>
-                                    </Grid>
-                                </Border>               
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsChecked" Value="True">
-                                        <Setter Property="Background" TargetName="border" Value="#3a4377"></Setter>
-                                        <Setter Property="FontWeight" TargetName="textBlock" Value="Bold"></Setter>
-                                        <Setter Property="Filled" TargetName="labelIcon" Value="True"></Setter>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                            
-                            <Style TargetType="RadioButton">
-                                <Setter Property="Template"
-                                        Value="{StaticResource NavButton}"/>
-                            </Style>
-                            
-                        </StackPanel.Resources>
-                        
-                        <RadioButton Content="Cosmetics" Checked="CosmeticsTab_OnChecked" IsChecked="True"/>
-                        <RadioButton Content="Swapper" Checked="SwapperTab_OnChecked"/>
-                        <RadioButton Content="Lobby Bot" Checked="CosmeticsTab_OnChecked"/>
-                        <RadioButton Content="Stats" Checked="CosmeticsTab_OnChecked"/>
+                        <userControls:NavButton Content="Settings" 
+                                                Symbol="Settings24" 
+                                                Checked="SwapperTab_OnChecked" 
+                                                GroupName="Settings"/>
                         
                     </StackPanel>
                 </Grid>

@@ -7,40 +7,76 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d"
              d:DesignHeight="50" d:DesignWidth="280">
-    <Button Name="_btn"
-            Height="50"
-            Margin="5 0"
-            Padding="0 -10"
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Left"
-            VerticalAlignment="Center"
-            Background="Transparent"
-            BorderBrush="#3a4377"
-            BorderThickness="0">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            
-            <ui:SymbolIcon Name="_labelIcon" 
-                           Grid.Column="0"
-                           Symbol="Accessibility24" 
-                           Filled="False" 
-                           FontSize="20"
-                           Foreground="#c9cddc" 
-                           Margin="20 0"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center"/>
-            <TextBlock Name="_textBlock" 
-                       Grid.Column="1"
-                       Text="Add Account" 
-                       Margin="5 0" 
-                       Foreground="#c9cddc"
-                       FontSize="16"
-                       FontWeight="400"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Center"/>
-        </Grid>
-    </Button>
+    <RadioButton x:Name="radioButton" 
+                 HorizontalAlignment="Stretch"
+             IsChecked="{Binding IsChecked,
+                         RelativeSource={RelativeSource AncestorType=UserControl},
+                         Mode=TwoWay}"
+             GroupName="{Binding GroupName,
+                          RelativeSource={RelativeSource AncestorType=UserControl}}">
+
+        <RadioButton.Template>
+            <ControlTemplate TargetType="RadioButton">
+
+                <Border x:Name="border"
+                        Height="50"
+                        Margin="0 3"
+                        Background="Transparent"
+                        BorderBrush="#3a4377"
+                        BorderThickness="0"
+                        CornerRadius="3">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <ui:SymbolIcon x:Name="labelIcon"
+                                       Grid.Column="0"
+                                       Symbol="{Binding Symbol,
+                                           RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                       Filled="False"
+                                       FontSize="20"
+                                       Foreground="#c9cddc"
+                                       Margin="20 0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"/>
+
+                        <TextBlock x:Name="textBlock"
+                                   Grid.Column="1"
+                                   Margin="5 0"
+                                   Foreground="#c9cddc"
+                                   FontSize="16"
+                                   FontWeight="400"
+                                   VerticalAlignment="Center">
+
+                            <ContentPresenter
+                                Content="{Binding Content,
+                                          RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                        </TextBlock>
+                    </Grid>
+                </Border>
+
+                <ControlTemplate.Triggers>
+
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter TargetName="border"
+                                Property="Background"
+                                Value="#3a4377"/>
+
+                        <Setter TargetName="textBlock"
+                                Property="FontWeight"
+                                Value="Bold"/>
+
+                        <Setter TargetName="labelIcon"
+                                Property="Filled"
+                                Value="True"/>
+                    </Trigger>
+
+                </ControlTemplate.Triggers>
+
+            </ControlTemplate>
+        </RadioButton.Template>
+    </RadioButton>
 </UserControl>
