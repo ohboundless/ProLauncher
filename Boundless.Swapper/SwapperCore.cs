@@ -31,5 +31,6 @@ public class SwapperCore
 
         var oodlePath = @"C:\Users\Owens\AppData\Local\BoundlessLauncher\oo2core_9_win64.dll"; // TODO oodle path
         await OodleHelper.DownloadOodleDllAsync(ref oodlePath);
+        await OodleHelper.InitializeAsync(oodlePath);
     }
 }

@@ -23,7 +23,7 @@ public enum CosmeticFilter
     Wraps,
 }
 
-public class CosmeticsViewModel: ViewModel
+public class CosmeticsViewModel : ViewModel
 {
     private CancellationTokenSource? _currentCancellationSource;
     private ObservableCollection<CosmeticItemModel> _cosmetics = new();
@@ -124,7 +124,7 @@ public class CosmeticsViewModel: ViewModel
         return false;
     }
     
-    private CancellationTokenSource HandleCancellation()
+    internal CancellationTokenSource HandleCancellation()
     {
         if (_currentCancellationSource != null)
         {

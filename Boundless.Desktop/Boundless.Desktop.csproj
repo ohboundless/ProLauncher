@@ -48,4 +48,8 @@
         <Resource Include="Fonts\Roboto-Italic-VariableFont_wdth,wght.ttf" />
         <Resource Include="Fonts\Roboto-VariableFont_wdth,wght.ttf" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Boundless.Swapper\Boundless.Swapper.csproj" />
+    </ItemGroup>
 </Project>

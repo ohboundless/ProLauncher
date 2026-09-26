@@ -21,11 +21,11 @@ public partial class CosmeticTab : UserControl
         set => SetValue(CosmeticsViewModelProperty, value);
     }
 
-    public CosmeticTab()
+    public CosmeticTab(bool isSwapper = false)
     {
         InitializeComponent();
         
-        CosmeticsViewModel = new CosmeticsViewModel();
+        CosmeticsViewModel = isSwapper ? new SwapperCosmeticsViewModel() : new CosmeticsViewModel();
         DataContext = CosmeticsViewModel;
     }
 

@@ -146,7 +146,7 @@
         <Border Grid.Row="2" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
         
         <!-- Cosmetic tab panels -->
-        <Grid Grid.Row="2" Margin="15 10">
+        <Grid Grid.Row="2" Margin="15 10" Name="CosmeticsPanel">
             <Grid.Resources>
                 <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             </Grid.Resources>
@@ -157,7 +157,6 @@
                              Converter={StaticResource BoolToVisibilityConverter}}" 
                              Margin="0 0 0 50">
             </ui:ProgressRing>
-            <userControls:CosmeticTab x:Name="CosmeticTab"/>
         </Grid>
     </Grid>
 </UserControl>
