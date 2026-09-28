@@ -139,6 +139,7 @@ public partial class MainWindow : BoundlessWindow
     private void CosmeticsTab_OnChecked(object sender, RoutedEventArgs e)
     {
         SelectedTab = ActiveTab.Cosmetics;
+        AccountCosmeticsTab.LoadCosmetics();
     }
     
     private void SwapperTab_OnChecked(object sender, RoutedEventArgs e)

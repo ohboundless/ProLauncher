@@ -20,10 +20,30 @@ public static class FortniteCache
     private static string ImagePath => FolderPath + "\\Images";
     private static string FilePath => FolderPath + "\\Cosmetics.json";
 
-    public static List<CosmeticData>? Cosmetics { get; private set; } = new();
+    public static CosmeticData[]? Cosmetics { get; private set; } = [];
 
     private static RestClient _client = new();
 
+    public static async Task WaitForCosmetics()
+    {
+        if (Cosmetics == null)
+            return; // Cosmetics will be null when after a tab is loaded in order to save memory
+        
+        while (Cosmetics.Length == 0)
+        {
+            await Task.Delay(10);
+        }
+    }
+    
+    public static async Task GetAllCosmetics()
+    {
+        var result = await FortniteApi.GetBRCosmeticsAsync();
+        if (result == null)
+            throw new NoNullAllowedException("Unable to retrieve BR cosmetics from fortnite-api.com");
+        
+        Cosmetics = result.Data;
+    }
+    
     public static void Load(bool isFirstTime = true)
     {
         try
@@ -37,7 +57,7 @@ public static class FortniteCache
             }
 
             var text = File.ReadAllText(FilePath);
-            Cosmetics = JsonConvert.DeserializeObject<List<CosmeticData>>(text) ??
+            Cosmetics = JsonConvert.DeserializeObject<CosmeticData[]>(text) ??
                         throw new JsonException($"Could not deserialize: \n\"{text}\"");
 
             Log("FortniteApiCache", LogLevel.Info, $"Loaded cosmetics cache. ({FilePath})");
@@ -68,8 +88,8 @@ public static class FortniteCache
         
         var json = JsonConvert.SerializeObject(Cosmetics, Formatting.Indented);
         File.WriteAllText(FilePath, json);
-        
-        Cosmetics?.Clear();
+
+        Cosmetics = [];
         Cosmetics = null;
         Log("FortniteApiCache", LogLevel.Info, $"Flushed cosmetics cache. ({FilePath})");
     }
@@ -92,15 +112,6 @@ public static class FortniteCache
 
         cosmeticModel = null;
         return false;
-    }
-
-    public static void CacheCosmetic(BRCosmeticModel data)
-    {
-        if (Cosmetics == null)
-            Load();
-        
-        Log("FortniteApiCache", LogLevel.Info, $"Caching cosmetic with id: {data.Data.Id}");
-        Cosmetics.Add(data.Data);
     }
 
     private static string GetImagePath(this CosmeticData cosmeticData) => $"{ImagePath}\\{cosmeticData.Id}.png";

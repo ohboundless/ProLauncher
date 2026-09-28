@@ -1,9 +1,11 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Boundless.Desktop.API;
 using Boundless.Desktop.Games;
 using Boundless.Desktop.Games.EpicGames.Fortnite.API;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.UserControls.Popups;
+using Boundless.Desktop.Utils;
 using Visibility = System.Windows.Visibility;
 
 namespace Boundless.Desktop.UserControls.Tabs;
@@ -13,6 +15,12 @@ public partial class AccountCosmeticsTab : UserControl
     public AccountCosmeticsTab()
     {
         InitializeComponent();
+    }
+
+    public async Task LoadCosmetics()
+    {
+        await FortniteCache.GetAllCosmetics();
+        Log("AccountCosmeticsTab", LogLevel.Info, "Downloaded cosmetics.");
     }
 
     public async void OnSetActiveAccount(FortniteAccount account, bool reloadData = false)

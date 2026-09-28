@@ -183,6 +183,10 @@ public class CosmeticsViewModel : ViewModel
         }
 
         IsProcessing = true;
+
+        // Wait for everything to be downloaded.
+        // This is only called on launch
+        await FortniteCache.WaitForCosmetics();
         
         try
         {

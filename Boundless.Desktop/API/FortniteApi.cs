@@ -12,10 +12,10 @@ public static class FortniteApi
     private const string BASE_URI = "https://fortnite-api.com/";
     private static RestClient _client = new(BASE_URI);
     
-    public static async Task<BRCosmeticModel?> GetBRCosmeticAsync(string cosmeticId)
+    public static async Task<BRCosmeticModel?> GetBRCosmeticsAsync()
     {
-        var request = new RestRequest("v2/cosmetics/br/" + cosmeticId);
-        return await _client.GetJsonAsync<BRCosmeticModel>(request);
+        var request = new RestRequest("v2/cosmetics/br");
+        return await _client.GetJsonAsync<BRCosmeticModel?>(request);
     }
 
     // TODO series

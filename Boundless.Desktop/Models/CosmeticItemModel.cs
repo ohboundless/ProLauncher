@@ -62,21 +62,13 @@ public class CosmeticItemModel
         }
         else
         {
-            if (FortniteCache.TryGetCosmetic(CosmeticId, out var model))
-                Data = model;
-            else
+            if (!FortniteCache.TryGetCosmetic(CosmeticId, out var model))
             {
-                var cosmeticModel = await FortniteApi.GetBRCosmeticAsync(CosmeticId);
-                if (cosmeticModel.Status != 200)
-                {
-                    Log("CosmeticItemModel", LogLevel.Error, $"({cosmeticModel.Status}): '{cosmeticModel.Error}'");
-                    return;
-                }
-            
-                Data = cosmeticModel.Data;
-                FortniteCache.CacheCosmetic(cosmeticModel);
+                Log("FortniteApiCache", LogLevel.Error, $"Could not find {CosmeticId} in cache.");
+                return;
             }
-        
+            
+            Data = model;
             Rarity = IsTranscendent(out var channel, out var tag) ? EFortRarity.Transcendent : Data.GetRarity();
 
             if (Data.TryGetCachedIcon(out var iconUri))
