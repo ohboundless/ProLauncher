@@ -123,7 +123,7 @@ public static class FortniteCache
         return false;
     }
 
-    public static async Task CacheIconAsync(this CosmeticData cosmeticData, string uri)
+    public static async Task<string> CacheIconAsync(this CosmeticData cosmeticData, string uri)
     {
         var request = new RestRequest(uri);
         var data = await _client.DownloadDataAsync(request);
@@ -133,6 +133,8 @@ public static class FortniteCache
 
         var path = cosmeticData.GetImagePath();
         await File.WriteAllBytesAsync(path, data);
+
+        return path;
     }
     #endregion
 }

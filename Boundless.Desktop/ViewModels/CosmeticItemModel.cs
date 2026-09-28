@@ -66,8 +66,8 @@ public class CosmeticItemModel
                 return;
             }
 
-            await Data.CacheIconAsync(uri);
-            IconUri = new Uri(uri);
+            var fileUri = await Data.CacheIconAsync(uri);
+            IconUri = new Uri(fileUri);
         }
 
         ProcessData();
