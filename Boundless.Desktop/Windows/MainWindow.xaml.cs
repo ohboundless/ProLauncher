@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using Boundless.Desktop.Commands;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Enums;
@@ -109,19 +110,26 @@ public partial class MainWindow : BoundlessWindow
         ActiveAccount = account;
         AccountCosmeticsTab.OnSetActiveAccount(account, reloadData);
     }
-
-    private void LaunchFortnite_OnClick(object sender, RoutedEventArgs e)
-    {
-        StaticCommands.LaunchFortniteCommand.Execute(null);
-    }
     
     private void AddAccount_OnClick(object sender, RoutedEventArgs e)
     {
         StaticCommands.AddAccountCommand.Execute(null);
     }
 
-    private void CloseFortnite_OnClick(object sender, RoutedEventArgs e)
+    private void LaunchFortnite_OnChecked(object sender, RoutedEventArgs e)
     {
+        LaunchFortniteBtn.Visibility = Visibility.Collapsed;
+        LaunchFortniteBtn.IsChecked = false;
+        CloseFortniteBtn.Visibility = Visibility.Visible;
+        
+        StaticCommands.LaunchFortniteCommand.Execute(null);
+    }
+
+    private void CloseFortnite_MouseUp(object sender, RoutedEventArgs e)
+    {
+        LaunchFortniteBtn.Visibility = Visibility.Visible;
+        CloseFortniteBtn.Visibility = Visibility.Collapsed;
+        
         GameProcessList.CloseFortnite();
     }
 

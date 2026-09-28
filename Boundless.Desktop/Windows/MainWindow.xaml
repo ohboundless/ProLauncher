@@ -125,6 +125,16 @@
                 <Grid Margin="10">
                      <StackPanel Margin="10 5">
                          
+                         <userControls:NavButton Content="Launch Fortnite" 
+                                                 Symbol="Play24" 
+                                                 Checked="LaunchFortnite_OnChecked" 
+                                                 GroupName="LaunchFortnite"
+                                                 x:Name="LaunchFortniteBtn"/>
+                         <userControls:IconButton Content="Close Fortnite" 
+                                                 Symbol="RecordStop24" 
+                                                 x:Name="CloseFortniteBtn"
+                                                 Click="CloseFortnite_MouseUp"
+                                                 Visibility="Collapsed"/>
                         <userControls:NavButton Content="Cosmetics" 
                                                 Symbol="Person24" 
                                                 Checked="CosmeticsTab_OnChecked" 

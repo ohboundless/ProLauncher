@@ -33,7 +33,7 @@
             </Grid.ColumnDefinitions>
             
             <Grid Grid.Column="0" Width="60" Height="60">
-                <Border CornerRadius="8" Background="#222123" Name="Border1">
+                <Border CornerRadius="8" Background="#202a47" Name="Border1">
                 </Border> 
                 <StackPanel>
                     <Image
