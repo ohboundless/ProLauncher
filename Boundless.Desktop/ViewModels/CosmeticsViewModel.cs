@@ -14,6 +14,7 @@ namespace Boundless.Desktop.ViewModels;
 
 public enum CosmeticFilter
 {
+    None,
     All,
     Outfits,
     Backblings,
@@ -21,6 +22,7 @@ public enum CosmeticFilter
     Emotes,
     Gliders,
     Wraps,
+    Shoes,
 }
 
 public class CosmeticsViewModel : ViewModel
@@ -80,7 +82,7 @@ public class CosmeticsViewModel : ViewModel
         }
     }
     
-    private CosmeticFilter _selectedFilter = CosmeticFilter.All;
+    private CosmeticFilter _selectedFilter = CosmeticFilter.None;
     public CosmeticFilter SelectedFilter
     {
         get => _selectedFilter;
@@ -111,13 +113,13 @@ public class CosmeticsViewModel : ViewModel
         if (string.IsNullOrWhiteSpace(SearchText))
             return true;
 
-        if (model.Data == null)
+        if (model.Data == null && !model.IsPakCosmetic)
         {
             Log("CosmeticsSearch", LogLevel.Warn, $"Cosmetic data was null unable to filter. Returning false... ({model.CosmeticId})");
             return false;
         }
         
-        if (model.Data.Name.Contains(_searchText, StringComparison.OrdinalIgnoreCase)
+        if (model.GetItemName().Contains(_searchText, StringComparison.OrdinalIgnoreCase)
             || model.CosmeticId.Contains(_searchText, StringComparison.OrdinalIgnoreCase))
             return true;
 
@@ -136,9 +138,12 @@ public class CosmeticsViewModel : ViewModel
         return _currentCancellationSource = new CancellationTokenSource();
     }
     
-    public void OnTabSwitched()
+    public virtual void OnTabSwitched()
     {
         if (MainWindow.ActiveAccount == null)
+            return;
+
+        if (SelectedFilter == CosmeticFilter.None)
             return;
         
         var athenaType = SelectedFilter switch
@@ -153,7 +158,6 @@ public class CosmeticsViewModel : ViewModel
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        //_cosmeticTab.Panel.Children.Clear(); // Clear cosmetics
         var myCosmetics = MainWindow.ActiveAccount.ProfileData?.Cosmetics;
         if (myCosmetics == null)
             throw new NoNullAllowedException("Profile data was null.");
@@ -220,8 +224,8 @@ public class CosmeticsViewModel : ViewModel
         }
         finally
         {
-            Log("CosmeticsLoading", LogLevel.Error, "Flushing cosmetics cache...");
-            FortniteApiCache.Flush();
+            Log("CosmeticsLoading", LogLevel.Info, "Flushing cosmetics cache...");
+            FortniteCache.Flush();
             IsProcessing = false;
         }
     }

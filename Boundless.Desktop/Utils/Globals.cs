@@ -1,6 +1,7 @@
 global using static Boundless.Desktop.Utils.Globals;
 using Boundless.Desktop.API;
 using Boundless.Desktop.Config;
+using Boundless.Desktop.Games.EpicGames;
 using Boundless.Desktop.Windows;
 using RestSharp;
 
@@ -23,7 +24,10 @@ public static class Globals
         
         Configuration.InitializeConfig();
         
+        // Populate Fortnite install
+        EpicInstallations.PopulateInstallations();
+        
         // Cache
-        FortniteApiCache.Load();
+        FortniteCache.Load();
     }
 }

@@ -1,9 +1,11 @@
-﻿using CUE4Parse.Encryption.Aes;
+﻿using System.Diagnostics;
+using CUE4Parse.Encryption.Aes;
 using CUE4Parse.FileProvider;
 using CUE4Parse.MappingsProvider.Usmap;
 using CUE4Parse.UE4.IO;
 using CUE4Parse.UE4.Objects.Core.Misc;
 using CUE4Parse.UE4.Versions;
+using Serilog;
 
 namespace Boundless.Swapper.Core;
 
@@ -51,6 +53,11 @@ public class CUE4ParseProvider
 
         var onDemandFiles = Directory.EnumerateFiles(PaksPath, "*.uondemandtoc");
         foreach (var file in onDemandFiles)
+        {
+            var sw = Stopwatch.StartNew();
             Provider.RegisterVfs(file);
+            sw.Stop();
+            Log.Logger.Information($"{sw.ElapsedMilliseconds}ms {file}");
+        }
     }
 }

@@ -144,6 +144,7 @@ public partial class MainWindow : BoundlessWindow
     private void SwapperTab_OnChecked(object sender, RoutedEventArgs e)
     {
         SelectedTab = ActiveTab.Swapper;
+        SwapperTab.LoadSwapper();
     }
     
     private void LobbyBotTab_OnChecked(object sender, RoutedEventArgs e)

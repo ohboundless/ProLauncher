@@ -6,24 +6,18 @@ using CUE4Parse.UE4.Assets;
 
 namespace Boundless.Swapper.Cosmetics;
 
-public class CosmeticsLoader
+public class CosmeticsLoader(SwapperCore core)
 {
-    private SwapperCore _core;
-    private DefaultFileProvider _provider => _core.CUE4Parse.Provider;
-    
-    public CosmeticsLoader(SwapperCore core)
-    {
-        _core = core;
-    }
+    private DefaultFileProvider _provider => core.CUE4Parse.Provider;
 
-    public List<BaseCosmetic> LoadGeneric<T>(params string[] paths) 
+    public List<BaseCosmetic> LoadGeneric<T>(string exportType, params string[] paths) 
         where T : BaseCosmetic
     {
         var cosmetics = new List<GameFile>();
         
         foreach (var kvp in _provider.Files)
         {
-            if (!paths.Any(path => kvp.Key.StartsWith(path)))
+            if (!paths.Any(path => kvp.Key.ToLower().StartsWith(path)))
                 continue;
             
             if (kvp.Key.Contains("/Tandem/"))
@@ -42,7 +36,10 @@ public class CosmeticsLoader
                 continue;
             }
 
-            var obj = pkg.GetExport(cosmetic.Name);
+            var obj = pkg.GetExport(cosmetic.NameWithoutExtension);
+            if (obj.ExportType != exportType)
+                continue;
+            
             var model = Activator.CreateInstance(typeof(T), obj);
             models.Add((BaseCosmetic)model);
         }
@@ -52,6 +49,6 @@ public class CosmeticsLoader
 
     public List<BaseCosmetic> LoadCharacters()
     {
-        return LoadGeneric<CharacterCosmetic>(CosmeticConstants.CharacterPaths);
+        return LoadGeneric<CharacterCosmetic>("AthenaCharacterItemDefinition", CosmeticConstants.CharacterPaths);
     }
 }

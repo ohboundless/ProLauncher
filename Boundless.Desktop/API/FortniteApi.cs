@@ -1,5 +1,7 @@
 ﻿using Boundless.Desktop.API.Models;
 using Boundless.Desktop.Utils;
+using Boundless.Swapper.Cosmetics.Models;
+using CUE4Parse.GameTypes.FN.Enums;
 using RestSharp;
 using static Boundless.Desktop.Utils.WebUtils;
 

@@ -9,47 +9,44 @@ using Boundless.Desktop.Framework;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.Models;
 using Boundless.Desktop.Utils;
+using Boundless.Swapper;
+using Boundless.Swapper.Cosmetics;
+using Boundless.Swapper.Cosmetics.Models;
+using Globals = Boundless.Swapper.Globals;
 
 namespace Boundless.Desktop.ViewModels;
 
-public class SwapperCosmeticsViewModel : CosmeticsViewModel
+public class SwapperCosmeticsViewModel() : CosmeticsViewModel
 {
-    public void OnTabSwitched()
+    private CosmeticsLoader _loader => Globals.SC.CosmeticsLoader;
+    
+    private List<BaseCosmetic>? _characters;
+    private List<BaseCosmetic>? _backpacks;
+    private List<BaseCosmetic>? _pickaxes;
+    private List<BaseCosmetic>? _emotes;
+    private List<BaseCosmetic>? _shoes;
+    
+    public override void OnTabSwitched()
     {
         if (MainWindow.ActiveAccount == null)
             return;
         
-        var athenaType = SelectedFilter switch
+        var cosmetics = SelectedFilter switch
         {
-            CosmeticFilter.All => "*", // All
-            CosmeticFilter.Outfits => "AthenaCharacter",
-            CosmeticFilter.Backblings => "AthenaBackpack",
-            CosmeticFilter.Pickaxes => "AthenaPickaxe",
-            CosmeticFilter.Emotes => "AthenaDance",
-            CosmeticFilter.Gliders => "AthenaGlider",
-            CosmeticFilter.Wraps => "AthenaItemWrap",
-            _ => throw new ArgumentOutOfRangeException()
+            CosmeticFilter.Outfits => _characters ??= _loader.LoadCharacters(),
+            /*CosmeticFilter.Backblings => _backpacks ??= _loader.LoadCharacters(),
+            CosmeticFilter.Pickaxes => _pickaxes ??= _loader.LoadCharacters(),
+            CosmeticFilter.Emotes => _emotes ??= _loader.LoadCharacters(),
+            CosmeticFilter.Shoes => _shoes ??= _loader.LoadCharacters(),*/
+            _ => new()
         };
-
-        //_cosmeticTab.Panel.Children.Clear(); // Clear cosmetics
-        var myCosmetics = MainWindow.ActiveAccount.ProfileData?.Cosmetics;
-        if (myCosmetics == null)
-            throw new NoNullAllowedException("Profile data was null.");
         
         var cancellationToken = HandleCancellation().Token;
-        if (athenaType == "*") // All
-        {
-            ProcessCosmeticsAsync(myCosmetics, MainWindow.AccountCosmeticsTab.UpdateCosmeticsLoadingProgress, cancellationToken);
-        }
-        else
-        {
-            var cosmeticsToLoad =
-                myCosmetics.Where(cosmetic => cosmetic.TemplateId.StartsWith(athenaType)).ToList();
-            ProcessCosmeticsAsync(cosmeticsToLoad, MainWindow.AccountCosmeticsTab.UpdateCosmeticsLoadingProgress, cancellationToken);
-        }
+        ProcessCosmeticsAsync(cosmetics, MainWindow.SwapperTab.UpdateCosmeticsLoadingProgress,
+            cancellationToken);
     }
 
-    public async Task ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics, Action<double> progressCallback, CancellationToken cancellationToken)
+    public async Task ProcessCosmeticsAsync(List<BaseCosmetic> cosmetics, Action<double> progressCallback, CancellationToken cancellationToken)
     {
         while (IsProcessing)
         {
@@ -66,20 +63,16 @@ public class SwapperCosmeticsViewModel : CosmeticsViewModel
                 cancellationToken.ThrowIfCancellationRequested();
 
                 // TODO all weird null cosmetics
-                if (cosmetic.TemplateId == "AthenaCharacter:cid_defaultoutfit")
+                if (cosmetic.Id.ToLower() == "cid_defaultoutfit")
                     continue;
                 
                 var model = new CosmeticItemModel(cosmetic);
                 await model.LoadAsync();
-                progressCallback(Convert.ToDouble(models.Count) / cosmetics.Count);
                 
-                if (model.IsNull)
-                {
-                    Log("CosmeticTab", LogLevel.Error, $"({cosmetic.TemplateId}) Unable to load model. Skipping...");
-                    continue;
-                }
+                progressCallback(Convert.ToDouble(models.Count) / cosmetics.Count);
 
                 models.Add(model);
+                Log("SwapperCosmetics", LogLevel.Info, $"Loaded {cosmetic.Id}");
             }
 
             models = models.OrderByDescending(x => x.Rarity).ThenBy(x => x.Data?.Type.ParseCosmeticType()).ToList();
@@ -98,8 +91,6 @@ public class SwapperCosmeticsViewModel : CosmeticsViewModel
         }
         finally
         {
-            Log("CosmeticsLoading", LogLevel.Error, "Flushing cosmetics cache...");
-            FortniteApiCache.Flush();
             IsProcessing = false;
         }
     }

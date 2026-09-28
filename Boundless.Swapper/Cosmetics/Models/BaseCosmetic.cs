@@ -1,4 +1,5 @@
 ﻿using CUE4Parse_Conversion.Textures;
+using CUE4Parse.GameTypes.FN.Enums;
 using CUE4Parse.UE4.Assets.Exports;
 using CUE4Parse.UE4.Assets.Exports.Texture;
 using CUE4Parse.UE4.Assets.Objects;
@@ -11,29 +12,41 @@ namespace Boundless.Swapper.Cosmetics.Models;
 public abstract class BaseCosmetic
 {
     public string Id { get; }
-    public string ItemName { get; }
-    public string ItemDescription { get; }
+    public FText? ItemName { get; }
+    //public FText ItemDescription { get; }
+    public EFortRarity? Rarity { get; }
     private FSoftObjectPath? LargeIcon { get; }
     private FSoftObjectPath? Icon { get; }
     
     public BaseCosmetic(UObject obj)
     {
         Id = obj.Name;
-        ItemName = obj.GetOrDefault<FText>(nameof(ItemName)).Text;
-        ItemDescription = obj.GetOrDefault<FText>(nameof(ItemDescription)).Text;
+        ItemName = obj.GetOrDefault<FText>(nameof(ItemName));
+        //ItemDescription = obj.GetOrDefault<FText>(nameof(ItemDescription));
         
         var dataList = obj.Get<FInstancedStruct[]>("DataList");
         foreach (var data in dataList)
         {
+            if (LargeIcon != null && Icon != null && Rarity != null)
+                break;
+            
             if (data.NonConstStruct == null)
                 continue;
-            
-            LargeIcon = data.NonConstStruct.GetOrDefault<FSoftObjectPath>(nameof(LargeIcon));
-            Icon = data.NonConstStruct.GetOrDefault<FSoftObjectPath>(nameof(Icon));
 
-            if (LargeIcon != null && Icon != null)
-                break;
+            if (LargeIcon == null && data.NonConstStruct.TryGetValue(out FSoftObjectPath largeIcon, nameof(LargeIcon)))
+                LargeIcon = largeIcon;
+                
+            if (Icon == null && data.NonConstStruct.TryGetValue(out FSoftObjectPath icon, nameof(Icon)))
+                Icon = icon;
+            
+            if (Rarity == null && data.NonConstStruct.TryGetValue(out EFortRarity rarity, nameof(Rarity)) )
+                Rarity = rarity;
         }
+    }
+
+    public string GetItemName()
+    {
+        return ItemName?.ToString() ?? "NULL";
     }
 
     public SKBitmap? GetLargeIcon()

@@ -112,7 +112,7 @@
         
         <!-- Cosmetic tab buttons -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20 0" 
-                    DataContext="{Binding ElementName=CosmeticTab,
+                    DataContext="{Binding ElementName=CosmeticPanel,
                     Path=CosmeticsViewModel}">
             
             <StackPanel.Resources>
@@ -199,7 +199,7 @@
                             Background="#0affffff"
                             FocusVisualStyle="{x:Null}"
                             IconPlacement="Right"
-                            Text="{Binding ElementName=CosmeticTab,
+                            Text="{Binding ElementName=CosmeticPanel,
                                 Path=CosmeticsViewModel.SearchText, 
                                 UpdateSourceTrigger=PropertyChanged}">
                     <ui:TextBox.Icon>
@@ -244,13 +244,13 @@
                 <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             </Grid.Resources>
             <ui:ProgressRing Name="CosmeticProgressRing" Foreground="#3a4377" 
-                             Visibility="{Binding ElementName=CosmeticTab,
+                             Visibility="{Binding ElementName=CosmeticPanel,
                              Path=CosmeticsViewModel.IsProcessing,
                              FallbackValue=False,
                              Converter={StaticResource BoolToVisibilityConverter}}" 
                              Margin="0 0 0 50">
             </ui:ProgressRing>
-            <userControls:CosmeticTab x:Name="CosmeticTab"/>
+            <userControls:CosmeticPanel x:Name="CosmeticPanel"/>
         </Grid>
     </Grid>
 </UserControl>

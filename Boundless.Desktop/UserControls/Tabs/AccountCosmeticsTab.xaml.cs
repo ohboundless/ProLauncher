@@ -39,7 +39,7 @@ public partial class AccountCosmeticsTab : UserControl
         BattlePassLevel.Text = account.ProfileData.BattlePassLevel.ToString("N0");
         CurrencyQuantity.Text = account.ProfileData.Currency.ToString("N0");
         
-        CosmeticTab.CosmeticsViewModel?.OnTabSwitched();
+        CosmeticPanel.CosmeticsViewModel?.OnTabSwitched();
     }
     
     public void UpdateCosmeticsLoadingProgress(double progress)
@@ -52,7 +52,7 @@ public partial class AccountCosmeticsTab : UserControl
             if (percentage >= 100.0)
             {
                 CosmeticProgressRing.Visibility = Visibility.Collapsed;
-                CosmeticTab.Visibility = Visibility.Visible;
+                CosmeticPanel.Visibility = Visibility.Visible;
             }
         });
     }

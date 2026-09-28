@@ -6,6 +6,8 @@ using Boundless.Desktop.API;
 using Boundless.Desktop.API.Models;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.Utils;
+using Boundless.Swapper.Cosmetics.Models;
+using CUE4Parse.GameTypes.FN.Enums;
 
 namespace Boundless.Desktop.Models;
 
@@ -18,53 +20,81 @@ public class CosmeticItemModel
     public Uri IconUri { get; private set; }
 
     public bool IsNull => Data == null;
-    
+
     // Data bindings
     public BitmapSource IconSource { get; set; }
     public Brush BackgroundRadial { get; set; }
     public Brush BorderColor { get; set; }
     public Visibility Visibility { get; set; }
-    
+
     public CosmeticItemModel(AthenaCosmetic cosmetic)
     {
         Cosmetic = cosmetic;
         CosmeticId = cosmetic.GetCosmeticId();
     }
 
+    #region Pak Cosmetics
+    
+    public BaseCosmetic? PakCosmetic { get; } // Cosmetic loaded from the pak files
+    public bool IsPakCosmetic => PakCosmetic != null;
+
+    public CosmeticItemModel(BaseCosmetic cosmetic)
+    {
+        PakCosmetic = cosmetic;
+        CosmeticId = cosmetic.Id;
+        Rarity = cosmetic.Rarity ?? EFortRarity.Uncommon;
+    }
+    
+    #endregion
+    
+    public string GetItemName()
+    {
+        var name = IsPakCosmetic ? PakCosmetic?.GetItemName() : Data?.Name;
+        return name ?? "NULL";
+    }
+
     public async Task LoadAsync()
     {
-        if (FortniteApiCache.TryGetCosmetic(CosmeticId, out var model))
-            Data = model;
+        if (IsPakCosmetic)
+        {
+            // We only need to load icon data here
+            IconUri = new Uri(await this.CachePakIconAsync() ?? "pack://application:,,,/Images/Icons/T_Ui_Outfit_256.png");
+        }
         else
         {
-            var cosmeticModel = await FortniteApi.GetBRCosmeticAsync(CosmeticId);
-            if (cosmeticModel.Status != 200)
+            if (FortniteCache.TryGetCosmetic(CosmeticId, out var model))
+                Data = model;
+            else
             {
-                Log("CosmeticItemModel", LogLevel.Error, $"({cosmeticModel.Status}): '{cosmeticModel.Error}'");
-                return;
-            }
+                var cosmeticModel = await FortniteApi.GetBRCosmeticAsync(CosmeticId);
+                if (cosmeticModel.Status != 200)
+                {
+                    Log("CosmeticItemModel", LogLevel.Error, $"({cosmeticModel.Status}): '{cosmeticModel.Error}'");
+                    return;
+                }
             
-            Data = cosmeticModel.Data;
-            FortniteApiCache.CacheCosmetic(cosmeticModel);
-        }
+                Data = cosmeticModel.Data;
+                FortniteCache.CacheCosmetic(cosmeticModel);
+            }
         
-        Rarity = IsTranscendent(out var channel, out var tag) ? EFortRarity.Transcendent : Data.GetRarity();
+            Rarity = IsTranscendent(out var channel, out var tag) ? EFortRarity.Transcendent : Data.GetRarity();
 
-        if (Data.TryGetCachedIcon(out var iconUri))
-            IconUri = iconUri;
-        else
-        {
-            var uri = Data.GetIcon(channel, tag);
-            if (uri == null) // Fallback icon
+            if (Data.TryGetCachedIcon(out var iconUri))
+                IconUri = iconUri;
+            else
             {
-                IconUri = new Uri("pack://application:,,,/Images/Icons/CID_Random.png");
-                return;
-            }
+                var uri = Data.GetIcon(channel, tag);
+                if (uri == null) // Fallback icon
+                {
+                    IconUri = new Uri("pack://application:,,,/Images/Icons/T_Ui_Outfit_256.png");
+                    return;
+                }
             
-            await Data.CacheIconAsync(uri);
-            IconUri = new Uri(uri);
+                await Data.CacheIconAsync(uri);
+                IconUri = new Uri(uri);
+            }
         }
-        
+
         ProcessData();
     }
     

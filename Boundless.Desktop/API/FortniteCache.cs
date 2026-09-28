@@ -4,13 +4,17 @@ using System.Net.Http;
 using System.Windows.Media.Imaging;
 using Boundless.Desktop.API.Models;
 using Boundless.Desktop.Config;
+using Boundless.Desktop.Models;
+using Boundless.Desktop.UserControls;
 using Boundless.Desktop.Utils;
+using Boundless.Swapper.Cosmetics.Models;
 using Newtonsoft.Json;
 using RestSharp;
+using SkiaSharp;
 
 namespace Boundless.Desktop.API;
 
-public static class FortniteApiCache
+public static class FortniteCache
 {
     private static string FolderPath => Configuration.DirectoryName + "\\Cache";
     private static string ImagePath => FolderPath + "\\Images";
@@ -100,6 +104,7 @@ public static class FortniteApiCache
     }
 
     private static string GetImagePath(this CosmeticData cosmeticData) => $"{ImagePath}\\{cosmeticData.Id}.png";
+    private static string GetImagePath(this CosmeticItemModel model) => $"{ImagePath}\\{model.CosmeticId}.png";
 
     public static bool TryGetCachedIcon(this CosmeticData cosmeticData, out Uri? source)
     {
@@ -124,5 +129,32 @@ public static class FortniteApiCache
 
         var path = cosmeticData.GetImagePath();
         await File.WriteAllBytesAsync(path, data);
+    }
+    
+    private static string GetImagePath(this BaseCosmetic model) => $"{ImagePath}\\{model.Id}.png";
+    
+    /// <summary>
+    /// Cache icons from .pak files
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="bitmap"></param>
+    /// <returns>The file path to the png</returns>
+    public static async Task<string?> CachePakIconAsync(this CosmeticItemModel model)
+    {
+        var path = model.GetImagePath();
+        if (!File.Exists(path))
+        {
+            var bitmap = model.PakCosmetic?.GetSmallIcon();
+            if (bitmap == null)
+            {
+                Log("FortniteCache", LogLevel.Error, $"Unable to load small icon for {model.CosmeticId}");
+                return null;
+            }
+            
+            var data = bitmap.Encode(SKEncodedImageFormat.Png, 100);
+            await File.WriteAllBytesAsync(path, data.ToArray());
+        }
+
+        return path;
     }
 }

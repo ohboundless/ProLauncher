@@ -12,17 +12,18 @@ namespace Boundless.Desktop.UserControls.Tabs;
 
 public partial class SwapperTab : UserControl
 {
-    public SwapperCore Core { get; private set; }
-    private CosmeticTab _cosmeticTab { get; }
+    public SwapperCore? Core { get; private set; }
     
     public SwapperTab()
     {
         InitializeComponent();
-        CosmeticsPanel.Children.Add(_cosmeticTab = new CosmeticTab(isSwapper: true));
     }
 
     public async Task LoadSwapper()
     {
+        if (Core != null)
+            return;
+        
         if (!EpicInstallations.Installs.TryGetValue("Fortnite", out var install))
         {
             throw new ApplicationException("Fortnite is not installed or the install has not been populated.");
@@ -43,7 +44,7 @@ public partial class SwapperTab : UserControl
             if (percentage >= 100.0)
             {
                 CosmeticProgressRing.Visibility = Visibility.Collapsed;
-                _cosmeticTab.Visibility = Visibility.Visible;
+                SwapperPanel.Visibility = Visibility.Visible;
             }
         });
     }

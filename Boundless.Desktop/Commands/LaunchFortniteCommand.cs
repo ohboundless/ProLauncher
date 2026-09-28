@@ -35,8 +35,6 @@ public class LaunchFortniteCommand : ICommand
     {
         try
         {
-            EpicInstallations.PopulateInstallations();
-
             if (!Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame.TryGetValue("Fortnite", out var current))
             {
                 throw new LaunchFortniteException("Cannot launch Fortnite, no active account found!");

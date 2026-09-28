@@ -19,7 +19,7 @@
         
         <!-- Cosmetic tab buttons -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20 0" 
-                    DataContext="{Binding ElementName=CosmeticTab,
+                    DataContext="{Binding ElementName=SwapperPanel,
                     Path=CosmeticsViewModel}">
             
             <StackPanel.Resources>
@@ -55,11 +55,6 @@
                 
             </StackPanel.Resources>
             
-            <RadioButton Content="ALL"
-                         IsChecked="{Binding SelectedFilter,
-                             Mode=TwoWay, 
-                             Converter={StaticResource EnumToBooleanConverter},
-                             ConverterParameter={x:Static viewModels:CosmeticFilter.All}}"/>
             <RadioButton Content="OUTFITS"
                          IsChecked="{Binding SelectedFilter,
                              Mode=TwoWay, 
@@ -80,7 +75,12 @@
                              Mode=TwoWay, 
                              Converter={StaticResource EnumToBooleanConverter},
                              ConverterParameter={x:Static viewModels:CosmeticFilter.Emotes}}"/>
-            <RadioButton Content="GLIDERS"
+            <RadioButton Content="SHOES"
+                         IsChecked="{Binding SelectedFilter,
+                             Mode=TwoWay, 
+                             Converter={StaticResource EnumToBooleanConverter},
+                             ConverterParameter={x:Static viewModels:CosmeticFilter.Shoes}}"/>
+            <!--<RadioButton Content="GLIDERS"
                          IsChecked="{Binding SelectedFilter,
                              Mode=TwoWay, 
                              Converter={StaticResource EnumToBooleanConverter},
@@ -89,8 +89,7 @@
                          IsChecked="{Binding SelectedFilter,
                              Mode=TwoWay, 
                              Converter={StaticResource EnumToBooleanConverter},
-                             ConverterParameter={x:Static viewModels:CosmeticFilter.Wraps}}"/>
-            <!--TODO <RadioButton Template="{StaticResource topBarRadioButton}">MORE</RadioButton>-->
+                             ConverterParameter={x:Static viewModels:CosmeticFilter.Wraps}}"/>-->
             
         </StackPanel>
         
@@ -106,7 +105,7 @@
                             Background="#0affffff"
                             FocusVisualStyle="{x:Null}"
                             IconPlacement="Right"
-                            Text="{Binding ElementName=CosmeticTab,
+                            Text="{Binding ElementName=SwapperPanel,
                                 Path=CosmeticsViewModel.SearchText, 
                                 UpdateSourceTrigger=PropertyChanged}">
                     <ui:TextBox.Icon>
@@ -151,12 +150,14 @@
                 <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             </Grid.Resources>
             <ui:ProgressRing Name="CosmeticProgressRing" Foreground="#3a4377" 
-                             Visibility="{Binding ElementName=CosmeticTab,
+                             Visibility="{Binding ElementName=SwapperPanel,
                              Path=CosmeticsViewModel.IsProcessing,
                              FallbackValue=False,
                              Converter={StaticResource BoolToVisibilityConverter}}" 
                              Margin="0 0 0 50">
             </ui:ProgressRing>
+            
+            <userControls:SwapperPanel x:Name="SwapperPanel"/>
         </Grid>
     </Grid>
 </UserControl>

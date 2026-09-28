@@ -27,7 +27,7 @@ public class FortniteAccount : IGameAccount
     {
         Id = token.AccountId;
         Username = token.DisplayName;
-        Icon = "https://fortnite.gg/img/items/899/style-1.jpg?4"; // Renegade Raider placeholder
+        Icon = "https://fortnite-api.com/images/cosmetics/br/cid_028_athena_commando_f/icon.png"; // Renegade Raider placeholder
         DeviceAuth = deviceAuth;
 
         Recent = this;

@@ -5,6 +5,6 @@ namespace Boundless.Swapper;
 
 public static class Globals
 {
-    public static SwapperCore SC { get; set; }
+    public static SwapperCore SC;
     public static UnrealSystemProvider USystem => SC.USystem;
 }

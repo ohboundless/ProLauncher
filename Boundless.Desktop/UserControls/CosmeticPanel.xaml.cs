@@ -2,17 +2,19 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Boundless.Desktop.Utils;
 using Boundless.Desktop.ViewModels;
+using Boundless.Swapper;
 
 namespace Boundless.Desktop.UserControls;
 
-public partial class CosmeticTab : UserControl
+public partial class CosmeticPanel : UserControl
 {
     public static readonly DependencyProperty CosmeticsViewModelProperty =
         DependencyProperty.Register(
             nameof(CosmeticsViewModel),
             typeof(CosmeticsViewModel),
-            typeof(CosmeticTab),
+            typeof(CosmeticPanel),
             new PropertyMetadata(null));
 
     public CosmeticsViewModel? CosmeticsViewModel
@@ -21,14 +23,11 @@ public partial class CosmeticTab : UserControl
         set => SetValue(CosmeticsViewModelProperty, value);
     }
 
-    public CosmeticTab() : this(isSwapper: false)
-    { }
-
-    public CosmeticTab(bool isSwapper)
+    public CosmeticPanel()
     {
         InitializeComponent();
         
-        CosmeticsViewModel = isSwapper ? new SwapperCosmeticsViewModel() : new CosmeticsViewModel();
+        CosmeticsViewModel = new CosmeticsViewModel();
         DataContext = CosmeticsViewModel;
     }
 
