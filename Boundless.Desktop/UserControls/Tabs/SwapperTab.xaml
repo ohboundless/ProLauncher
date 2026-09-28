@@ -75,11 +75,11 @@
                              Mode=TwoWay, 
                              Converter={StaticResource EnumToBooleanConverter},
                              ConverterParameter={x:Static viewModels:CosmeticFilter.Emotes}}"/>
-            <RadioButton Content="SHOES"
+            <!--<RadioButton Content="SHOES"
                          IsChecked="{Binding SelectedFilter,
                              Mode=TwoWay, 
                              Converter={StaticResource EnumToBooleanConverter},
-                             ConverterParameter={x:Static viewModels:CosmeticFilter.Shoes}}"/>
+                             ConverterParameter={x:Static viewModels:CosmeticFilter.Shoes}}"/>-->
             <!--<RadioButton Content="GLIDERS"
                          IsChecked="{Binding SelectedFilter,
                              Mode=TwoWay, 
