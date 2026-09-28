@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.XPath;
 using Boundless.Desktop.API;
 using Boundless.Desktop.API.Models;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
@@ -30,6 +31,7 @@ public class CosmeticItemModel
     public CosmeticItemModel(AthenaCosmetic cosmetic)
     {
         Cosmetic = cosmetic;
+        Data = cosmetic.CosmeticData;
         CosmeticId = cosmetic.GetCosmeticId();
     }
 
@@ -62,13 +64,17 @@ public class CosmeticItemModel
         }
         else
         {
-            if (!FortniteCache.TryGetCosmetic(CosmeticId, out var model))
+            if (Data == null)
             {
-                Log("FortniteApiCache", LogLevel.Error, $"Could not find {CosmeticId} in cache.");
-                return;
+                if (!FortniteCache.TryGetCosmetic(CosmeticId, out var model))
+                {
+                    Log("FortniteApiCache", LogLevel.Error, $"Could not find {CosmeticId} in cache.");
+                    return;
+                }
+
+                Data = model;
             }
-            
-            Data = model;
+
             Rarity = IsTranscendent(out var channel, out var tag) ? EFortRarity.Transcendent : Data.GetRarity();
 
             if (Data.TryGetCachedIcon(out var iconUri))
@@ -124,7 +130,23 @@ public class CosmeticItemModel
     private void ProcessData()
     {
         SetRarity(Rarity);
-        IconSource = new BitmapImage(IconUri);
+        LoadIcon();
+    }
+    
+    private void LoadIcon()
+    {
+        var bitmap = new BitmapImage();
+
+        bitmap.BeginInit();
+        bitmap.UriSource = IconUri;
+        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+        bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+        bitmap.EndInit();
+
+        if (bitmap.CanFreeze)
+            bitmap.Freeze();
+        
+        IconSource = bitmap;
     }
 
     private void SetRarity(EFortRarity rarity)
@@ -142,7 +164,13 @@ public class CosmeticItemModel
             _ => throw new ArgumentOutOfRangeException(nameof(rarity), rarity, null)
         };
 
-        BackgroundRadial = new RadialGradientBrush(colors[0], colors[1]);
-        BorderColor = new SolidColorBrush(colors[0]);
+        var radial = new RadialGradientBrush(colors[0], colors[1]);
+        radial.Freeze();
+        
+        var border = new SolidColorBrush(colors[0]);
+        border.Freeze();
+
+        BackgroundRadial = radial;
+        BorderColor = border;
     }
 }

@@ -1,4 +1,5 @@
-﻿global using static Boundless.Swapper.Globals;
+﻿global using static Serilog.Log;
+global using static Boundless.Swapper.Globals;
 using Boundless.Swapper.Core;
 
 namespace Boundless.Swapper;

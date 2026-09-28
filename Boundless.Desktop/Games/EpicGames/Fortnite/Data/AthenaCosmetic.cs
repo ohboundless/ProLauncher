@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Boundless.Desktop.API.Models;
 using Newtonsoft.Json;
 
 namespace Boundless.Desktop.Games.EpicGames.Fortnite.Data;
@@ -13,6 +13,15 @@ public class AthenaVariant
     
     [JsonProperty("owned")]
     public string[] Owned { get; set; }
+
+    public AthenaVariant()
+    { }
+    
+    public AthenaVariant(CosmeticVariants cosmeticVariants)
+    {
+        Channel = cosmeticVariants.Channel;
+        Owned = cosmeticVariants.Options.Select(x => x.Tag).ToArray();
+    }
 }
 
 public class AthenaCosmeticAttributes
@@ -29,5 +38,23 @@ public class AthenaCosmetic
     [JsonProperty("attributes")]
     public AthenaCosmeticAttributes? Attributes { get; set; }
 
+    public AthenaCosmetic()
+    { }
+
+    [JsonIgnore]
+    public CosmeticData CosmeticData { get; }
+    
+    public AthenaCosmetic(CosmeticData cosmeticData)
+    {
+        TemplateId = $"{cosmeticData.Type.BackendValue}:{cosmeticData.Id}";
+        Attributes = new AthenaCosmeticAttributes
+        {
+            Variants = cosmeticData.Variants?.Select(x => new AthenaVariant(x)).ToArray() ?? []
+        };
+
+        CosmeticData = cosmeticData;
+    }
+    
     public string GetCosmeticId() => TemplateId.Split(":").Last(); // AthenaCharacter:CID...
+    public static string GetCosmeticId(string templateId) => templateId.Split(":").Last();
 }

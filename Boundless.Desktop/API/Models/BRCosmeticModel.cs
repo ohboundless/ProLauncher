@@ -18,7 +18,7 @@ public sealed record CosmeticData(
     [property: JsonPropertyName("rarity")] CosmeticRarity Rarity,
     [property: JsonPropertyName("introduction")] CosmeticIntroduction Introduction,
     [property: JsonPropertyName("images")] CosmeticImages Images,
-    [property: JsonPropertyName("variants")] CosmeticVariants[] Variants,
+    [property: JsonPropertyName("variants")] CosmeticVariants[]? Variants,
     [property: JsonPropertyName("showcaseVideo")] string ShowcaseVideo,
     [property: JsonPropertyName("added")] DateTimeOffset Added
 );

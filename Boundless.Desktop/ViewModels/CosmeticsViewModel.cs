@@ -2,7 +2,10 @@
 using System.ComponentModel;
 using System.Data;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Threading;
 using Boundless.Desktop.API;
 using Boundless.Desktop.API.Models;
 using Boundless.Desktop.Framework;
@@ -98,6 +101,8 @@ public class CosmeticsViewModel : ViewModel
             CosmeticsView.Refresh();
         }
     }
+    
+    public bool IsForSwapper { get; set; }
 
     public CosmeticsViewModel()
     {
@@ -138,7 +143,7 @@ public class CosmeticsViewModel : ViewModel
         return _currentCancellationSource = new CancellationTokenSource();
     }
     
-    public virtual void OnTabSwitched()
+    public async virtual void OnTabSwitched()
     {
         if (MainWindow.ActiveAccount == null)
             return;
@@ -158,24 +163,20 @@ public class CosmeticsViewModel : ViewModel
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        var myCosmetics = MainWindow.ActiveAccount.ProfileData?.Cosmetics;
-        if (myCosmetics == null)
-            throw new NoNullAllowedException("Profile data was null.");
-        
-        var cancellationToken = HandleCancellation().Token;
-        if (athenaType == "*") // All
+        var myCosmetics = IsForSwapper ? null : MainWindow.ActiveAccount.ProfileData?.Cosmetics;
+
+        _ = Task.Run(async () =>
         {
-            ProcessCosmeticsAsync(myCosmetics, MainWindow.AccountCosmeticsTab.UpdateCosmeticsLoadingProgress, cancellationToken);
-        }
-        else
-        {
-            var cosmeticsToLoad =
-                myCosmetics.Where(cosmetic => cosmetic.TemplateId.StartsWith(athenaType)).ToList();
-            ProcessCosmeticsAsync(cosmeticsToLoad, MainWindow.AccountCosmeticsTab.UpdateCosmeticsLoadingProgress, cancellationToken);
-        }
+            var cancellationToken = HandleCancellation().Token;
+            await ProcessCosmeticsAsync(
+                athenaType, 
+                myCosmetics, 
+                MainWindow.AccountCosmeticsTab.UpdateCosmeticsLoadingProgress, 
+                cancellationToken);
+        });
     }
 
-    public async Task ProcessCosmeticsAsync(List<AthenaCosmetic> cosmetics, Action<double> progressCallback, CancellationToken cancellationToken)
+    public async Task ProcessCosmeticsAsync(string athenaType, List<AthenaCosmetic>? cosmetics, Action<double> progressCallback, CancellationToken cancellationToken)
     {
         while (IsProcessing)
         {
@@ -185,27 +186,57 @@ public class CosmeticsViewModel : ViewModel
         IsProcessing = true;
 
         // Wait for everything to be downloaded.
-        // This is only called on launch
         await FortniteCache.WaitForCosmetics();
+        
+        // Load
+        if (FortniteCache.Cosmetics == null)
+            FortniteCache.Load();
         
         try
         {
             var models = new List<CosmeticItemModel>();
-            foreach (var cosmetic in cosmetics)
+            var filtered = new List<AthenaCosmetic>();
+            
+            if (IsForSwapper)
+            {
+                var allCosmetics = FortniteCache.Cosmetics;
+                
+                foreach (var data in allCosmetics)
+                {
+                    if (data.Type.BackendValue != athenaType)
+                        continue;
+                    
+                    filtered.Add(new AthenaCosmetic(data));
+                }
+            }
+            else
+            {
+                foreach (var cosmetic in cosmetics)
+                {
+                    if (!cosmetic.TemplateId.StartsWith(athenaType))
+                        continue;
+                    
+                    filtered.Add(cosmetic);
+                }
+            }
+
+            cosmetics = filtered;
+            
+            foreach (var obj in cosmetics)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                // TODO all weird null cosmetics
-                if (cosmetic.TemplateId == "AthenaCharacter:cid_defaultoutfit")
+                if (IsInvalidCosmetic(obj.TemplateId))
                     continue;
-                
-                var model = new CosmeticItemModel(cosmetic);
+
+                var model = new CosmeticItemModel(obj);
                 await model.LoadAsync();
                 progressCallback(Convert.ToDouble(models.Count) / cosmetics.Count);
-                
+
                 if (model.IsNull)
                 {
-                    Log("CosmeticTab", LogLevel.Error, $"({cosmetic.TemplateId}) Unable to load model. Skipping...");
+                    Log("CosmeticTab", LogLevel.Error,
+                        $"({obj.TemplateId}) Unable to load model. Skipping...");
                     continue;
                 }
 
@@ -213,9 +244,12 @@ public class CosmeticsViewModel : ViewModel
             }
 
             models = models.OrderByDescending(x => x.Rarity).ThenBy(x => x.Data?.Type.ParseCosmeticType()).ToList();
-            Cosmetics = new ObservableCollection<CosmeticItemModel>(models);
+            Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                Cosmetics = new ObservableCollection<CosmeticItemModel>(models);
+                progressCallback(1.0); // Just in case
+            });
 
-            progressCallback(1.0); // Just in case
         }
         catch (OperationCanceledException)
         {
@@ -232,5 +266,10 @@ public class CosmeticsViewModel : ViewModel
             FortniteCache.Flush();
             IsProcessing = false;
         }
+    }
+
+    private bool IsInvalidCosmetic(string templateId)
+    {
+        return templateId == "AthenaCharacter:cid_defaultoutfit";
     }
 }

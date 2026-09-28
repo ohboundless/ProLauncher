@@ -8,7 +8,11 @@ public class SwapperPanel : CosmeticPanel
 {
     public SwapperPanel()
     {
-        CosmeticsViewModel = new SwapperCosmeticsViewModel();
+        CosmeticsViewModel = new CosmeticsViewModel
+        {
+            IsForSwapper = true
+        };
+
         DataContext = CosmeticsViewModel;
     }
 }

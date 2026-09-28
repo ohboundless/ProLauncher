@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
+using System.Windows.Threading;
 using Boundless.Desktop.API;
 using Boundless.Desktop.API.Models;
 using Boundless.Desktop.Framework;

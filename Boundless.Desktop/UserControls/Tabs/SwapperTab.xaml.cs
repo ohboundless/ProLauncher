@@ -30,8 +30,8 @@ public partial class SwapperTab : UserControl
         }
         
         Core = new SwapperCore(install.Path);
-        await Core.Initialize();
-        UpdateCosmeticsLoadingProgress(.25); // Provider loaded
+        Core.Initialize();
+        UpdateCosmeticsLoadingProgress(.15);
     }
     
     public void UpdateCosmeticsLoadingProgress(double progress)

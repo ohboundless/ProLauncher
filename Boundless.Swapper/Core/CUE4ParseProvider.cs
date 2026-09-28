@@ -14,8 +14,10 @@ public class CUE4ParseProvider
     public string PaksPath { get; }
     public DefaultFileProvider Provider { get; }
     public UnrealSystemProvider USystem { get; }
+    public bool IsOnDemandTocsMounted { get; private set; }
     
     private string _streamedChunksDirectory { get; }
+    
 
     public CUE4ParseProvider(string paksPath, string streamedChunksDirectory, string mappingsPath)
     {
@@ -31,7 +33,7 @@ public class CUE4ParseProvider
     public async Task Initialize()
     {
         Provider.Initialize();
-        await RegisterOnDemandTocs();
+        RegisterOnDemandTocs();
     }
 
     public async Task SubmitKeychain(Keychain keychain)
@@ -51,13 +53,16 @@ public class CUE4ParseProvider
             DownloaderClient = new HttpClient()
         };
 
-        var onDemandFiles = Directory.EnumerateFiles(PaksPath, "*.uondemandtoc");
+        /*var onDemandFiles = Directory.EnumerateFiles(PaksPath, "*.uondemandtoc");
         foreach (var file in onDemandFiles)
         {
             var sw = Stopwatch.StartNew();
             Provider.RegisterVfs(file);
             sw.Stop();
-            Log.Logger.Information($"{sw.ElapsedMilliseconds}ms {file}");
-        }
+            
+            Logger.Information($"Mounted uondemandtoc ({file}) in {sw.ElapsedMilliseconds}ms");
+        }*/
+
+        IsOnDemandTocsMounted = true;
     }
 }

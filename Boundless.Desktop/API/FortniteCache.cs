@@ -34,7 +34,7 @@ public static class FortniteCache
             await Task.Delay(10);
         }
     }
-    
+
     public static async Task GetAllCosmetics()
     {
         var result = await FortniteApi.GetBRCosmeticsAsync();

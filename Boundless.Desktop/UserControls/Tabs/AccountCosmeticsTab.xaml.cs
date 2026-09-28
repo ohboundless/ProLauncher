@@ -62,6 +62,11 @@ public partial class AccountCosmeticsTab : UserControl
                 CosmeticProgressRing.Visibility = Visibility.Collapsed;
                 CosmeticPanel.Visibility = Visibility.Visible;
             }
+            else
+            {
+                CosmeticPanel.Visibility = Visibility.Collapsed;
+                CosmeticProgressRing.Visibility = Visibility.Visible;
+            }
         });
     }
 }
