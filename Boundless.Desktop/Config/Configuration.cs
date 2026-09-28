@@ -8,12 +8,14 @@ namespace Boundless.Desktop.Config;
 public class Configuration
 {
     public static Configuration? ConfigData;
-    
-    // Binary data holders
-    public static LoginStorage? LoginData;
 
-    // Actual config data
+    #region Config Data
+
     [JsonProperty("version")] public string Version { get; set; } = VERSION;
+
+    [JsonProperty("currentAccountEntries")]
+    public CurrentAccountEntries CurrentAccounts { get; set; } = new();
+    #endregion
 
     public class CurrentAccountEntries
     {
@@ -21,7 +23,6 @@ public class Configuration
         public Dictionary<string, string> AccountIdsByGame = new();
     }
     
-    [JsonProperty("currentAccountEntries")] public CurrentAccountEntries CurrentAccounts { get; set; } = new();
     
     public static string DirectoryName =>
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BoundlessLauncher";
@@ -42,10 +43,6 @@ public class Configuration
                  ?? throw new JsonException($"Could not deserialize json from '{FilePath}'");
         
         Log(LogCategory.Startup, LogLevel.Info, "Loaded config.");
-
-        // Load binary data holders
-        LoginData = new LoginStorage();
-        LoginData.TryRead();
     }
 
     public static void SaveConfig()

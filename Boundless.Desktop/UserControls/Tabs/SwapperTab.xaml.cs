@@ -46,6 +46,11 @@ public partial class SwapperTab : UserControl
                 CosmeticProgressRing.Visibility = Visibility.Collapsed;
                 SwapperPanel.Visibility = Visibility.Visible;
             }
+            else
+            {
+                SwapperPanel.Visibility = Visibility.Collapsed;
+                CosmeticProgressRing.Visibility = Visibility.Visible;
+            }
         });
     }
 }

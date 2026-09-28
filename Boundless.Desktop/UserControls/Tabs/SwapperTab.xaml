@@ -145,15 +145,9 @@
         <Border Grid.Row="2" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
         
         <!-- Cosmetic tab panels -->
-        <Grid Grid.Row="2" Margin="15 10" Name="CosmeticsPanel">
-            <Grid.Resources>
-                <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-            </Grid.Resources>
+        <Grid Grid.Row="2" Margin="15 10">
             <ui:ProgressRing Name="CosmeticProgressRing" Foreground="#3a4377" 
-                             Visibility="{Binding ElementName=SwapperPanel,
-                             Path=CosmeticsViewModel.IsProcessing,
-                             FallbackValue=False,
-                             Converter={StaticResource BoolToVisibilityConverter}}" 
+                             Visibility="Collapsed"
                              Margin="0 0 0 50">
             </ui:ProgressRing>
             

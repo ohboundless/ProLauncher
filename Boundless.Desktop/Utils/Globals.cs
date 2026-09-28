@@ -1,5 +1,5 @@
 global using static Boundless.Desktop.Utils.Globals;
-using Boundless.Desktop.API;
+using Boundless.Desktop.FortniteAPI;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Games.EpicGames;
 using Boundless.Desktop.Windows;

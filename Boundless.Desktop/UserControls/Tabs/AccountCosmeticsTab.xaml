@@ -65,7 +65,7 @@
                     <StackPanel Orientation="Horizontal" 
                                 VerticalAlignment="Center" 
                                 Margin="20 0">
-                        <Image Source="pack://application:,,,/Images/Icons/T_UI_UniversalXP_Icon_LevelUp_Standard_256.png"
+                        <Image Source="pack://application:,,,/Resources/Images/Icons/T_UI_UniversalXP_Icon_LevelUp_Standard_256.png"
                                Width="42"/>
                         <StackPanel Margin="5 0" VerticalAlignment="Center">
                             <TextBlock Text="Account Level" Foreground="#c9c9c9" FontSize="12"/>
@@ -81,7 +81,7 @@
                     <StackPanel Orientation="Horizontal" 
                                 VerticalAlignment="Center" 
                                 Margin="20 0">
-                        <Image Source="pack://application:,,,/Images/Icons/T_UI_Nexus_FigmentPass_L.png"
+                        <Image Source="pack://application:,,,/Resources/Images/Icons/T_UI_Nexus_FigmentPass_L.png"
                                Width="42"/>
                         <StackPanel Margin="5 0" VerticalAlignment="Center">
                             <TextBlock Text="Battle Pass" Foreground="#c9c9c9" FontSize="12"/>
@@ -97,7 +97,7 @@
                     <StackPanel Orientation="Horizontal" 
                                 VerticalAlignment="Center" 
                                 Margin="20 0">
-                        <Image Source="pack://application:,,,/Images/Icons/T-VBuck-64.png"
+                        <Image Source="pack://application:,,,/Resources/Images/Icons/T-VBuck-64.png"
                                Width="42"/>
                         <StackPanel Margin="5 0" VerticalAlignment="Center">
                             <TextBlock Text="V-Bucks" Foreground="#c9c9c9" FontSize="12"/>
@@ -240,14 +240,8 @@
         
         <!-- Cosmetic tab panels -->
         <Grid Grid.Row="3" Margin="15 10">
-            <Grid.Resources>
-                <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-            </Grid.Resources>
             <ui:ProgressRing Name="CosmeticProgressRing" Foreground="#3a4377" 
-                             Visibility="{Binding ElementName=CosmeticPanel,
-                             Path=CosmeticsViewModel.IsProcessing,
-                             FallbackValue=False,
-                             Converter={StaticResource BoolToVisibilityConverter}}" 
+                             Visibility="Collapsed"
                              Margin="0 0 0 50">
             </ui:ProgressRing>
             <userControls:CosmeticPanel x:Name="CosmeticPanel"/>

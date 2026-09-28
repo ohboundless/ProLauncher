@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using Boundless.Desktop.API;
+using Boundless.Desktop.FortniteAPI;
 using Boundless.Desktop.Games;
 using Boundless.Desktop.Games.EpicGames.Fortnite.API;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;

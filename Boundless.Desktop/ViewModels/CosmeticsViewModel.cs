@@ -1,16 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Threading;
-using Boundless.Desktop.API;
-using Boundless.Desktop.API.Models;
+using Boundless.Desktop.FortniteAPI;
+using Boundless.Desktop.FortniteAPI.Models;
 using Boundless.Desktop.Framework;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
-using Boundless.Desktop.Models;
+using Boundless.Desktop.UserControls.Popups;
 using Boundless.Desktop.Utils;
 
 namespace Boundless.Desktop.ViewModels;
@@ -30,6 +26,7 @@ public enum CosmeticFilter
 
 public class CosmeticsViewModel : ViewModel
 {
+    #region Properties
     private CancellationTokenSource? _currentCancellationSource;
     private ObservableCollection<CosmeticItemModel> _cosmetics = new();
 
@@ -103,6 +100,7 @@ public class CosmeticsViewModel : ViewModel
     }
     
     public bool IsForSwapper { get; set; }
+    #endregion
 
     public CosmeticsViewModel()
     {
@@ -118,17 +116,14 @@ public class CosmeticsViewModel : ViewModel
         if (string.IsNullOrWhiteSpace(SearchText))
             return true;
 
-        if (model.Data == null && !model.IsPakCosmetic)
+        if (model.Data == null)
         {
             Log("CosmeticsSearch", LogLevel.Warn, $"Cosmetic data was null unable to filter. Returning false... ({model.CosmeticId})");
             return false;
         }
         
-        if (model.GetItemName().Contains(_searchText, StringComparison.OrdinalIgnoreCase)
-            || model.CosmeticId.Contains(_searchText, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        return false;
+        return model.GetItemName().Contains(_searchText, StringComparison.OrdinalIgnoreCase)
+               || model.CosmeticId.Contains(_searchText, StringComparison.OrdinalIgnoreCase);
     }
     
     internal CancellationTokenSource HandleCancellation()
@@ -143,7 +138,7 @@ public class CosmeticsViewModel : ViewModel
         return _currentCancellationSource = new CancellationTokenSource();
     }
     
-    public async virtual void OnTabSwitched()
+    public void OnTabSwitched()
     {
         if (MainWindow.ActiveAccount == null)
             return;
@@ -160,23 +155,27 @@ public class CosmeticsViewModel : ViewModel
             CosmeticFilter.Emotes => "AthenaDance",
             CosmeticFilter.Gliders => "AthenaGlider",
             CosmeticFilter.Wraps => "AthenaItemWrap",
+            CosmeticFilter.Shoes => "CosmeticShoes",
             _ => throw new ArgumentOutOfRangeException()
         };
 
         var myCosmetics = IsForSwapper ? null : MainWindow.ActiveAccount.ProfileData?.Cosmetics;
-
+        Action<double> progressCallback = IsForSwapper
+            ? MainWindow.SwapperTab.UpdateCosmeticsLoadingProgress
+            : MainWindow.AccountCosmeticsTab.UpdateCosmeticsLoadingProgress;
+        
         _ = Task.Run(async () =>
         {
             var cancellationToken = HandleCancellation().Token;
             await ProcessCosmeticsAsync(
                 athenaType, 
                 myCosmetics, 
-                MainWindow.AccountCosmeticsTab.UpdateCosmeticsLoadingProgress, 
+                progressCallback, 
                 cancellationToken);
         });
     }
 
-    public async Task ProcessCosmeticsAsync(string athenaType, List<AthenaCosmetic>? cosmetics, Action<double> progressCallback, CancellationToken cancellationToken)
+    private async Task ProcessCosmeticsAsync(string athenaType, List<AthenaCosmetic>? cosmetics, Action<double> progressCallback, CancellationToken cancellationToken)
     {
         while (IsProcessing)
         {
@@ -191,37 +190,40 @@ public class CosmeticsViewModel : ViewModel
         // Load
         if (FortniteCache.Cosmetics == null)
             FortniteCache.Load();
-        
+
         try
         {
             var models = new List<CosmeticItemModel>();
             var filtered = new List<AthenaCosmetic>();
-            
-            if (IsForSwapper)
+
+            if (athenaType != "*")
             {
-                var allCosmetics = FortniteCache.Cosmetics;
-                
-                foreach (var data in allCosmetics)
+                if (IsForSwapper)
                 {
-                    if (data.Type.BackendValue != athenaType)
-                        continue;
-                    
-                    filtered.Add(new AthenaCosmetic(data));
+                    var allCosmetics = FortniteCache.Cosmetics;
+
+                    foreach (var data in allCosmetics)
+                    {
+                        if (data.Type.BackendValue != athenaType)
+                            continue;
+
+                        filtered.Add(new AthenaCosmetic(data));
+                    }
                 }
-            }
-            else
-            {
-                foreach (var cosmetic in cosmetics)
+                else
                 {
-                    if (!cosmetic.TemplateId.StartsWith(athenaType))
-                        continue;
-                    
-                    filtered.Add(cosmetic);
+                    foreach (var cosmetic in cosmetics)
+                    {
+                        if (!cosmetic.TemplateId.StartsWith(athenaType))
+                            continue;
+
+                        filtered.Add(cosmetic);
+                    }
                 }
+
+                cosmetics = filtered;
             }
 
-            cosmetics = filtered;
-            
             foreach (var obj in cosmetics)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -257,8 +259,8 @@ public class CosmeticsViewModel : ViewModel
         }
         catch (Exception ex)
         {
-            Log("CosmeticsLoading", LogLevel.Error, ex.ToString());
-            // TODO popup
+            _ = new ErrorPopup("CosmeticsLoading",
+                "Error loading cosmetics. If this issue persists please report this to the dev team.", ex);
         }
         finally
         {

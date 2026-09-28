@@ -3,14 +3,14 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.XPath;
-using Boundless.Desktop.API;
-using Boundless.Desktop.API.Models;
+using Boundless.Desktop.FortniteAPI;
+using Boundless.Desktop.FortniteAPI.Models;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.Utils;
 using Boundless.Swapper.Cosmetics.Models;
 using CUE4Parse.GameTypes.FN.Enums;
 
-namespace Boundless.Desktop.Models;
+namespace Boundless.Desktop.ViewModels;
 
 public class CosmeticItemModel
 {
@@ -19,112 +19,58 @@ public class CosmeticItemModel
     public CosmeticData? Data { get; private set; }
     public EFortRarity Rarity { get; private set; }
     public Uri IconUri { get; private set; }
-
     public bool IsNull => Data == null;
 
-    // Data bindings
+    #region Data Bindings
     public BitmapSource IconSource { get; set; }
     public Brush BackgroundRadial { get; set; }
     public Brush BorderColor { get; set; }
     public Visibility Visibility { get; set; }
-
+    #endregion
+    
     public CosmeticItemModel(AthenaCosmetic cosmetic)
     {
         Cosmetic = cosmetic;
         Data = cosmetic.CosmeticData;
         CosmeticId = cosmetic.GetCosmeticId();
     }
-
-    #region Pak Cosmetics
-    
-    public BaseCosmetic? PakCosmetic { get; } // Cosmetic loaded from the pak files
-    public bool IsPakCosmetic => PakCosmetic != null;
-
-    public CosmeticItemModel(BaseCosmetic cosmetic)
-    {
-        PakCosmetic = cosmetic;
-        CosmeticId = cosmetic.Id;
-        Rarity = cosmetic.Rarity ?? EFortRarity.Uncommon;
-    }
-    
-    #endregion
     
     public string GetItemName()
     {
-        var name = IsPakCosmetic ? PakCosmetic?.GetItemName() : Data?.Name;
-        return name ?? "NULL";
+        return Data?.Name ?? "NULL";
     }
 
     public async Task LoadAsync()
     {
-        if (IsPakCosmetic)
+        if (Data == null)
         {
-            // We only need to load icon data here
-            IconUri = new Uri(await this.CachePakIconAsync() ?? "pack://application:,,,/Images/Icons/T_Ui_Outfit_256.png");
+            if (!FortniteCache.TryGetCosmetic(CosmeticId, out var model))
+            {
+                Log("FortniteApiCache", LogLevel.Error, $"Could not find {CosmeticId} in cache.");
+                return;
+            }
+
+            Data = model;
         }
+
+        Rarity = IsTranscendent(out var channel, out var tag) ? EFortRarity.Transcendent : Data.GetRarity();
+
+        if (Data.TryGetCachedIcon(out var iconUri))
+            IconUri = iconUri;
         else
         {
-            if (Data == null)
+            var uri = Data.GetIcon(channel, tag);
+            if (uri == null) // Fallback icon
             {
-                if (!FortniteCache.TryGetCosmetic(CosmeticId, out var model))
-                {
-                    Log("FortniteApiCache", LogLevel.Error, $"Could not find {CosmeticId} in cache.");
-                    return;
-                }
-
-                Data = model;
+                IconUri = new Uri("pack://application:,,,/Resources/Images/Icons/T_Ui_Outfit_256.png");
+                return;
             }
 
-            Rarity = IsTranscendent(out var channel, out var tag) ? EFortRarity.Transcendent : Data.GetRarity();
-
-            if (Data.TryGetCachedIcon(out var iconUri))
-                IconUri = iconUri;
-            else
-            {
-                var uri = Data.GetIcon(channel, tag);
-                if (uri == null) // Fallback icon
-                {
-                    IconUri = new Uri("pack://application:,,,/Images/Icons/T_Ui_Outfit_256.png");
-                    return;
-                }
-            
-                await Data.CacheIconAsync(uri);
-                IconUri = new Uri(uri);
-            }
+            await Data.CacheIconAsync(uri);
+            IconUri = new Uri(uri);
         }
 
         ProcessData();
-    }
-    
-    private bool IsTranscendent(out string? channel, out string? tag)
-    {
-        if (RareCosmetics.IsRare(CosmeticId, null, null))
-        {
-            channel = null;
-            tag = null;
-            return true;
-        }
-
-        var variants = Cosmetic.Attributes?.Variants;
-        if (variants != null)
-        {
-            foreach (var variant in variants)
-            {
-                foreach (var style in variant.Owned)
-                {
-                    if (!RareCosmetics.IsRare(CosmeticId, variant.Channel, style))
-                        continue;
-
-                    channel = variant.Channel;
-                    tag = style;
-                    return true;
-                }
-            }
-        }
-
-        channel = null;
-        tag = null;
-        return false;
     }
     
     private void ProcessData()
@@ -173,4 +119,35 @@ public class CosmeticItemModel
         BackgroundRadial = radial;
         BorderColor = border;
     }
+    
+    private bool IsTranscendent(out string? channel, out string? tag)
+        {
+            if (RareCosmetics.IsRare(CosmeticId, null, null))
+            {
+                channel = null;
+                tag = null;
+                return true;
+            }
+    
+            var variants = Cosmetic.Attributes?.Variants;
+            if (variants != null)
+            {
+                foreach (var variant in variants)
+                {
+                    foreach (var style in variant.Owned)
+                    {
+                        if (!RareCosmetics.IsRare(CosmeticId, variant.Channel, style))
+                            continue;
+    
+                        channel = variant.Channel;
+                        tag = style;
+                        return true;
+                    }
+                }
+            }
+    
+            channel = null;
+            tag = null;
+            return false;
+        }
 }

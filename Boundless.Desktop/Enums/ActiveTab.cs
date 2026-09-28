@@ -1,4 +1,4 @@
-﻿namespace Boundless.Desktop.UserControls.Tabs;
+﻿namespace Boundless.Desktop.Enums;
 
 public enum ActiveTab
 {

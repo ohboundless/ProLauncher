@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Boundless.Desktop.API.Models;
+namespace Boundless.Desktop.FortniteAPI.Models;
 
 using System.Text.Json.Serialization;
 

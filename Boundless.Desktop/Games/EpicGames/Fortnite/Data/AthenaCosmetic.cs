@@ -1,4 +1,4 @@
-﻿using Boundless.Desktop.API.Models;
+﻿using Boundless.Desktop.FortniteAPI.Models;
 using Newtonsoft.Json;
 
 namespace Boundless.Desktop.Games.EpicGames.Fortnite.Data;

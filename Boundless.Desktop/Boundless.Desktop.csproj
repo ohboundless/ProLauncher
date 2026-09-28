@@ -34,22 +34,23 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Resource Include="Images\Splash.bmp" />
-      <Resource Include="Images\Icons\T_UI_UniversalXP_Icon_LevelUp_Standard_256.png" />
-      <Resource Include="Images\Icons\T_UI_Nexus_FigmentPass_Default_L.png" />
-      <Resource Include="Images\Icons\T_UI_Nexus_FigmentPass_L.png" />
-      <Resource Include="Images\Icons\T-VBuck-64.png" />
       <None Remove="Images\Icons\T_Ui_Outfit_256.png" />
       <None Remove="Images\Icons\T_Ui_Outfit_256.png" />
-      <Resource Include="Images\Icons\T_Ui_Outfit_256.png" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Resource Include="Fonts\Roboto-Italic-VariableFont_wdth,wght.ttf" />
-        <Resource Include="Fonts\Roboto-VariableFont_wdth,wght.ttf" />
+      <Resource Include="Resources\Fonts\Roboto-Italic-VariableFont_wdth,wght.ttf" />
+      <Resource Include="Resources\Fonts\Roboto-VariableFont_wdth,wght.ttf" />
+      <Resource Include="Resources\Images\Icons\T-VBuck-64.png" />
+      <Resource Include="Resources\Images\Icons\T_UI_Nexus_FigmentPass_Default_L.png" />
+      <Resource Include="Resources\Images\Icons\T_UI_Nexus_FigmentPass_L.png" />
+      <Resource Include="Resources\Images\Icons\T_Ui_Outfit_256.png" />
+      <Resource Include="Resources\Images\Icons\T_UI_UniversalXP_Icon_LevelUp_Standard_256.png" />
+      <Resource Include="Resources\Images\Splash.bmp" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Boundless.Swapper\Boundless.Swapper.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\" />
     </ItemGroup>
 </Project>

@@ -1,11 +1,11 @@
-﻿using Boundless.Desktop.API.Models;
+﻿using Boundless.Desktop.FortniteAPI.Models;
 using Boundless.Desktop.Utils;
 using Boundless.Swapper.Cosmetics.Models;
 using CUE4Parse.GameTypes.FN.Enums;
 using RestSharp;
 using static Boundless.Desktop.Utils.WebUtils;
 
-namespace Boundless.Desktop.API;
+namespace Boundless.Desktop.FortniteAPI;
 
 public static class FortniteApi
 {

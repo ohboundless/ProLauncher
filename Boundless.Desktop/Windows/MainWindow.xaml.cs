@@ -1,22 +1,11 @@
-﻿using System.ComponentModel;
-using System.Data;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+﻿using System.Windows;
 using Boundless.Desktop.Commands;
 using Boundless.Desktop.Config;
+using Boundless.Desktop.Enums;
 using Boundless.Desktop.Games;
-using Boundless.Desktop.Games.EpicGames.Fortnite.API;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
-using Boundless.Desktop.Models;
-using Boundless.Desktop.Templates;
 using Boundless.Desktop.UserControls;
-using Boundless.Desktop.UserControls.Popups;
-using Boundless.Desktop.UserControls.Tabs;
 using Boundless.Desktop.Utils;
-using Boundless.Desktop.ViewModels;
-using TextBox = Wpf.Ui.Controls.TextBox;
 
 namespace Boundless.Desktop.Windows;
 

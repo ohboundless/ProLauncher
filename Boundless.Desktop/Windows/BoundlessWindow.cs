@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Boundless.Desktop.Templates;
+namespace Boundless.Desktop.Windows;
 
 public class BoundlessWindow : Window
 {

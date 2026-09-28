@@ -1,49 +1,24 @@
 ﻿using System.Data;
 using System.IO;
 using System.Net.Http;
-using System.Windows.Media.Imaging;
-using Boundless.Desktop.API.Models;
+using Boundless.Desktop.FortniteAPI.Models;
 using Boundless.Desktop.Config;
-using Boundless.Desktop.Models;
-using Boundless.Desktop.UserControls;
 using Boundless.Desktop.Utils;
-using Boundless.Swapper.Cosmetics.Models;
 using Newtonsoft.Json;
 using RestSharp;
-using SkiaSharp;
 
-namespace Boundless.Desktop.API;
+namespace Boundless.Desktop.FortniteAPI;
 
 public static class FortniteCache
 {
     private static string FolderPath => Configuration.DirectoryName + "\\Cache";
     private static string ImagePath => FolderPath + "\\Images";
     private static string FilePath => FolderPath + "\\Cosmetics.json";
-
-    public static CosmeticData[]? Cosmetics { get; private set; } = [];
-
     private static RestClient _client = new();
-
-    public static async Task WaitForCosmetics()
-    {
-        if (Cosmetics == null)
-            return; // Cosmetics will be null when after a tab is loaded in order to save memory
-        
-        while (Cosmetics.Length == 0)
-        {
-            await Task.Delay(10);
-        }
-    }
-
-    public static async Task GetAllCosmetics()
-    {
-        var result = await FortniteApi.GetBRCosmeticsAsync();
-        if (result == null)
-            throw new NoNullAllowedException("Unable to retrieve BR cosmetics from fortnite-api.com");
-        
-        Cosmetics = result.Data;
-    }
     
+    public static CosmeticData[]? Cosmetics { get; private set; } = [];
+    
+    #region Loading And Saving
     public static void Load(bool isFirstTime = true)
     {
         try
@@ -93,18 +68,35 @@ public static class FortniteCache
         Cosmetics = null;
         Log("FortniteApiCache", LogLevel.Info, $"Flushed cosmetics cache. ({FilePath})");
     }
-
-    public static bool TryGetCosmetic(string cosmeticId, out CosmeticData? cosmeticModel)
+    #endregion
+    
+    #region Cosmetic Functions
+    public static async Task WaitForCosmetics()
     {
         if (Cosmetics == null)
-            Load();
+            return; // Cosmetics will be null when after a tab is loaded in order to save memory
+        
+        while (Cosmetics.Length == 0)
+        {
+            await Task.Delay(10);
+        }
+    }
 
+    public static async Task GetAllCosmetics()
+    {
+        var result = await FortniteApi.GetBRCosmeticsAsync();
+        if (result == null)
+            throw new NoNullAllowedException("Unable to retrieve BR cosmetics from fortnite-api.com");
+        
+        Cosmetics = result.Data;
+    }
+    
+    public static bool TryGetCosmetic(string cosmeticId, out CosmeticData? cosmeticModel)
+    {
         foreach (var cosmetic in Cosmetics)
         {
             if (cosmetic.Id.ToLower() != cosmeticId)
                 continue;
-
-            Log("FortniteApiCache", LogLevel.Info, $"Found cached cosmetic: {cosmeticId}");
             
             cosmeticModel = cosmetic;
             return true;
@@ -113,9 +105,10 @@ public static class FortniteCache
         cosmeticModel = null;
         return false;
     }
+    #endregion
 
+    #region Icons
     private static string GetImagePath(this CosmeticData cosmeticData) => $"{ImagePath}\\{cosmeticData.Id}.png";
-    private static string GetImagePath(this CosmeticItemModel model) => $"{ImagePath}\\{model.CosmeticId}.png";
 
     public static bool TryGetCachedIcon(this CosmeticData cosmeticData, out Uri? source)
     {
@@ -141,31 +134,5 @@ public static class FortniteCache
         var path = cosmeticData.GetImagePath();
         await File.WriteAllBytesAsync(path, data);
     }
-    
-    private static string GetImagePath(this BaseCosmetic model) => $"{ImagePath}\\{model.Id}.png";
-    
-    /// <summary>
-    /// Cache icons from .pak files
-    /// </summary>
-    /// <param name="model"></param>
-    /// <param name="bitmap"></param>
-    /// <returns>The file path to the png</returns>
-    public static async Task<string?> CachePakIconAsync(this CosmeticItemModel model)
-    {
-        var path = model.GetImagePath();
-        if (!File.Exists(path))
-        {
-            var bitmap = model.PakCosmetic?.GetSmallIcon();
-            if (bitmap == null)
-            {
-                Log("FortniteCache", LogLevel.Error, $"Unable to load small icon for {model.CosmeticId}");
-                return null;
-            }
-            
-            var data = bitmap.Encode(SKEncodedImageFormat.Png, 100);
-            await File.WriteAllBytesAsync(path, data.ToArray());
-        }
-
-        return path;
-    }
+    #endregion
 }
