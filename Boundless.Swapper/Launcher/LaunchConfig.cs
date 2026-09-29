@@ -21,6 +21,8 @@ public class LaunchConfig
     public LaunchConfig(string launcherDirectory)
     {
         LauncherDirectory = launcherDirectory;
+        Directory.CreateDirectory(LauncherDirectory);
+        Directory.CreateDirectory(DataPath);
     }
 
     public void Save()

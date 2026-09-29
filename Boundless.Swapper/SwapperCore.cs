@@ -24,7 +24,7 @@ public class SwapperCore
         // TODO chunk directory and mappings path
         CUE4Parse = new CUE4ParseProvider(_paksPath, "Chunks", 
             @"C:\Users\Owens\Documents\FModel\Output\.data\mappings\++Fortnite+Release-42.20-CL-58011042_zs.usmap");
-        //CosmeticsLoader = new CosmeticsLoader(this);
+        CosmeticsLoader = new CosmeticsLoader(this);
     }
 
     public async Task Initialize()

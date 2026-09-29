@@ -20,7 +20,8 @@ public class CosmeticItemModel
     public EFortRarity Rarity { get; private set; }
     public Uri IconUri { get; private set; }
     public bool IsNull => Data == null;
-
+    public bool IsForSwapper => Cosmetic.IsForSwapper;
+    
     #region Data Bindings
     public BitmapSource IconSource { get; set; }
     public Brush BackgroundRadial { get; set; }

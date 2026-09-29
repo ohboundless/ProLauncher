@@ -8,7 +8,8 @@
              Width="100" Height="115"
              Background="Transparent"
              Margin="5"
-             Visibility="{Binding Visibility}">
+             Visibility="{Binding Visibility}"
+             MouseUp="CosmeticItem_OnMouseUp">
     <Grid>
         <Border x:Name="MaskBorder"
                 CornerRadius="10"

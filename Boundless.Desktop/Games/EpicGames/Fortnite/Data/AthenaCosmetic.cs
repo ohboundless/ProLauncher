@@ -40,9 +40,9 @@ public class AthenaCosmetic
 
     public AthenaCosmetic()
     { }
-
-    [JsonIgnore]
-    public CosmeticData CosmeticData { get; }
+    
+    [JsonIgnore] public CosmeticData? CosmeticData { get; }
+    [JsonIgnore] public bool IsForSwapper { get; }
     
     public AthenaCosmetic(CosmeticData cosmeticData)
     {
@@ -53,6 +53,7 @@ public class AthenaCosmetic
         };
 
         CosmeticData = cosmeticData;
+        IsForSwapper = true;
     }
     
     public string GetCosmeticId() => TemplateId.Split(":").Last(); // AthenaCharacter:CID...

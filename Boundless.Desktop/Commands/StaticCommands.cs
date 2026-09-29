@@ -1,9 +1,12 @@
 ﻿using System.Windows.Input;
+using Boundless.Desktop.Commands.Swapper;
 
 namespace Boundless.Desktop.Commands;
 
 public static class StaticCommands
 {
+    #region Account
+    
     private static LaunchFortniteCommand _launchFortniteCommand;
     public static LaunchFortniteCommand LaunchFortniteCommand
     {
@@ -42,4 +45,36 @@ public static class StaticCommands
             return _removeAccountCommand;
         }
     }
+    
+    #endregion
+
+    #region Swapper
+
+    private static ConvertSwapCommand _convertSwapCommand;
+    public static ConvertSwapCommand ConvertSwapCommand
+    {
+        get
+        {
+            if (_convertSwapCommand != null)
+                return _convertSwapCommand;
+
+            _convertSwapCommand = new ConvertSwapCommand();
+            return _convertSwapCommand;
+        }
+    }
+
+    private static RevertSwapCommand _revertSwapCommand;
+    public static RevertSwapCommand RevertSwapCommand
+    {
+        get
+        {
+            if (_revertSwapCommand != null)
+                return _revertSwapCommand;
+
+            _revertSwapCommand = new RevertSwapCommand();
+            return _revertSwapCommand;
+        }
+    }
+    
+    #endregion
 }

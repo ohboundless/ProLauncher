@@ -39,7 +39,8 @@ public class UnrealSystemProvider
         asset.Game = EGame.GAME_UE5_LATEST;
         asset.Mappings = _mappings;
         asset.GlobalData = _globalReader;
-
+        asset.ReadAll();
+        
         return asset;
     }
 }

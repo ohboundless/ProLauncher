@@ -1,0 +1,44 @@
+﻿global using static Boundless.Swapper.Globals;
+using System.Diagnostics;
+using System.Windows.Input;
+
+namespace Boundless.Desktop.Commands.Swapper;
+
+public class ConvertSwapCommand : ICommand
+{
+    public bool CanExecute(object? parameter)
+    {
+        return true;
+    }
+
+    public void Execute(object? parameter)
+    {
+        if (parameter is not SwapParameter swap)
+            throw new ApplicationException($"Parameter is not a SwapParameter ({parameter})");
+
+        try
+        {
+            var templateId = swap.SwapTo.Cosmetic.TemplateId.Split(":");
+            var athenaType = templateId[0];
+            var id = templateId[1];
+
+            swap.Log("Starting conversion...");
+            var sw = Stopwatch.StartNew();
+
+            switch (athenaType)
+            {
+                case "AthenaCharacter":
+                    CharacterSwap.Convert(swap);
+                    break;
+            }
+
+            swap.Log($"Done in {sw.ElapsedMilliseconds}ms");
+        }
+        catch (Exception ex)
+        {
+            swap.Log(ex.ToString());
+        }
+    }
+
+    public event EventHandler? CanExecuteChanged;
+}

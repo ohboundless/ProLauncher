@@ -47,6 +47,29 @@ public class CosmeticsLoader(SwapperCore core)
         return models;
     }
 
+    public T? LoadCosmetic<T>(string id)
+        where T : BaseCosmetic
+    {
+        foreach (var kvp in _provider.Files)
+        {
+            if (kvp.Value.NameWithoutExtension != id)
+                continue;
+
+            if (!_provider.TryLoadPackage(kvp.Value, out var pkg))
+            {
+                // TODO logging
+                continue;
+            }
+
+            var obj = pkg.GetExport(kvp.Value.NameWithoutExtension);
+            var model = Activator.CreateInstance(typeof(T), obj);
+
+            return (T?)model;
+        }
+
+        return null;
+    }
+
     public List<BaseCosmetic> LoadCharacters()
     {
         return LoadGeneric<CharacterCosmetic>("AthenaCharacterItemDefinition", CosmeticConstants.CharacterPaths);
