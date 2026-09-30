@@ -51,6 +51,6 @@ public partial class SwapControlPopup : UserControl
     public void LogMessage(string message)
     {
         Log("SwapControlPopup", LogLevel.Info, message);
-        LogBox.Text += message + "\n";
+        Dispatcher.InvokeAsync(() => { LogBox.Text += message + "\n"; });
     }
 }

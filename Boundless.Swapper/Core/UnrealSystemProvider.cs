@@ -24,7 +24,7 @@ public class UnrealSystemProvider
         _mappings = Usmap.Parse(mappingsFilePath);
     }
 
-    public ZenAsset ReadAsset(string assetPath, out string containerPath)
+    public byte[] ReadAssetBytes(string assetPath, out string containerPath)
     {
         if (!_provider.TryGetGameFile(assetPath, out var gameFile))
             throw new ApplicationException($"Could not find '{assetPath}'");
@@ -35,6 +35,12 @@ public class UnrealSystemProvider
         if (!_provider.TrySaveAsset(gameFile, out var bytes))
             throw new ApplicationException($"Could not export '{assetPath}'");
 
+        return bytes;
+    }
+
+    public ZenAsset ReadAsset(string assetPath, out string containerPath)
+    {
+        var bytes = ReadAssetBytes(assetPath, out containerPath);
         var asset = new ZenAsset(bytes);
         asset.Game = EGame.GAME_UE5_LATEST;
         asset.Mappings = _mappings;

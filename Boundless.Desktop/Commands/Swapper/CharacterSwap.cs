@@ -21,5 +21,8 @@ public static class CharacterSwap
         
         CharacterPartSwapper.SetCharacterParts(character.BaseCharacterParts.Select(x => x.ToString()).ToArray());
         parameter.Log("Set character parts.");
+        
+        CharacterPartSwapper.InvalidateDefault();
+        parameter.Log("Invalidated default character.");
     }
 }

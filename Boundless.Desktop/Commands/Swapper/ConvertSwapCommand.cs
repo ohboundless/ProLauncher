@@ -16,28 +16,31 @@ public class ConvertSwapCommand : ICommand
         if (parameter is not SwapParameter swap)
             throw new ApplicationException($"Parameter is not a SwapParameter ({parameter})");
 
-        try
+        Task.Run(() =>
         {
-            var templateId = swap.SwapTo.Cosmetic.TemplateId.Split(":");
-            var athenaType = templateId[0];
-            var id = templateId[1];
-
-            swap.Log("Starting conversion...");
-            var sw = Stopwatch.StartNew();
-
-            switch (athenaType)
+            try
             {
-                case "AthenaCharacter":
-                    CharacterSwap.Convert(swap);
-                    break;
-            }
+                var templateId = swap.SwapTo.Cosmetic.TemplateId.Split(":");
+                var athenaType = templateId[0];
+                var id = templateId[1];
 
-            swap.Log($"Done in {sw.ElapsedMilliseconds}ms");
-        }
-        catch (Exception ex)
-        {
-            swap.Log(ex.ToString());
-        }
+                swap.Log("Starting conversion...");
+                var sw = Stopwatch.StartNew();
+
+                switch (athenaType)
+                {
+                    case "AthenaCharacter":
+                        CharacterSwap.Convert(swap);
+                        break;
+                }
+
+                swap.Log($"Done in {sw.ElapsedMilliseconds}ms");
+            }
+            catch (Exception ex)
+            {
+                swap.Log(ex.ToString());
+            }
+        });
     }
 
     public event EventHandler? CanExecuteChanged;
