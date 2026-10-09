@@ -146,7 +146,7 @@
                                                 GroupName="Nav"/>
                         <userControls:NavButton Content="Lobby Bot" 
                                                 Symbol="Person24" 
-                                                Checked="SwapperTab_OnChecked" 
+                                                Checked="LobbyBotTab_OnChecked" 
                                                 GroupName="Nav"/>
                         <userControls:NavButton Content="Stats" 
                                                 Symbol="DataBarVertical24" 

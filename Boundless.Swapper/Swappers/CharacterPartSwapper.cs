@@ -1,4 +1,5 @@
-﻿using UAssetEditor.Binary;
+﻿using Boundless.Logging.Classes;
+using UAssetEditor.Binary;
 using UAssetEditor.Unreal.Properties.Types;
 
 namespace Boundless.Swapper.Swappers;
@@ -19,6 +20,7 @@ public class CharacterPartSwapper
         array.Value.Clear();
         foreach (var part in parts)
         {
+            Log("CharacterPartSwapper", LogLevel.Info, $"Set part '{part}'");
             array.AddItem(SoftObjectProperty.Create(part));
         }
 

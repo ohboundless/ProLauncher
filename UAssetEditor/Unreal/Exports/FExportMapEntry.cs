@@ -23,11 +23,11 @@ public class FExportMapEntry
     public EObjectFlags ObjectFlags;
     public byte FilterFlags; // EExportFilterFlags: client/server flags
 
-    public ZenAsset Asset;
+    public IoAsset Asset;
     public string Name;
     public Lazy<string> Class;
     
-    public FExportMapEntry(ZenAsset reader)
+    public FExportMapEntry(IoAsset reader)
     {
         Asset = reader;
         CookedSerialOffset = reader.Read<ulong>();

@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boundless.Swapper", "Boundl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UAssetEditor", "UAssetEditor\UAssetEditor.csproj", "{B7B62507-52E1-4084-A964-5215136497EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boundless.Logging", "Boundless.Logging\Boundless.Logging.csproj", "{E20AED94-CBFD-4639-B10E-A794B306BA79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,5 +42,9 @@ Global
 		{B7B62507-52E1-4084-A964-5215136497EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7B62507-52E1-4084-A964-5215136497EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7B62507-52E1-4084-A964-5215136497EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E20AED94-CBFD-4639-B10E-A794B306BA79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E20AED94-CBFD-4639-B10E-A794B306BA79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E20AED94-CBFD-4639-B10E-A794B306BA79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E20AED94-CBFD-4639-B10E-A794B306BA79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

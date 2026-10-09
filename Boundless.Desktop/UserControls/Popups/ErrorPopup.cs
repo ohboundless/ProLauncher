@@ -16,4 +16,12 @@ public partial class ErrorPopup : MessagePopup
         Messages.ShowMessage(this);
         Log(category + "_ErrorPopup", LogLevel.Error, exception.ToString());
     }
+
+    public static void Show(string category, string message, Exception exception)
+    {
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            _ = new ErrorPopup(category, message, exception);
+        });
+    }
 }

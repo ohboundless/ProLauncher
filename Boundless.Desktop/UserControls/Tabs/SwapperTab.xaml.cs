@@ -19,7 +19,7 @@ public partial class SwapperTab : UserControl
         InitializeComponent();
     }
 
-    public async Task LoadSwapper()
+    public async void LoadSwapper()
     {
         if (Core != null)
             return;
@@ -30,8 +30,7 @@ public partial class SwapperTab : UserControl
         }
         
         Core = new SwapperCore(install.Path);
-        Core.Initialize();
-        UpdateCosmeticsLoadingProgress(.15);
+        await Core.Initialize();
     }
     
     public void UpdateCosmeticsLoadingProgress(double progress)

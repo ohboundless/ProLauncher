@@ -21,7 +21,7 @@ using UAssetEditor.Utils;
 
 namespace UAssetEditor.Unreal.Assets;
 
-public class ZenAsset : Asset
+public class IoAsset : Asset
 {
     public IoGlobalReader? GlobalData;
     public IoStoreReader? IoReader => Reader as IoStoreReader;
@@ -41,7 +41,7 @@ public class ZenAsset : Asset
 
     public List<FPackageId>? ImportedPackageIds;
 
-    public ZenAsset(byte[] data, UnrealFileSystem? system = null, UnrealFileReader? reader = null) : base(data, system,
+    public IoAsset(byte[] data, UnrealFileSystem? system = null, UnrealFileReader? reader = null) : base(data, system,
         reader)
     {
         if (system == null)
@@ -52,7 +52,7 @@ public class ZenAsset : Asset
         GlobalData = system.GetGlobalReader();
     }
     
-    public ZenAsset(string path) : this(File.ReadAllBytes(path))
+    public IoAsset(string path) : this(File.ReadAllBytes(path))
     { }
 
     /// <summary>
@@ -282,7 +282,7 @@ public class ZenAsset : Asset
 	    var header = IoReader?.ContainerHeader;
 	    if (header == null)
 	    {
-		    Log.Warning("Could not populate imports because ContainerHeader is null.");
+		    Warning("Could not populate imports because ContainerHeader is null.");
 		    return;
 	    }
 
@@ -610,7 +610,7 @@ public class ExportContainer : Container<FExportMapEntry>
 	public ExportContainer(List<FExportMapEntry> items) : base(items)
 	{ }
 
-	public static ExportContainer Read(ZenAsset asset, FZenPackageSummary summary, FZenPackageCellOffsets? cellOffsets)
+	public static ExportContainer Read(IoAsset asset, FZenPackageSummary summary, FZenPackageCellOffsets? cellOffsets)
 	{
 		var size = cellOffsets.HasValue
 			? cellOffsets.Value.CellImportMapOffset - summary.ExportMapOffset
@@ -619,7 +619,7 @@ public class ExportContainer : Container<FExportMapEntry>
 			.ToList());
 	}
     
-    public static ExportContainer Read(ZenAsset asset, FPackageSummary summary)
+    public static ExportContainer Read(IoAsset asset, FPackageSummary summary)
     {
         var size = summary.ExportBundlesOffset - summary.ExportMapOffset;
         return new ExportContainer(asset.ReadArray(() => new FExportMapEntry(asset), size / FExportMapEntry.Size)

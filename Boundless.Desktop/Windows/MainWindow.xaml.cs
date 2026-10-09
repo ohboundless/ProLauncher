@@ -4,9 +4,11 @@ using Boundless.Desktop.Commands;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Enums;
 using Boundless.Desktop.Games;
+using Boundless.Desktop.Games.EpicGames.Fortnite.API;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.UserControls;
 using Boundless.Desktop.Utils;
+using Boundless.Desktop.ViewModels;
 
 namespace Boundless.Desktop.Windows;
 
@@ -143,11 +145,24 @@ public partial class MainWindow : BoundlessWindow
     {
         SelectedTab = ActiveTab.Swapper;
         SwapperTab.LoadSwapper();
+        SwapperTab.SwapperPanel?.CosmeticsViewModel?.SelectedFilter = CosmeticFilter.Outfits;
     }
     
-    private void LobbyBotTab_OnChecked(object sender, RoutedEventArgs e)
+    private async void LobbyBotTab_OnChecked(object sender, RoutedEventArgs e)
     {
-        SelectedTab = ActiveTab.LobbyBot;
+        //SelectedTab = ActiveTab.LobbyBot;
+        var androidToken = await FortniteHandler.GetAndroidAccessToken(ActiveAccount);
+        //var client = new LobbyBotClient(androidToken);
+        /*await client.ConnectAsync();
+        await client.CreateParty(androidToken);*/
+
+        //await FortnitePartyHandler.SendRequestToJoin(androidToken, "ee216d7c9a8e4a25852fb435b54cdd34"); // Oh Owen
+
+        /*var partyInfo = await FortnitePartyHandler.GetCurrentPartyInfo(ActiveAccount, androidToken);
+        await FortnitePartyHandler.UpdatePartyMemberMeta(androidToken, partyInfo, ActiveAccount.Id,
+            "CID_313_Athena_Commando_M_KpopFashion");*/
+
+
     }
     
     private void StatsTab_OnChecked(object sender, RoutedEventArgs e)

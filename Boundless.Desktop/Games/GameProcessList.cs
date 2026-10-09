@@ -11,7 +11,7 @@ public static class GameProcessList
         "FortniteLauncher", "FortniteClient-Win64-Shipping", "FortniteClient-Win64-Shipping_EAC_EOS"
     ];
 
-    public static async Task FortniteProcessLoop()
+    public static async void FortniteProcessLoop()
     {
         while (true)
         {

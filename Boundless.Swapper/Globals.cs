@@ -1,4 +1,4 @@
-﻿global using static Serilog.Log;
+﻿global using static Boundless.Logging.Classes.Logging;
 global using static Boundless.Swapper.Globals;
 using Boundless.Swapper.Core;
 

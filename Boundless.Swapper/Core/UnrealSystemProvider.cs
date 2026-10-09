@@ -15,13 +15,13 @@ public class UnrealSystemProvider
 {
     private DefaultFileProvider _provider;
     private IoGlobalReader _globalReader;
-    private Usmap _mappings;
+    private MappingsProvider _mappings;
     
-    public UnrealSystemProvider(CUE4ParseProvider cue4ParseProvider, string mappingsFilePath)
+    public UnrealSystemProvider(CUE4ParseProvider cue4ParseProvider, MappingsProvider mappings)
     {
         _provider = cue4ParseProvider.Provider;
         _globalReader = IoGlobalReader.InitializeGlobalData(cue4ParseProvider.PaksPath + "\\global.utoc", EGame.GAME_UE5_LATEST);
-        _mappings = Usmap.Parse(mappingsFilePath);
+        _mappings = mappings;
     }
 
     public byte[] ReadAssetBytes(string assetPath, out string containerPath)
@@ -38,12 +38,12 @@ public class UnrealSystemProvider
         return bytes;
     }
 
-    public ZenAsset ReadAsset(string assetPath, out string containerPath)
+    public IoAsset ReadAsset(string assetPath, out string containerPath)
     {
         var bytes = ReadAssetBytes(assetPath, out containerPath);
-        var asset = new ZenAsset(bytes);
+        var asset = new IoAsset(bytes);
         asset.Game = EGame.GAME_UE5_LATEST;
-        asset.Mappings = _mappings;
+        asset.Mappings = _mappings.Usmap;
         asset.GlobalData = _globalReader;
         asset.ReadAll();
         

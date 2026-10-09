@@ -1,4 +1,6 @@
 global using static Boundless.Desktop.Utils.Globals;
+global using static Boundless.Logging.Classes.Logging;
+global using Boundless.Logging.Classes;
 using Boundless.Desktop.FortniteAPI;
 using Boundless.Desktop.Config;
 using Boundless.Desktop.Games.EpicGames;

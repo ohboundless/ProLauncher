@@ -22,8 +22,10 @@ public class ConvertSwapCommand : ICommand
             {
                 var templateId = swap.SwapTo.Cosmetic.TemplateId.Split(":");
                 var athenaType = templateId[0];
-                var id = templateId[1];
+                //var id = templateId[1];
 
+                Log("ConvertSwapCommand", LogLevel.Info, $"Starting swap for {swap.SwapTo.Cosmetic.TemplateId}");
+                
                 swap.Log("Starting conversion...");
                 var sw = Stopwatch.StartNew();
 

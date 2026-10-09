@@ -9,4 +9,12 @@ public static class StringUtils
         
         return char.ToUpper(str[0]) + str.Substring(1).ToLower();
     }
+
+    public static string RandomHexString(int length)
+    {
+        var buffer = new byte[length];
+        new Random().NextBytes(buffer);
+
+        return Convert.ToHexString(buffer);
+    }
 }

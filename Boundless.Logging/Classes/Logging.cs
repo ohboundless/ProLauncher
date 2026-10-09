@@ -1,8 +1,7 @@
-global using static Boundless.Desktop.Utils.Logging;
-using static Serilog.Log;
 using Serilog;
+using static Serilog.Log;
 
-namespace Boundless.Desktop.Utils;
+namespace Boundless.Logging.Classes;
 
 public enum LogLevel
 {

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Data;
+using System.Diagnostics;
 using CUE4Parse.Encryption.Aes;
 using CUE4Parse.FileProvider;
 using CUE4Parse.MappingsProvider.Usmap;
@@ -13,27 +14,33 @@ public class CUE4ParseProvider
 {
     public string PaksPath { get; }
     public DefaultFileProvider Provider { get; }
-    public UnrealSystemProvider USystem { get; }
+    public UnrealSystemProvider USystem { get; private set; }
     public bool IsOnDemandTocsMounted { get; private set; }
-    
-    private string _streamedChunksDirectory { get; }
-    
 
-    public CUE4ParseProvider(string paksPath, string streamedChunksDirectory, string mappingsPath)
+    private string _streamedChunksDirectory;
+    private readonly MappingsProvider _mappingsProvider;
+
+    public CUE4ParseProvider(string paksPath, string streamedChunksDirectory, MappingsProvider mappingsProvider)
     {
         PaksPath = paksPath;
         _streamedChunksDirectory = streamedChunksDirectory;
+        _mappingsProvider = mappingsProvider;
 
+        CUE4Parse.Globals.LogVfsMounts = false;
         Provider = new DefaultFileProvider(PaksPath, SearchOption.TopDirectoryOnly,
             new VersionContainer(EGame.GAME_UE5_LATEST));
-        Provider.MappingsContainer = new FileUsmapTypeMappingsProvider(mappingsPath);
-        USystem = new UnrealSystemProvider(this, mappingsPath);
     }
 
     public async Task Initialize()
     {
+        if (_mappingsProvider.Version == null)
+            throw new NoNullAllowedException("Mappings have not been loaded yet!");
+        
+        Provider.MappingsContainer = new FileUsmapTypeMappingsProvider(_mappingsProvider.MappingsFilePath);
+        USystem = new UnrealSystemProvider(this, _mappingsProvider);
+        
         Provider.Initialize();
-        RegisterOnDemandTocs();
+        await RegisterOnDemandTocs();
     }
 
     public async Task SubmitKeychain(Keychain keychain)

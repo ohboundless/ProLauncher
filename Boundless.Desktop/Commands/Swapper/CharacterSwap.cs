@@ -13,7 +13,7 @@ public static class CharacterSwap
         if (character == null)
         {
             parameter.Log("Error!");
-            _ = new ErrorPopup("CharacterSwap",
+            ErrorPopup.Show("CharacterSwap",
                 "Unable to find character in pak files. If this error persists please report it to the dev team.",
                 new ApplicationException($"Could not find character ({parameter.SwapTo.CosmeticId})"));
             return;

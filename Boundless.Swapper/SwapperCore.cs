@@ -1,4 +1,5 @@
-﻿using Boundless.Swapper.Core;
+﻿using Boundless.Logging.Classes;
+using Boundless.Swapper.Core;
 using Boundless.Swapper.Cosmetics;
 using Boundless.Swapper.Launcher;
 using CUE4Parse_Conversion.Textures.BC;
@@ -11,36 +12,43 @@ public class SwapperCore
     private string _paksPath;
     private Keychain _keychain;
 
-    public CUE4ParseProvider CUE4Parse { get; private set; }
+    public CUE4ParseProvider CUE4Parse { get; }
     public UnrealSystemProvider USystem => CUE4Parse.USystem;
-    public LaunchConfig LaunchConfig { get; } = new(@"C:\Users\Owens\AppData\Local\BoundlessLauncher\Launcher");
+
+    public LaunchConfig LaunchConfig { get; }
     public CosmeticsLoader CosmeticsLoader { get; }
+    public MappingsProvider Mappings { get; }
     
     public SwapperCore(string fortnitePath)
     {
-        Globals.SC = this;
+        SC = this; // Set global instance
         
         _paksPath = fortnitePath + @"\FortniteGame\Content\Paks";
-        // TODO chunk directory and mappings path
-        CUE4Parse = new CUE4ParseProvider(_paksPath, "Chunks", 
-            @"C:\Users\Owens\Documents\FModel\Output\.data\mappings\++Fortnite+Release-42.20-CL-58011042_zs.usmap");
+        Mappings = new MappingsProvider();
+        CUE4Parse = new CUE4ParseProvider(_paksPath, Statics.DataDirectory + "\\Chunks", Mappings);
         CosmeticsLoader = new CosmeticsLoader(this);
+        LaunchConfig = new();
     }
 
     public async Task Initialize()
     {
+        Log("SwapperCore", LogLevel.Info, "Initializing mappings...");
+        await Mappings.DownloadMappings();
+        
+        Log("SwapperCore", LogLevel.Info, "Initializing CUE4Parse...");
         await CUE4Parse.Initialize();
 
+        Log("SwapperCore", LogLevel.Info, "Loading keychain...");
         _keychain = new Keychain();
         await _keychain.LoadKeys();
         await CUE4Parse.SubmitKeychain(_keychain);
 
         // Oodle
-        var oodlePath = @"C:\Users\Owens\AppData\Local\BoundlessLauncher\oo2core_9_win64.dll"; // TODO oodle path
+        var oodlePath = Statics.DataDirectory + "\\oo2core_9_win64.dll";
         await OodleHelper.DownloadOodleDllAsync(ref oodlePath);
         await OodleHelper.InitializeAsync(oodlePath);
         
         // Detex
-        DetexHelper.Initialize("Detex.dll");
+        // DetexHelper.Initialize("Detex.dll");
     }
 }

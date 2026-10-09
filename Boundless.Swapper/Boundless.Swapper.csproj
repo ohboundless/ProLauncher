@@ -7,11 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="CUE4Parse" Version="1.2.2.202609" />
-      <PackageReference Include="CUE4Parse-Conversion" Version="1.2.2.202609" />
+      <PackageReference Include="CUE4Parse" Version="1.2.2.202610" />
+      <PackageReference Include="CUE4Parse-Conversion" Version="1.2.2.202610" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Boundless.Logging\Boundless.Logging.csproj" />
       <ProjectReference Include="..\UAssetEditor\UAssetEditor.csproj" />
     </ItemGroup>
 

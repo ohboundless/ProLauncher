@@ -18,9 +18,10 @@ public class LaunchConfig
     
     private List<Edit> Edits { get; } = new();
 
-    public LaunchConfig(string launcherDirectory)
+    public LaunchConfig()
     {
-        LauncherDirectory = launcherDirectory;
+        LauncherDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                            @"\BoundlessLauncher\Launcher";
         Directory.CreateDirectory(LauncherDirectory);
         Directory.CreateDirectory(DataPath);
     }
