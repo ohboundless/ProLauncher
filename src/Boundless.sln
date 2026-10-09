@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{3C8E55B8-AB7C-4755-95AF-6F3100EF9826}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boundless.Desktop", "App\Boundless.Desktop\Boundless.Desktop.csproj", "{78A11495-3C75-42CF-8B7E-DF840B45A0B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boundless.Logging", "App\Boundless.Logging\Boundless.Logging.csproj", "{BA245E93-FAD9-47DB-A45E-9F902BFBB860}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Swapper", "Swapper", "{1C255732-9C1C-4F8D-B8C1-B890BB108378}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boundless.Swapper", "App\Swapper\Boundless.Swapper\Boundless.Swapper.csproj", "{9D7CD15D-179A-40DC-A3BA-1A94A9BE076B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UAssetEditor", "App\Swapper\UAssetEditor\UAssetEditor.csproj", "{FA884655-95C3-46CB-B6C1-BB01F563E596}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B35549F7-B5C8-4ACF-B4B1-971F936DCC39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B35549F7-B5C8-4ACF-B4B1-971F936DCC39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B35549F7-B5C8-4ACF-B4B1-971F936DCC39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B35549F7-B5C8-4ACF-B4B1-971F936DCC39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78A11495-3C75-42CF-8B7E-DF840B45A0B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78A11495-3C75-42CF-8B7E-DF840B45A0B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78A11495-3C75-42CF-8B7E-DF840B45A0B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78A11495-3C75-42CF-8B7E-DF840B45A0B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA245E93-FAD9-47DB-A45E-9F902BFBB860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA245E93-FAD9-47DB-A45E-9F902BFBB860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA245E93-FAD9-47DB-A45E-9F902BFBB860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA245E93-FAD9-47DB-A45E-9F902BFBB860}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D7CD15D-179A-40DC-A3BA-1A94A9BE076B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D7CD15D-179A-40DC-A3BA-1A94A9BE076B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D7CD15D-179A-40DC-A3BA-1A94A9BE076B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D7CD15D-179A-40DC-A3BA-1A94A9BE076B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA884655-95C3-46CB-B6C1-BB01F563E596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA884655-95C3-46CB-B6C1-BB01F563E596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA884655-95C3-46CB-B6C1-BB01F563E596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA884655-95C3-46CB-B6C1-BB01F563E596}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{78A11495-3C75-42CF-8B7E-DF840B45A0B4} = {3C8E55B8-AB7C-4755-95AF-6F3100EF9826}
+		{BA245E93-FAD9-47DB-A45E-9F902BFBB860} = {3C8E55B8-AB7C-4755-95AF-6F3100EF9826}
+		{1C255732-9C1C-4F8D-B8C1-B890BB108378} = {3C8E55B8-AB7C-4755-95AF-6F3100EF9826}
+		{9D7CD15D-179A-40DC-A3BA-1A94A9BE076B} = {1C255732-9C1C-4F8D-B8C1-B890BB108378}
+		{FA884655-95C3-46CB-B6C1-BB01F563E596} = {1C255732-9C1C-4F8D-B8C1-B890BB108378}
+	EndGlobalSection
+EndGlobal

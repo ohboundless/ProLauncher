@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Boundless.Logging\Boundless.Logging.csproj" />
+      <ProjectReference Include="..\..\Boundless.Logging\Boundless.Logging.csproj" />
       <ProjectReference Include="..\UAssetEditor\UAssetEditor.csproj" />
     </ItemGroup>
 

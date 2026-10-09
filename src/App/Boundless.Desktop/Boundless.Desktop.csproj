@@ -47,8 +47,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Boundless.Logging\Boundless.Logging.csproj" />
-      <ProjectReference Include="..\Boundless.Swapper\Boundless.Swapper.csproj" />
+      <ProjectReference Include="..\Swapper\Boundless.Swapper\Boundless.Swapper.csproj" />
     </ItemGroup>
 
     <ItemGroup>
