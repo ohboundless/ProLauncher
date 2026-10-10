@@ -7,8 +7,11 @@ using Boundless.Desktop.Games;
 using Boundless.Desktop.Games.EpicGames.Fortnite.API;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.UserControls;
+using Boundless.Desktop.UserControls.Popups;
 using Boundless.Desktop.Utils;
 using Boundless.Desktop.ViewModels;
+using LobbyBotController;
+using Newtonsoft.Json;
 
 namespace Boundless.Desktop.Windows;
 
@@ -151,18 +154,38 @@ public partial class MainWindow : BoundlessWindow
     private async void LobbyBotTab_OnChecked(object sender, RoutedEventArgs e)
     {
         //SelectedTab = ActiveTab.LobbyBot;
-        var androidToken = await FortniteHandler.GetAndroidAccessToken(ActiveAccount);
-        //var client = new LobbyBotClient(androidToken);
-        /*await client.ConnectAsync();
-        await client.CreateParty(androidToken);*/
+        if (Accounts.Fortnite.Accounts == null)
+        {
+            PopupContainer.ShowMessage("Please Add an Account", "Cannot select accounts because accounts are null.");
+            return;
+        }
 
-        //await FortnitePartyHandler.SendRequestToJoin(androidToken, "ee216d7c9a8e4a25852fb435b54cdd34"); // Oh Owen
+        _ = new AccountSelectPopup(Accounts.Fortnite.Accounts, async account =>
+        {
+            PopupContainer.ShowMessage("Starting Lobby Bot", $"Please wait for {account.Username} to appear online, then invite it.");
+            
+            var json = JsonConvert.SerializeObject(account.DeviceAuth);
+            var controller = new BotController(json);
+            controller.Start();
 
-        /*var partyInfo = await FortnitePartyHandler.GetCurrentPartyInfo(ActiveAccount, androidToken);
-        await FortnitePartyHandler.UpdatePartyMemberMeta(androidToken, partyInfo, ActiveAccount.Id,
-            "CID_313_Athena_Commando_M_KpopFashion");*/
+            // Wait for bot startup
+            var success = false;
+            while (!success)
+            {
+                await Task.Delay(1000);
+                
+                if (SwapperConfig.ConfigData?.CharacterId != null)
+                    success = await controller.TrySetCosmetic("AthenaCharacter", SwapperConfig.ConfigData.CharacterId);
 
+                if (SwapperConfig.ConfigData?.BackpackId != null)
+                    success = await controller.TrySetCosmetic("AthenaBackpack", SwapperConfig.ConfigData.BackpackId);
 
+                if (success)
+                    Log("LobbyBotController", LogLevel.Info, "Set cosmetic.");
+                else
+                    Log("LobbyBotController", LogLevel.Info, "Unable to set cosmetic. Retrying...");
+            }
+        });
     }
     
     private void StatsTab_OnChecked(object sender, RoutedEventArgs e)

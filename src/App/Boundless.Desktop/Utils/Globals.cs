@@ -25,6 +25,7 @@ public static class Globals
         Log(LogCategory.Startup, LogLevel.Info, $"Opened log file ({now.ToLongDateString()} - {now.ToLongTimeString()})");
         
         Configuration.InitializeConfig();
+        SwapperConfig.InitializeConfig();
         
         // Populate Fortnite install
         EpicInstallations.PopulateInstallations();

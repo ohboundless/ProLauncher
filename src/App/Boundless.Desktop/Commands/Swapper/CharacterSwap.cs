@@ -1,4 +1,5 @@
-﻿using Boundless.Desktop.UserControls.Popups;
+﻿using Boundless.Desktop.Config;
+using Boundless.Desktop.UserControls.Popups;
 using Boundless.Swapper;
 using Boundless.Swapper.Cosmetics.Models;
 using Boundless.Swapper.Swappers;
@@ -24,5 +25,8 @@ public static class CharacterSwap
         
         CharacterPartSwapper.InvalidateDefault();
         parameter.Log("Invalidated default character.");
+
+        SwapperConfig.ConfigData?.CharacterId = parameter.SwapTo.CosmeticId;
+        SwapperConfig.SaveConfig();
     }
 }

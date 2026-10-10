@@ -31,6 +31,11 @@
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
+      <Page Update="UserControls\Popups\AccountSelectPopup.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
     </ItemGroup>
 
     <ItemGroup>
@@ -47,6 +52,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\LobbyBotController\LobbyBotController.csproj" />
       <ProjectReference Include="..\Swapper\Boundless.Swapper\Boundless.Swapper.csproj" />
     </ItemGroup>
 
