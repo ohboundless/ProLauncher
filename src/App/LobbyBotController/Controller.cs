@@ -33,8 +33,6 @@ public class BotController
             Arguments = "/c node index.js",
             CreateNoWindow = false
         });
-        
-       // Thread.Sleep(15000); // Wait for lobby bot to start
     }
 
     public async Task<bool> TrySetCosmetic(string athenaType, string id)

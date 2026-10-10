@@ -25,7 +25,7 @@
             
             <Grid Grid.Row="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="45"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="60"/>
@@ -53,14 +53,20 @@
                 </Grid>
             
                 <StackPanel Grid.Row="2" 
-                            Margin="10" 
+                            Margin="25" 
                             HorizontalAlignment="Center">
-                    <Button Content="Convert" Padding="20 10" Margin="2" Width="150"
+                    <Button Content="Convert" Margin="2" Width="150"
                             Command="{x:Static commands:StaticCommands.ConvertSwapCommand}"
-                            CommandParameter="{Binding}"/>
-                    <Button Content="Revert" Padding="20 10" Margin="2" Width="150"
+                            CommandParameter="{Binding}"
+                            Background="#04ffffff"
+                            BorderBrush="#3a4377"
+                            Padding="30 10"/>
+                    <Button Content="Revert" Margin="2" Width="150"
                             Command="{x:Static commands:StaticCommands.RevertSwapCommand}"
-                            CommandParameter="{Binding}"/>
+                            CommandParameter="{Binding}"
+                            Background="#04ffffff"
+                            BorderBrush="#3a4377"
+                            Padding="30 10"/>
                 </StackPanel>
             </Grid>
             
@@ -69,7 +75,10 @@
                      Margin="10 0 0 0" 
                      x:Name="LogBox"
                      Width="350"
-                     IsReadOnly="True"/>
+                     IsReadOnly="True"
+                     Background="#04ffffff"
+                     BorderBrush="#3a4377"
+                     Padding="30 10"/>
             
             <Button HorizontalAlignment="Right" 
                     Grid.ColumnSpan="2" 
@@ -77,7 +86,10 @@
                     Grid.Row="1"
                     Margin="20 5"
                     Content="Close"
-                    Click="Close_OnClick"/>
+                    Click="Close_OnClick"
+                    Background="#04ffffff"
+                    BorderBrush="#3a4377"
+                    Padding="30 10"/>
         </Grid>
     </Border>
 </UserControl>

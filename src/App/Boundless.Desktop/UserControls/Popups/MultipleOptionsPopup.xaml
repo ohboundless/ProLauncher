@@ -1,0 +1,58 @@
+<UserControl x:Class="Boundless.Desktop.UserControls.Popups.MultipleOptionsPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Boundless.Desktop.UserControls.Popups"
+             mc:Ignorable="d"
+             d:DesignHeight="280" d:DesignWidth="500">
+    <Border BorderBrush="#3a4377"
+            BorderThickness="1"
+            CornerRadius="10"
+            Background="#202542"
+            MinWidth="350"
+            MinHeight="200">
+        <Grid Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0" x:Name="TextPanel">
+                <TextBlock
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"
+                           FontSize="25"
+                           FontWeight="600"
+                           Foreground="White"
+                           Padding="30 0"
+                           x:Name="TitleTextBlock"/>
+            
+                <TextBlock
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Foreground="#dedede"
+                           Padding="30 0"
+                           x:Name="MessageTextBlock"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="1"
+                        Margin="40"
+                        HorizontalAlignment="Center"
+                        x:Name="OptionsPanel"/>
+            
+            <Button Grid.Row="2" 
+                    Content="Cancel" 
+                    HorizontalAlignment="Right"
+                    Padding="30 10"
+                    Background="#04ffffff"
+                    BorderBrush="#3a4377"
+                    BorderThickness="1"
+                    Foreground="White"
+                    Click="Cancel_OnClick"/>
+        </Grid>
+    </Border>
+</UserControl>

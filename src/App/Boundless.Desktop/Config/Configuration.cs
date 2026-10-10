@@ -23,7 +23,6 @@ public class Configuration
         public Dictionary<string, string> AccountIdsByGame = new();
     }
     
-    
     public static string DirectoryName =>
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BoundlessLauncher";
 

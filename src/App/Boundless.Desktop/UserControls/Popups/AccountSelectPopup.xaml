@@ -19,7 +19,10 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             
-            <Button HorizontalAlignment="Right" Content="Close" Click="Close_OnClick"/>
+            <Button HorizontalAlignment="Right" Content="Close" Click="Close_OnClick"
+                    Background="#04ffffff"
+                    BorderBrush="#3a4377"
+                    Padding="30 10"/>
             
             <StackPanel Grid.Row="1" Margin="15">
                 <TextBlock Text="Select an Account for the Lobby Bot"
@@ -27,9 +30,14 @@
                            FontSize="20"
                            HorizontalAlignment="Center"/>
                 
-                <ComboBox Margin="20" Width="400" x:Name="Accounts"/>
+                <ComboBox Margin="20" Width="400" x:Name="Accounts"
+                          Background="#04ffffff"
+                          BorderBrush="#3a4377"/>
                 
-                <Button Content="Confirm" HorizontalAlignment="Center" Padding="15 10" Click="Confirm_OnClick"/>
+                <Button Content="Confirm" HorizontalAlignment="Center" Click="Confirm_OnClick"
+                        Background="#04ffffff"
+                        BorderBrush="#3a4377"
+                        Padding="30 10"/>
             </StackPanel>
         </Grid>
     </Border>
