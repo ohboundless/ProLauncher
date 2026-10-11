@@ -151,41 +151,10 @@ public partial class MainWindow : BoundlessWindow
         SwapperTab.SwapperPanel?.CosmeticsViewModel?.SelectedFilter = CosmeticFilter.Outfits;
     }
     
-    private async void LobbyBotTab_OnChecked(object sender, RoutedEventArgs e)
+    private void LobbyBotTab_OnChecked(object sender, RoutedEventArgs e)
     {
         //SelectedTab = ActiveTab.LobbyBot;
-        if (Accounts.Fortnite.Accounts == null)
-        {
-            PopupContainer.ShowMessage("Please Add an Account", "Cannot select accounts because accounts are null.");
-            return;
-        }
-
-        _ = new AccountSelectPopup(Accounts.Fortnite.Accounts, async account =>
-        {
-            PopupContainer.ShowMessage("Starting Lobby Bot", $"Please wait for {account.Username} to appear online, then invite it.");
-            
-            var json = JsonConvert.SerializeObject(account.DeviceAuth);
-            var controller = new BotController(json);
-            controller.Start();
-
-            // Wait for bot startup
-            var success = false;
-            while (!success)
-            {
-                await Task.Delay(1000);
-                
-                if (SwapperConfig.ConfigData?.CharacterId != null)
-                    success = await controller.TrySetCosmetic("AthenaCharacter", SwapperConfig.ConfigData.CharacterId);
-
-                if (SwapperConfig.ConfigData?.BackpackId != null)
-                    success = await controller.TrySetCosmetic("AthenaBackpack", SwapperConfig.ConfigData.BackpackId);
-
-                if (success)
-                    Log("LobbyBotController", LogLevel.Info, "Set cosmetic.");
-                else
-                    Log("LobbyBotController", LogLevel.Info, "Unable to set cosmetic. Retrying...");
-            }
-        });
+        LaunchFortniteCommand.StartLobbyBot();
     }
     
     private void StatsTab_OnChecked(object sender, RoutedEventArgs e)

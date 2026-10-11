@@ -102,7 +102,7 @@ public class LaunchFortniteCommand : ICommand
         }
     }
 
-    private void StartLobbyBot()
+    public static void StartLobbyBot()
     {
         if (Accounts.Fortnite.Accounts == null)
         {
@@ -110,32 +110,38 @@ public class LaunchFortniteCommand : ICommand
             return;
         }
 
-        new AccountSelectPopup(Accounts.Fortnite.Accounts, async void (account) =>
+        _ = new AccountSelectPopup(Accounts.Fortnite.Accounts, async void (account) =>
         {
             try
             {
                 MainWindow.PopupContainer.ShowMessage("Starting Lobby Bot", $"Please wait for {account.Username} to appear online, then invite it.");
             
                 var json = JsonConvert.SerializeObject(account.DeviceAuth);
-                var controller = new BotController(json);
-                controller.Start();
+                BotController.Start(json);
 
                 // Wait for bot startup
-                var success = false;
-                while (!success)
+                var characterSuccess = false;
+                var backpackSuccess = false;
+                while (!characterSuccess || !backpackSuccess)
                 {
                     await Task.Delay(1000);
-                
+
                     if (SwapperConfig.ConfigData?.CharacterId != null)
-                        success = await controller.TrySetCosmetic("AthenaCharacter", SwapperConfig.ConfigData.CharacterId);
+                    {
+                        characterSuccess = await BotController.TrySetCosmetic("AthenaCharacter",
+                            SwapperConfig.ConfigData.CharacterId);
+                    }
 
                     if (SwapperConfig.ConfigData?.BackpackId != null)
-                        success = await controller.TrySetCosmetic("AthenaBackpack", SwapperConfig.ConfigData.BackpackId);
+                    {
+                        backpackSuccess =
+                            await BotController.TrySetCosmetic("AthenaBackpack", SwapperConfig.ConfigData.BackpackId);
+                    }
 
-                    if (success)
-                        Log("LobbyBotController", LogLevel.Info, "Set cosmetic.");
+                    if (characterSuccess && backpackSuccess)
+                        Log("LobbyBotController", LogLevel.Info, "Set cosmetics");
                     else
-                        Log("LobbyBotController", LogLevel.Info, "Unable to set cosmetic. Retrying...");
+                        Log("LobbyBotController", LogLevel.Info, "Unable to set cosmetics. Retrying...");
                 }
             }
             catch (Exception ex)
@@ -145,7 +151,7 @@ public class LaunchFortniteCommand : ICommand
         });
     }
 
-    private void HandleError(Exception ex)
+    private static void HandleError(Exception ex)
     {
         var error = ex.ToString();
         MainWindow.PopupContainer.ShowMessage("ERROR",

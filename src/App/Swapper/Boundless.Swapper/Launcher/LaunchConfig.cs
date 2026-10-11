@@ -34,6 +34,10 @@ public class LaunchConfig
 
     public void SaveAssetData(string assetPath, string containerPath, byte[] buffer)
     {
+        var duplicateEdit = Edits.FirstOrDefault(x => x.AssetPath == assetPath);
+        if (duplicateEdit != null)
+            Edits.RemoveAll(x => x.AssetPath == assetPath);
+        
         var filePath = DataPath + "\\" + assetPath.Split("/").Last();
         var edit = new Edit(assetPath, filePath, containerPath);
 

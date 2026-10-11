@@ -2,20 +2,20 @@ using System.Diagnostics;
 
 namespace LobbyBotController;
 
-public class BotController
+public static class BotController
 {
-    private string DeviceAuthFilePath => Globals.FolderPath + "\\device_auth.json";
-    private HttpClient _httpClient;
-    
-    public BotController(string deviceAuthJson)
-    {
-        Directory.CreateDirectory(Globals.FolderPath);
-        _httpClient = new HttpClient();
-        File.WriteAllText(DeviceAuthFilePath, deviceAuthJson);
-    }
+    private static string DeviceAuthFilePath => Globals.FolderPath + "\\device_auth.json";
+    private static HttpClient _httpClient = new();
 
-    public void Start()
+    private static Process? _lobbyBotProcess;
+
+    public static void Start(string deviceAuthJson)
     {
+        _httpClient = new HttpClient();
+        
+        Directory.CreateDirectory(Globals.FolderPath);
+        File.WriteAllText(DeviceAuthFilePath, deviceAuthJson);
+        
         var npm = Process.Start(new ProcessStartInfo
         {
             WorkingDirectory = Globals.FolderPath + "\\src",
@@ -26,7 +26,7 @@ public class BotController
 
         npm?.WaitForExit();
         
-        Process.Start(new ProcessStartInfo
+        _lobbyBotProcess = Process.Start(new ProcessStartInfo
         {
             WorkingDirectory = Globals.FolderPath + "\\src",
             FileName = "cmd.exe",
@@ -35,7 +35,13 @@ public class BotController
         });
     }
 
-    public async Task<bool> TrySetCosmetic(string athenaType, string id)
+    public static void Stop()
+    {
+        _lobbyBotProcess?.Kill();
+        _lobbyBotProcess = null;
+    }
+
+    public static async Task<bool> TrySetCosmetic(string athenaType, string id)
     {
         try
         {

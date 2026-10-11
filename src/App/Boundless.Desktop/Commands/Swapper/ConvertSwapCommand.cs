@@ -1,6 +1,7 @@
 ﻿global using static Boundless.Swapper.Globals;
 using System.Diagnostics;
 using System.Windows.Input;
+using Boundless.Desktop.Config;
 
 namespace Boundless.Desktop.Commands.Swapper;
 
@@ -33,6 +34,17 @@ public class ConvertSwapCommand : ICommand
                 {
                     case "AthenaCharacter":
                         CharacterSwap.Convert(swap);
+                        break;
+                    case "AthenaBackpack":
+                        if (SwapperConfig.ConfigData?.CharacterId == null)
+                        {
+                            swap.Log("Cannot swap backpack without first swapping a character!");
+                            swap.Log("Cannot swap backpack without first swapping a character!");
+                            swap.Log("Cannot swap backpack without first swapping a character!");
+                        }
+                        else
+                            BackpackSwap.Convert(swap);
+                        
                         break;
                 }
 
