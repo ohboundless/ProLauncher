@@ -64,7 +64,8 @@ public partial class MultipleOptionsPopup : UserControl
                 BorderThickness = new Thickness(1),
                 Foreground = Brushes.White,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                Margin = new Thickness(3)
+                Margin = new Thickness(3),
+                MinWidth = 250
             };
 
             button.Click += (_, _) =>
