@@ -38,6 +38,7 @@ public class LaunchFortniteCommand : ICommand
     private void ExecLaunchFortnite()
     {
         LaunchFortnite();
+        
         var username = MainWindow.ActiveAccount?.Username ?? "NULL";
         MainWindow.PopupContainer.ShowMessage("Launching...", $"Retrieving access token for \"{username}\" and launching Fortnite.", removeAllPopups: false);
     }
@@ -89,12 +90,18 @@ public class LaunchFortniteCommand : ICommand
         try
         {
             var launchConfig = new LaunchConfig(); // Everything gets automatically loaded
-            Process.Start(new ProcessStartInfo
+            var launcherProc = Process.Start(new ProcessStartInfo
             {
                 WorkingDirectory = launchConfig.LauncherDirectory,
                 FileName = launchConfig.ExePath,
-                CreateNoWindow = false // Might change later
+                CreateNoWindow = true
             });
+
+            if (launcherProc != null)
+            {
+                launcherProc.EnableRaisingEvents = true;
+                launcherProc.Exited += (_, _) => BotController.Stop();
+            }
         }
         catch (Exception ex)
         {
@@ -106,7 +113,8 @@ public class LaunchFortniteCommand : ICommand
     {
         if (Accounts.Fortnite.Accounts == null)
         {
-            MainWindow.PopupContainer.ShowMessage("Please Add an Account", "Cannot select accounts because accounts are null.");
+            MainWindow.PopupContainer.ShowMessage("Please Add an Account",
+                "Cannot select accounts because accounts are null.");
             return;
         }
 
@@ -114,8 +122,9 @@ public class LaunchFortniteCommand : ICommand
         {
             try
             {
-                MainWindow.PopupContainer.ShowMessage("Starting Lobby Bot", $"Please wait for {account.Username} to appear online, then invite it.");
-            
+                MainWindow.PopupContainer.ShowMessage("Starting Lobby Bot",
+                    $"Please wait for {account.Username} to appear online, then invite it.");
+
                 var json = JsonConvert.SerializeObject(account.DeviceAuth);
                 BotController.Start(json);
 

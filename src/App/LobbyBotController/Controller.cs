@@ -21,7 +21,7 @@ public static class BotController
             WorkingDirectory = Globals.FolderPath + "\\src",
             FileName = "cmd.exe",
             Arguments = "/c npm install",
-            CreateNoWindow = false
+            CreateNoWindow = true
         });
 
         npm?.WaitForExit();
@@ -29,9 +29,9 @@ public static class BotController
         _lobbyBotProcess = Process.Start(new ProcessStartInfo
         {
             WorkingDirectory = Globals.FolderPath + "\\src",
-            FileName = "cmd.exe",
-            Arguments = "/c node index.js",
-            CreateNoWindow = false
+            FileName = "node",
+            Arguments = "index.js",
+            CreateNoWindow = true
         });
     }
 

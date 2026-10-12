@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Windows;
 using Boundless.Desktop.Utils;
+using LobbyBotController;
 
 namespace Boundless.Desktop.Games;
 
@@ -21,7 +22,7 @@ public static class GameProcessList
         }
     }
 
-    public static void MarkIsRunning(bool isRunning)
+    private static void MarkIsRunning(bool isRunning)
     {
         MainWindow.LaunchFortniteBtn.Visibility = isRunning ? Visibility.Collapsed : Visibility.Visible;
         MainWindow.CloseFortniteBtn.Visibility = isRunning ? Visibility.Visible : Visibility.Collapsed;
