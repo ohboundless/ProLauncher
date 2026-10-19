@@ -1,7 +1,10 @@
+using System.IO;
 using System.IO.Compression;
+using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using static Boundless.Installer.Loader.Statics;
 
-namespace Boundless.Installer;
+namespace Boundless.Installer.Loader;
 
 public class Downloader
 {
@@ -14,7 +17,7 @@ public class Downloader
 
     public async Task<dynamic> GetStatus()
     {
-        var text = await _httpClient.GetStringAsync(Statics.ServerUrl + "/api/info/status");
+        var text = await _httpClient.GetStringAsync(ServerUrl + "/api/info/status");
         var json = JObject.Parse(text);
 
         return json;
@@ -39,22 +42,16 @@ public class Downloader
             await output.WriteAsync(buffer.AsMemory(0, bytesRead));
             downloadedBytes += bytesRead;
 
-            if (totalBytes > 0)
-            {
-                var progress = (double)downloadedBytes / totalBytes * 100;
-                Console.WriteLine($"{progress:F1}%");
-            }
-            else
-            {
-                Console.WriteLine($"Downloaded: {downloadedBytes:N0} bytes");
-            }
+            if (totalBytes <= 0) 
+                continue;
+            
+            var progress = (double)downloadedBytes / totalBytes;
+            Progress(progress);
         }
         
         output.Close();
         
-        Console.WriteLine("Extracting...");
+        Log("Extracting...");
         await ZipFile.ExtractToDirectoryAsync(fileName, directoryPath, overwriteFiles: true);
-
-        Console.Clear();
     }
 }
