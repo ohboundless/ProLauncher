@@ -1,7 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using System.Runtime.InteropServices.Marshalling;
+using OffiUtils;
 using OodleDotNet;
 using Serilog;
+using UAssetEditor.Compression;
 using UAssetEditor.Encryption.Aes;
 using UAssetEditor.Unreal.Assets;
 using UAssetEditor.Unreal.Containers;
@@ -13,6 +15,7 @@ using UAssetEditor.Unreal.Readers.IoStore;
 using UAssetEditor.Unreal.Versioning;
 using UAssetEditor.Utils;
 using UsmapDotNet;
+using ZstdSharp;
 
 namespace UAssetEditor;
 
@@ -51,8 +54,7 @@ public class UnrealFileSystem
     {
         return Usmap.Parse(path, new UsmapOptions
         {
-            Oodle = string.IsNullOrEmpty(OodleDll) ? null : new Oodle(OodleDll),
-            SaveNames = false
+            Decompressor = CompressionHandler.BuildZstdDecompressor()
         });
     }
     

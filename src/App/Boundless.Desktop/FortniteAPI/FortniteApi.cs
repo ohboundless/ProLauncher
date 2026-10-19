@@ -60,7 +60,6 @@ public static class FortniteApi
         var option = data.GetOption(channel, tag);
         if (option != null)
             return option.Image;
-            
         
         Log("FortniteAPI", LogLevel.Error, $"Unable to get icon for {data.Id} using channel '{channel}' and tag '{tag}'");
         return string.Empty;

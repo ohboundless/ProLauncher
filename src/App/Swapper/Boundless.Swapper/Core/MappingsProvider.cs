@@ -1,8 +1,11 @@
 ﻿using System.Data;
 using Boundless.Logging.Classes;
 using Newtonsoft.Json.Linq;
+using OffiUtils;
+using OodleSharp;
 using Serilog;
 using UsmapDotNet;
+using ZstdSharp;
 
 namespace Boundless.Swapper.Core;
 
@@ -32,7 +35,7 @@ public class MappingsProvider
         if (IsCached())
         {
             Log("MappingsProvider", LogLevel.Info, $"Mappings for {Version} is cached. Loading...");
-            Usmap = await LoadMappings(Version);
+            Usmap = await LoadMappings();
             return;
         }
         else
@@ -54,7 +57,7 @@ public class MappingsProvider
         Log("MappingsProvider", LogLevel.Info, "Downloaded mappings. Saving, parsing, and returning...");
         
         await SaveMappings(data);
-        Usmap = Usmap.Parse(data);
+        Usmap = Usmap.Parse(data, UsmapOptions);
     }
 
     private bool IsCached() => File.Exists(MappingsFilePath);
@@ -64,14 +67,31 @@ public class MappingsProvider
         await File.WriteAllBytesAsync(MappingsFilePath, bytes);
     }
 
-    private async Task<Usmap> LoadMappings(string version)
+    private async Task<Usmap> LoadMappings()
     {
         var bytes = await File.ReadAllBytesAsync(MappingsFilePath);
-        return Usmap.Parse(bytes);
+        return Usmap.Parse(bytes, UsmapOptions);
     }
 
     private string GetMappingsPath(string version)
     {
         return $"{Statics.DataDirectory}\\{version}.usmap";
     }
+    
+    private static bool TryDecompressZstd(
+        ReadOnlySpan<byte> source,
+        Span<byte> destination,
+        out int bytesWritten)
+    {
+        using var decompressor = new Decompressor();
+        return decompressor.TryUnwrap(source, destination, out bytesWritten);
+    }
+
+    private static UsmapOptions UsmapOptions { get; } = new()
+    {
+        Decompressor = DecompressorBuilder.Default
+            .Add(CompressionAlgorithm.Oodle, OodleDecompressor.TryDecompress)
+            .Add(CompressionAlgorithm.Zstd, TryDecompressZstd)
+            .Build()
+    };
 }

@@ -23,16 +23,24 @@ public partial class SwapperTab : UserControl
     {
         if (Core != null)
             return;
-        
+
         if (!EpicInstallations.Installs.TryGetValue("Fortnite", out var install))
         {
             throw new ApplicationException("Fortnite is not installed or the install has not been populated.");
         }
-        
-        Core = new SwapperCore(install.Path);
-        await Core.Initialize();
+
+        try
+        {
+            Core = new SwapperCore(install.Path);
+            await Core.Initialize();
+        }
+        catch (Exception ex)
+        {
+            ErrorPopup.Show("SwapperTab",
+                "Error loading swapper! If this error persists please report it the to dev team.", ex);
+        }
     }
-    
+
     public void UpdateCosmeticsLoadingProgress(double progress)
     {
         var percentage = progress * 100.0;

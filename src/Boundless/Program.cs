@@ -15,7 +15,7 @@ try
 
         if (!string.IsNullOrWhiteSpace(key))
         {
-            File.WriteAllText(Statics.DirectoryPath + "\\Launcher\\Key.txt", key.Trim());
+            File.WriteAllText(Statics.DirectoryPath + @"\Launcher\Key.txt", key.Trim());
             Console.WriteLine("Submitted...\n");
         }
         else

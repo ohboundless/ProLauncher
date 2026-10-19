@@ -6,7 +6,6 @@ using UAssetEditor.Classes.Containers;
 using UAssetEditor.Unreal.Misc;
 using UAssetEditor.Unreal.Objects;
 using UAssetEditor.Unreal.Summaries.IO;
-using ZstdSharp.Unsafe;
 
 namespace UAssetEditor.Unreal.Names;
 

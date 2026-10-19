@@ -12,7 +12,8 @@
       <PackageReference Include="Oodle.NET" Version="2.2.0" />
       <PackageReference Include="Serilog" Version="4.4.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
-      <PackageReference Include="Usmap.NET" Version="3.1.0" />
+      <PackageReference Include="Usmap.NET" Version="3.3.0" />
+      <PackageReference Include="ZstdSharp.Port" Version="0.8.8" />
     </ItemGroup>
 
 
