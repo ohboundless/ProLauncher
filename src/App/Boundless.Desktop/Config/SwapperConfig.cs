@@ -11,13 +11,15 @@ public class SwapperConfig
     
     public string? CharacterId { get; set; }
     public string? BackpackId { get; set; }
+    public string[]? CharacterCps { get; set; }
+    public string[]? BackpackCps { get; set; }
     
     #endregion
     
     public static string DirectoryName =>
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BoundlessLauncher";
 
-    private static string FilePath => DirectoryName + "\\" + "SwapperConfig.json";
+    private static string FilePath => DirectoryName + "\\" + "swapper_config.json";
     
     public static void InitializeConfig()
     {

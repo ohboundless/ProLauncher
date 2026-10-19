@@ -26,13 +26,13 @@ public class Configuration
     public static string DirectoryName =>
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BoundlessLauncher";
 
-    private static string FilePath => DirectoryName + "\\" + "Config.json";
-    public static string LoggingPath => DirectoryName + @"\Logs\Boundless.Desktop-.log";
+    private static string FilePath => DirectoryName + "\\" + "config.json";
+    public static string LoggingPath => DirectoryName + @"\logs\Boundless.Desktop-.log";
     
     public static void InitializeConfig()
     {
         Directory.CreateDirectory(DirectoryName);
-        Directory.CreateDirectory(DirectoryName + "\\Logs");
+        Directory.CreateDirectory(DirectoryName + "\\logs");
         
         if (!File.Exists(FilePath))
             SaveConfig();

@@ -19,14 +19,28 @@ public static class CharacterSwap
                 new ApplicationException($"Could not find character ({parameter.SwapTo.CosmeticId})"));
             return;
         }
-        
-        CharacterPartSwapper.SetCharacterParts(character.BaseCharacterParts.Select(x => x.ToString()).ToArray());
+
+        var parts = character.BaseCharacterParts.Select(x => x.ToString()).ToArray();
+        CharacterPartSwapper.SetCharacterParts(parts);
         parameter.Log("Set character parts.");
         
         CharacterPartSwapper.InvalidateDefault();
         parameter.Log("Invalidated default character.");
 
         SwapperConfig.ConfigData?.CharacterId = parameter.SwapTo.CosmeticId;
+        SwapperConfig.ConfigData?.CharacterCps = parts;
+        SwapperConfig.SaveConfig();
+    }
+    
+    public static void Revert(SwapParameter parameter)
+    {
+        CharacterPartSwapper.RevertAll();
+        parameter.Log("Reverted outfit and backbling...");
+        
+        SwapperConfig.ConfigData?.CharacterId = null;
+        SwapperConfig.ConfigData?.BackpackId = null;
+        SwapperConfig.ConfigData?.CharacterCps = null;
+        SwapperConfig.ConfigData?.BackpackCps = null;
         SwapperConfig.SaveConfig();
     }
 }

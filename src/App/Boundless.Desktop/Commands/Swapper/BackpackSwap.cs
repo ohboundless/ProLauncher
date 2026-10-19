@@ -22,7 +22,8 @@ public static class BackpackSwap
         }
 
         var characterParts = character!.BaseCharacterParts.Select(x => x.ToString()).ToList();
-        characterParts.AddRange(backpack.CharacterParts.Select(x => x.ToString()));
+        var backpackParts = backpack.CharacterParts.Select(x => x.ToString()).ToArray();
+        characterParts.AddRange(backpackParts);
         
         CharacterPartSwapper.SetCharacterParts(characterParts.ToArray());
         parameter.Log("Set character parts.");
@@ -34,6 +35,23 @@ public static class BackpackSwap
         parameter.Log("Invalidated default backpack.");
         
         SwapperConfig.ConfigData.BackpackId = parameter.SwapTo.CosmeticId;
+        SwapperConfig.ConfigData.BackpackCps = backpackParts;        
+        SwapperConfig.SaveConfig();
+    }
+    
+    public static void Revert(SwapParameter parameter)
+    {
+        if (SwapperConfig.ConfigData!.BackpackCps == null)
+        {
+            parameter.Log("No character to revert.");
+            return;
+        }
+        
+        CharacterPartSwapper.RevertBackpack(SwapperConfig.ConfigData.CharacterCps!);
+        parameter.Log("Reverted backbling...");
+        
+        SwapperConfig.ConfigData.BackpackId = null;
+        SwapperConfig.ConfigData.BackpackCps = null;
         SwapperConfig.SaveConfig();
     }
 }

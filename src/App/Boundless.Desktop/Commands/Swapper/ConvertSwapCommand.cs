@@ -48,7 +48,7 @@ public class ConvertSwapCommand : ICommand
                         break;
                 }
 
-                swap.Log($"Done in {sw.ElapsedMilliseconds}ms");
+                swap.Log($"Converted in {sw.ElapsedMilliseconds}ms");
                 
             }
             catch (Exception ex)

@@ -140,7 +140,7 @@ public class CosmeticsViewModel : ViewModel
     
     public void OnTabSwitched()
     {
-        if (MainWindow.ActiveAccount == null)
+        if (MainWindow.ActiveAccount == null && !IsForSwapper)
             return;
 
         if (SelectedFilter == CosmeticFilter.None)
@@ -159,7 +159,7 @@ public class CosmeticsViewModel : ViewModel
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        var myCosmetics = IsForSwapper ? null : MainWindow.ActiveAccount.ProfileData?.Cosmetics;
+        var myCosmetics = IsForSwapper ? null : MainWindow.ActiveAccount!.ProfileData?.Cosmetics;
         Action<double> progressCallback = IsForSwapper
             ? MainWindow.SwapperTab.UpdateCosmeticsLoadingProgress
             : MainWindow.AccountCosmeticsTab.UpdateCosmeticsLoadingProgress;

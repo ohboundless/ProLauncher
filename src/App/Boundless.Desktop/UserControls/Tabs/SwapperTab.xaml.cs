@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Boundless.Desktop.FortniteAPI;
 using Boundless.Desktop.Games;
 using Boundless.Desktop.Games.EpicGames;
 using Boundless.Desktop.Games.EpicGames.Fortnite.API;
@@ -31,6 +32,9 @@ public partial class SwapperTab : UserControl
 
         try
         {
+            await FortniteCache.GetAllCosmetics();
+            Log("SwapperTab", LogLevel.Info, "Downloaded cosmetics.");
+            
             Core = new SwapperCore(install.Path);
             await Core.Initialize();
         }
@@ -41,10 +45,10 @@ public partial class SwapperTab : UserControl
         }
     }
 
-    public void UpdateCosmeticsLoadingProgress(double progress)
+    public async void UpdateCosmeticsLoadingProgress(double progress)
     {
         var percentage = progress * 100.0;
-        Dispatcher.InvokeAsync(() =>
+        await Dispatcher.InvokeAsync(() =>
         {
             CosmeticProgressRing.Progress = percentage;
             

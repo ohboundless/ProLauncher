@@ -50,10 +50,10 @@ public partial class AccountCosmeticsTab : UserControl
         CosmeticPanel.CosmeticsViewModel?.OnTabSwitched();
     }
     
-    public void UpdateCosmeticsLoadingProgress(double progress)
+    public async void UpdateCosmeticsLoadingProgress(double progress)
     {
         var percentage = progress * 100.0;
-        Dispatcher.InvokeAsync(() =>
+        await Dispatcher.InvokeAsync(() =>
         {
             CosmeticProgressRing.Progress = percentage;
             

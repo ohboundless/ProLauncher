@@ -13,15 +13,15 @@ public class LaunchConfig
 {
     public string LauncherDirectory { get; }
     public string ExePath => LauncherDirectory + "\\ProSwapper.Launcher.exe";
-    public string EditsPath => LauncherDirectory + "\\Edits.json";
-    public string DataPath => LauncherDirectory + "\\Data";
+    public string EditsPath => LauncherDirectory + "\\edits.json";
+    public string DataPath => LauncherDirectory + "\\data";
     
     private List<Edit> Edits { get; } = new();
 
     public LaunchConfig()
     {
         LauncherDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                            @"\BoundlessLauncher\Launcher";
+                            @"\BoundlessLauncher\launcher";
         Directory.CreateDirectory(LauncherDirectory);
         Directory.CreateDirectory(DataPath);
     }
@@ -43,6 +43,16 @@ public class LaunchConfig
 
         File.WriteAllBytes(filePath, buffer);
         Edits.Add(edit);
+        Save();
+    }
+
+    public void RemoveAsset(string assetPath)
+    {
+        Edits.RemoveAll(x => x.AssetPath == assetPath);
+        
+        var filePath = DataPath + "\\" + assetPath.Split("/").Last();
+        File.Delete(filePath);
+        
         Save();
     }
 }

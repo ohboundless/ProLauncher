@@ -1,4 +1,6 @@
 ﻿using Boundless.Logging.Classes;
+using Boundless.Swapper.Cosmetics.Models;
+using Boundless.Swapper.Launcher;
 using UAssetEditor.Binary;
 using UAssetEditor.Unreal.Properties.Types;
 
@@ -7,8 +9,10 @@ namespace Boundless.Swapper.Swappers;
 public class CharacterPartSwapper
 {
     private const string DataCosmetics = "FortniteGame/Content/Balance/DefaultGameDataCosmetics.uasset";
+
     private const string DefaultBody =
         "FortniteGame/Plugins/GameFeatures/DefaultCosmeticsAthena/Content/Characters/Meshes/CP_Athena_Body_F_Prime_A.uasset";
+
     private const string NoBackpack =
         "FortniteGame/Content/Characters/CharacterParts/BackPacks/NoBackpack.uasset";
     
@@ -52,5 +56,18 @@ public class CharacterPartSwapper
         Researcher.FindAndReplace(memoryStream, "NoBackpack", "N1111111ck");
 
         SC.LaunchConfig.SaveAssetData(NoBackpack, containerPath, memoryStream.ToArray());
+    }
+
+    public static void RevertAll()
+    {
+        SC.LaunchConfig.RemoveAsset(DataCosmetics);
+        SC.LaunchConfig.RemoveAsset(DefaultBody);
+        SC.LaunchConfig.RemoveAsset(NoBackpack);
+    }
+
+    public static void RevertBackpack(string[] characterParts)
+    {
+        SetCharacterParts(characterParts);
+        SC.LaunchConfig.RemoveAsset(NoBackpack);
     }
 }
