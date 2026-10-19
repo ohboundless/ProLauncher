@@ -11,7 +11,8 @@ public class Edit(string assetPath, string dataFilePath, string containerPath)
 
 public class LaunchConfig
 {
-    public string LauncherDirectory { get; }
+    public static string LauncherDirectory => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                              @"\BoundlessLauncher\launcher";
     public string ExePath => LauncherDirectory + "\\ProSwapper.Launcher.exe";
     public string EditsPath => LauncherDirectory + "\\edits.json";
     public string DataPath => LauncherDirectory + "\\data";
@@ -20,8 +21,6 @@ public class LaunchConfig
 
     public LaunchConfig()
     {
-        LauncherDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                            @"\BoundlessLauncher\launcher";
         Directory.CreateDirectory(LauncherDirectory);
         Directory.CreateDirectory(DataPath);
     }

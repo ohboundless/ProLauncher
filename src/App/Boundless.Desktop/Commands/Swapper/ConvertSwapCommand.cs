@@ -46,6 +46,11 @@ public class ConvertSwapCommand : ICommand
                             BackpackSwap.Convert(swap);
                         
                         break;
+                    default:
+                        swap.Log($"Swap type '{athenaType}' is not implemented yet!");
+                        swap.Log($"Swap type '{athenaType}' is not implemented yet!");
+                        swap.Log($"Swap type '{athenaType}' is not implemented yet!");
+                        break;
                 }
 
                 swap.Log($"Converted in {sw.ElapsedMilliseconds}ms");

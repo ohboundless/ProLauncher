@@ -4,14 +4,14 @@ namespace Boundless.Swapper.Launcher;
 
 public static class Launcher
 {
-    private static LaunchConfig _launchConfig => SC.LaunchConfig;
-    
-    public static void Launch()
+    public static Process? Launch()
     {
-        Process.Start(new ProcessStartInfo
+        var config = new LaunchConfig();
+        return Process.Start(new ProcessStartInfo
         {
-            FileName = _launchConfig.ExePath,
-            Arguments = $"\"{_launchConfig.EditsPath}\""
+            FileName = config.ExePath,
+            WorkingDirectory = LaunchConfig.LauncherDirectory,
+            Arguments = $"\"{config.EditsPath}\""
         });
     }
 }

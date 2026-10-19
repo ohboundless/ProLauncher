@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using Boundless.Desktop.Config;
@@ -43,13 +44,13 @@ public class LaunchFortniteCommand : ICommand
         MainWindow.PopupContainer.ShowMessage("Launching...", $"Retrieving access token for \"{username}\" and launching Fortnite.", removeAllPopups: false);
     }
     
-    private void ExecLaunchFortniteWithSwapper()
+    private async void ExecLaunchFortniteWithSwapper()
     {
+        Log("LaunchFortniteCommand (Swapper)", LogLevel.Info, "Starting launcher...");
+        await StartLauncher();
+        
         Log("LaunchFortniteCommand (Swapper)", LogLevel.Info, "Starting lobby bot...");
         StartLobbyBot();
-        
-        Log("LaunchFortniteCommand (Swapper)", LogLevel.Info, "Starting launcher...");
-        StartLauncher();
         
         Log("LaunchFortniteCommand (Swapper)", LogLevel.Info, "Executing launch Fortnite process...");
         LaunchFortnite();
@@ -85,22 +86,20 @@ public class LaunchFortniteCommand : ICommand
         }
     }
 
-    private void StartLauncher()
+    private async Task StartLauncher()
     {
         try
         {
-            var launchConfig = new LaunchConfig(); // Everything gets automatically loaded
-            var launcherProc = Process.Start(new ProcessStartInfo
-            {
-                WorkingDirectory = launchConfig.LauncherDirectory,
-                FileName = launchConfig.ExePath,
-                CreateNoWindow = true
-            });
-
+            var launcherProc = Launcher.Launch();
             if (launcherProc != null)
             {
                 launcherProc.EnableRaisingEvents = true;
                 launcherProc.Exited += (_, _) => BotController.Stop();
+            }
+
+            while (!File.Exists(LaunchConfig.LauncherDirectory + "\\key.txt"))
+            {
+                await Task.Delay(1000);
             }
         }
         catch (Exception ex)
@@ -125,8 +124,11 @@ public class LaunchFortniteCommand : ICommand
                 MainWindow.PopupContainer.ShowMessage("Starting Lobby Bot",
                     $"Please wait for {account.Username} to appear online, then invite it.");
 
+                if (!Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame.TryGetValue("Fortnite", out var current))
+                    throw new LaunchFortniteException("Cannot start lobby bot, no active account found!");
+                    
                 var json = JsonConvert.SerializeObject(account.DeviceAuth);
-                BotController.Start(json);
+                BotController.Start(json, current);
 
                 // Wait for bot startup
                 var characterSuccess = false;

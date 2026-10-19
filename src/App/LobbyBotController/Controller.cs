@@ -5,16 +5,18 @@ namespace LobbyBotController;
 public static class BotController
 {
     private static string DeviceAuthFilePath => Globals.FolderPath + "\\device_auth.json";
+    private static string OwnerIdFilePath => Globals.FolderPath + "\\owner.txt";
     private static HttpClient _httpClient = new();
 
     private static Process? _lobbyBotProcess;
 
-    public static void Start(string deviceAuthJson)
+    public static void Start(string deviceAuthJson, string ownerAccountId)
     {
         _httpClient = new HttpClient();
         
         Directory.CreateDirectory(Globals.FolderPath);
         File.WriteAllText(DeviceAuthFilePath, deviceAuthJson);
+        File.WriteAllText(OwnerIdFilePath, ownerAccountId);
         
         var npm = Process.Start(new ProcessStartInfo
         {
