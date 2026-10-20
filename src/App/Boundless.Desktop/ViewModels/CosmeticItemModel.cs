@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -12,87 +14,193 @@ using CUE4Parse.GameTypes.FN.Enums;
 
 namespace Boundless.Desktop.ViewModels;
 
-public class CosmeticItemModel
+public class CosmeticItemModel : INotifyPropertyChanged
 {
+    private readonly Lazy<Task> _loadTask;
+
     public AthenaCosmetic Cosmetic { get; }
     public string CosmeticId { get; }
-    public CosmeticData? Data { get; private set; }
-    public EFortRarity Rarity { get; private set; }
-    public Uri IconUri { get; private set; }
+
+    private string _channel;
+    private string _tag;
+    
+    private CosmeticData? _data;
+
+    public CosmeticData? Data
+    {
+        get => _data;
+        private set
+        {
+            _data = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsNull));
+            OnPropertyChanged(nameof(ItemName));
+        }
+    }
+
+    private EFortRarity _rarity;
+
+    public EFortRarity Rarity
+    {
+        get => _rarity;
+        private set
+        {
+            _rarity = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private Uri? _iconUri;
+
+    public Uri? IconUri
+    {
+        get => _iconUri;
+        private set
+        {
+            _iconUri = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private BitmapSource? _iconSource;
+
+    public BitmapSource? IconSource
+    {
+        get => _iconSource;
+        private set
+        {
+            _iconSource = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private Brush? _backgroundRadial;
+
+    public Brush? BackgroundRadial
+    {
+        get => _backgroundRadial;
+        private set
+        {
+            _backgroundRadial = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private Brush? _borderColor;
+
+    public Brush? BorderColor
+    {
+        get => _borderColor;
+        private set
+        {
+            _borderColor = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility Visibility { get; set; }
+
     public bool IsNull => Data == null;
     public bool IsForSwapper => Cosmetic.IsForSwapper;
-    
-    #region Data Bindings
-    public BitmapSource IconSource { get; set; }
-    public Brush BackgroundRadial { get; set; }
-    public Brush BorderColor { get; set; }
-    public Visibility Visibility { get; set; }
-    #endregion
-    
+    public string ItemName => Data?.Name ?? "NULL";
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(
+            this,
+            new PropertyChangedEventArgs(propertyName));
+    }
+
     public CosmeticItemModel(AthenaCosmetic cosmetic)
     {
         Cosmetic = cosmetic;
-        Data = cosmetic.CosmeticData;
         CosmeticId = cosmetic.GetCosmeticId();
-    }
-    
-    public string GetItemName()
-    {
-        return Data?.Name ?? "NULL";
-    }
+        Data = cosmetic.CosmeticData;
+        _loadTask = new Lazy<Task>(LoadCoreAsync);
 
-    public async Task LoadAsync()
-    {
-        if (Data == null)
+        if (IsForSwapper)
+            Rarity = Data?.GetRarity() ?? EFortRarity.Common;
+        
+        if (!IsForSwapper)
         {
             if (!FortniteCache.TryGetCosmetic(CosmeticId, out var model))
             {
-                Log("FortniteApiCache", LogLevel.Error, $"Could not find {CosmeticId} in cache.");
+                Log(
+                    "FortniteApiCache",
+                    LogLevel.Error,
+                    $"Could not find {CosmeticId} in cache.");
+
                 return;
             }
 
             Data = model;
+            
+            // Check if this is a rare cosmetic
+            var transcendent = IsTranscendent(out _channel, out _tag);
+            
+            Rarity = transcendent
+                ? EFortRarity.Transcendent
+                : Data.GetRarity();
         }
 
-        Rarity = IsTranscendent(out var channel, out var tag) ? EFortRarity.Transcendent : Data.GetRarity();
+        SetRarity(Rarity);
+    }
 
-        if (Data.TryGetCachedIcon(out var iconUri))
+    public string GetItemName() => ItemName;
+
+    public Task LoadAsync() => _loadTask.Value;
+
+    private async Task LoadCoreAsync()
+    {
+        if (Data.TryGetCachedIcon(_channel, _tag, out var iconUri))
+        {
             IconUri = iconUri;
+        }
         else
         {
-            var uri = Data.GetIcon(channel, tag);
-            if (uri == null) // Fallback icon
+            var uri = Data.GetIcon(_channel, _tag);
+
+            if (uri == null)
             {
-                IconUri = new Uri("pack://application:,,,/Resources/Images/Icons/T_Ui_Outfit_256.png");
+                IconUri = new Uri(
+                    "pack://application:,,,/Resources/Images/Icons/T_Ui_Outfit_256.png");
+
                 return;
             }
 
-            var fileUri = await Data.CacheIconAsync(uri);
+            var fileUri = await Data.CacheIconAsync(uri, _channel, _tag);
             IconUri = new Uri(fileUri);
         }
 
-        ProcessData();
+        await LoadIconAsync();
     }
-    
-    private void ProcessData()
-    {
-        SetRarity(Rarity);
-        LoadIcon();
-    }
-    
-    private void LoadIcon()
-    {
-        var bitmap = new BitmapImage();
 
-        bitmap.BeginInit();
-        bitmap.UriSource = IconUri;
-        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-        bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-        bitmap.EndInit();
+    private async Task LoadIconAsync()
+    {
+        if (IconUri == null)
+            return;
 
-        if (bitmap.CanFreeze)
-            bitmap.Freeze();
-        
+        var uri = IconUri;
+
+        var bitmap = await Task.Run(() =>
+        {
+            var image = new BitmapImage();
+
+            image.BeginInit();
+            image.UriSource = uri;
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.DecodePixelWidth = 256;
+            image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            image.EndInit();
+
+            if (image.CanFreeze)
+                image.Freeze();
+
+            return image;
+        });
+
         IconSource = bitmap;
     }
 
@@ -113,42 +221,42 @@ public class CosmeticItemModel
 
         var radial = new RadialGradientBrush(colors[0], colors[1]);
         radial.Freeze();
-        
+
         var border = new SolidColorBrush(colors[0]);
         border.Freeze();
 
         BackgroundRadial = radial;
         BorderColor = border;
     }
-    
+
     private bool IsTranscendent(out string? channel, out string? tag)
+    {
+        if (RareCosmetics.IsRare(CosmeticId, null, null))
         {
-            if (RareCosmetics.IsRare(CosmeticId, null, null))
-            {
-                channel = null;
-                tag = null;
-                return true;
-            }
-    
-            var variants = Cosmetic.Attributes?.Variants;
-            if (variants != null)
-            {
-                foreach (var variant in variants)
-                {
-                    foreach (var style in variant.Owned)
-                    {
-                        if (!RareCosmetics.IsRare(CosmeticId, variant.Channel, style))
-                            continue;
-    
-                        channel = variant.Channel;
-                        tag = style;
-                        return true;
-                    }
-                }
-            }
-    
             channel = null;
             tag = null;
-            return false;
+            return true;
         }
+
+        var variants = Cosmetic.Attributes?.Variants;
+        if (variants != null)
+        {
+            foreach (var variant in variants)
+            {
+                foreach (var style in variant.Owned)
+                {
+                    if (!RareCosmetics.IsRare(CosmeticId, variant.Channel, style))
+                        continue;
+
+                    channel = variant.Channel;
+                    tag = style;
+                    return true;
+                }
+            }
+        }
+
+        channel = null;
+        tag = null;
+        return false;
+    }
 }

@@ -18,7 +18,8 @@
         <Image Source="{Binding IconSource}" 
                VerticalAlignment="Bottom"
                Width="100"
-               Margin="1">
+               Margin="1"
+               Loaded="Image_OnLoaded">
             <Image.OpacityMask>
                 <VisualBrush Visual="{Binding ElementName=MaskBorder}" />
             </Image.OpacityMask>

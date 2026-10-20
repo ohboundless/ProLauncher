@@ -108,11 +108,18 @@ public static class FortniteCache
     #endregion
 
     #region Icons
-    private static string GetImagePath(this CosmeticData cosmeticData) => $"{ImagePath}\\{cosmeticData.Id}.png";
 
-    public static bool TryGetCachedIcon(this CosmeticData cosmeticData, out Uri? source)
+    private static string GetImagePath(this CosmeticData cosmeticData, string? channel = null, string? tag = null)
     {
-        var path = cosmeticData.GetImagePath();
+        if (channel != null && tag != null)
+            return $"{ImagePath}\\{cosmeticData.Id}_{channel}_{tag}.png";
+        
+        return $"{ImagePath}\\{cosmeticData.Id}.png";
+    }
+
+    public static bool TryGetCachedIcon(this CosmeticData cosmeticData, string? channel, string? tag, out Uri? source)
+    {
+        var path = cosmeticData.GetImagePath(channel, tag);
         if (File.Exists(path))
         {
             source = new Uri(path, UriKind.Absolute);
@@ -123,7 +130,7 @@ public static class FortniteCache
         return false;
     }
 
-    public static async Task<string> CacheIconAsync(this CosmeticData cosmeticData, string uri)
+    public static async Task<string> CacheIconAsync(this CosmeticData cosmeticData, string uri, string channel, string tag)
     {
         var request = new RestRequest(uri);
         var data = await _client.DownloadDataAsync(request);
@@ -131,7 +138,7 @@ public static class FortniteCache
         if (data == null)
             throw new HttpRequestException($"Unable to download '{uri}'");
 
-        var path = cosmeticData.GetImagePath();
+        var path = cosmeticData.GetImagePath(channel, tag);
         await File.WriteAllBytesAsync(path, data);
 
         return path;

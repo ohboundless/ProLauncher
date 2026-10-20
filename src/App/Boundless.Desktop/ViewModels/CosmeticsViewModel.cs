@@ -232,7 +232,6 @@ public class CosmeticsViewModel : ViewModel
                     continue;
 
                 var model = new CosmeticItemModel(obj);
-                await model.LoadAsync();
                 progressCallback(Convert.ToDouble(models.Count) / cosmetics.Count);
 
                 if (model.IsNull)
@@ -246,7 +245,7 @@ public class CosmeticsViewModel : ViewModel
             }
 
             models = models.OrderByDescending(x => x.Rarity).ThenBy(x => x.Data?.Type.ParseCosmeticType()).ToList();
-            Application.Current.Dispatcher.InvokeAsync(() =>
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 Cosmetics = new ObservableCollection<CosmeticItemModel>(models);
                 progressCallback(1.0); // Just in case
