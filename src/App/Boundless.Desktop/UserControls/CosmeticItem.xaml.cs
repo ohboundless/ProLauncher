@@ -39,7 +39,7 @@ public partial class CosmeticItem : UserControl
             await item.LoadAsync();
             
             if (item.SeriesUri != null)
-                MaskBorder.Background = new ImageBrush(new BitmapImage(item.SeriesUri));
+                item.BackgroundRadial = new ImageBrush(new BitmapImage(item.SeriesUri));
         }
         catch (Exception ex)
         {

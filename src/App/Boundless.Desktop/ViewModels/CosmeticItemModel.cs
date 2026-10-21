@@ -91,7 +91,7 @@ public class CosmeticItemModel : INotifyPropertyChanged
     public Brush? BackgroundRadial
     {
         get => _backgroundRadial;
-        private set
+        set
         {
             _backgroundRadial = value;
             OnPropertyChanged();
