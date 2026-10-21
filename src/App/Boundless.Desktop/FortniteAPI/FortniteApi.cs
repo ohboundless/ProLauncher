@@ -17,10 +17,20 @@ public static class FortniteApi
         var request = new RestRequest("v2/cosmetics/br");
         return await _client.GetJsonAsync<BRCosmeticModel?>(request);
     }
-
-    // TODO series
-    public static EFortRarity GetRarity(this CosmeticData data)
+    
+    public static EFortRarity GetRarity(this CosmeticData data, out string? series, out string? seriesBackgroundUri)
     {
+        if (data.Series?.Image != null)
+        {
+            series = data.Series.BackendValue;
+            seriesBackgroundUri = data.Series.Image;
+        }
+        else
+        {
+            series = null;
+            seriesBackgroundUri = null;
+        }
+        
         return Enum.TryParse<EFortRarity>(data.Rarity.DisplayValue, out var rarity) ? rarity : EFortRarity.Common;
     }
 

@@ -11,6 +11,7 @@
              Visibility="{Binding Visibility}"
              MouseUp="CosmeticItem_OnMouseUp">
     <Grid>
+        
         <Border x:Name="MaskBorder"
                 CornerRadius="10"
                 Background="{Binding BackgroundRadial}" />

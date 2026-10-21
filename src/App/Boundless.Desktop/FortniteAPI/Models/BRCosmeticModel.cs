@@ -16,6 +16,7 @@ public sealed record CosmeticData(
     [property: JsonPropertyName("description")] string Description,
     [property: JsonPropertyName("type")] CosmeticType Type,
     [property: JsonPropertyName("rarity")] CosmeticRarity Rarity,
+    [property: JsonPropertyName("series")] CosmeticSeries? Series,
     [property: JsonPropertyName("introduction")] CosmeticIntroduction Introduction,
     [property: JsonPropertyName("images")] CosmeticImages Images,
     [property: JsonPropertyName("variants")] CosmeticVariants[]? Variants,
@@ -55,6 +56,13 @@ public static class CosmeticTypeUtils
 public sealed record CosmeticRarity(
     [property: JsonPropertyName("value")] string Value,
     [property: JsonPropertyName("displayValue")] string DisplayValue,
+    [property: JsonPropertyName("backendValue")] string BackendValue
+);
+
+public sealed record CosmeticSeries(
+    [property: JsonPropertyName("value")] string Value,
+    [property: JsonPropertyName("image")] string? Image,
+    [property: JsonPropertyName("colors")] string[]? Colors,
     [property: JsonPropertyName("backendValue")] string BackendValue
 );
 

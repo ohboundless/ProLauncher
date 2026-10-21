@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Boundless.Desktop.UserControls.Popups;
 using Boundless.Desktop.ViewModels;
 
@@ -35,13 +37,13 @@ public partial class CosmeticItem : UserControl
         try
         {
             await item.LoadAsync();
+            
+            if (item.SeriesUri != null)
+                MaskBorder.Background = new ImageBrush(new BitmapImage(item.SeriesUri));
         }
         catch (Exception ex)
         {
-            Log(
-                "CosmeticLoading",
-                LogLevel.Error,
-                $"Failed to load cosmetic {item.CosmeticId}: {ex}");
+            Log("CosmeticLoading", LogLevel.Error, $"Failed to load cosmetic {item.CosmeticId}: {ex}");
         }
     }
 }

@@ -73,6 +73,18 @@ public class CosmeticItemModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+    
+    private BitmapSource? _backgroundSource;
+
+    public BitmapSource? BackgroundSource
+    {
+        get => _backgroundSource;
+        private set
+        {
+            _backgroundSource = value;
+            OnPropertyChanged();
+        }
+    }
 
     private Brush? _backgroundRadial;
 
@@ -113,15 +125,16 @@ public class CosmeticItemModel : INotifyPropertyChanged
             new PropertyChangedEventArgs(propertyName));
     }
 
+    private string? _series;
+    private string? _seriesUriStr;
+    public Uri? SeriesUri { get; set; }
+
     public CosmeticItemModel(AthenaCosmetic cosmetic)
     {
         Cosmetic = cosmetic;
         CosmeticId = cosmetic.GetCosmeticId();
         Data = cosmetic.CosmeticData;
         _loadTask = new Lazy<Task>(LoadCoreAsync);
-
-        if (IsForSwapper)
-            Rarity = Data?.GetRarity() ?? EFortRarity.Common;
         
         if (!IsForSwapper)
         {
@@ -136,16 +149,16 @@ public class CosmeticItemModel : INotifyPropertyChanged
             }
 
             Data = model;
-            
-            // Check if this is a rare cosmetic
-            var transcendent = IsTranscendent(out _channel, out _tag);
-            
-            Rarity = transcendent
-                ? EFortRarity.Transcendent
-                : Data.GetRarity();
         }
+        
+        // Check if this is a rare cosmetic
+        var transcendent = IsTranscendent(out _channel, out _tag);
+        
+        Rarity = transcendent
+            ? EFortRarity.Transcendent
+            : Data.GetRarity(out _series, out _seriesUriStr);
 
-        SetRarity(Rarity);
+        SetRarity(Rarity, Data?.Series);
     }
 
     public string GetItemName() => ItemName;
@@ -174,6 +187,9 @@ public class CosmeticItemModel : INotifyPropertyChanged
             IconUri = new Uri(fileUri);
         }
 
+        if (_seriesUriStr != null)
+            SeriesUri = new Uri(_seriesUriStr);
+        
         await LoadIconAsync();
     }
 
@@ -183,8 +199,7 @@ public class CosmeticItemModel : INotifyPropertyChanged
             return;
 
         var uri = IconUri;
-
-        var bitmap = await Task.Run(() =>
+        var iconBitmap = await Task.Run(() =>
         {
             var image = new BitmapImage();
 
@@ -201,23 +216,39 @@ public class CosmeticItemModel : INotifyPropertyChanged
             return image;
         });
 
-        IconSource = bitmap;
+        IconSource = iconBitmap;
     }
 
-    private void SetRarity(EFortRarity rarity)
+    private void SetRarity(EFortRarity rarity, CosmeticSeries? series)
     {
-        var colors = rarity switch
+        Color[] colors;
+        
+        // Set series colors if they exist
+        if (series?.Colors != null)
         {
-            EFortRarity.Common => new[] { Color.FromRgb(181, 181, 181), Color.FromRgb(158, 158, 158) },
-            EFortRarity.Uncommon => new[] { Color.FromRgb(47, 173, 51), Color.FromRgb(57, 150, 60) },
-            EFortRarity.Rare => new[] { Color.FromRgb(72, 125, 217), Color.FromRgb(44, 83, 150) },
-            EFortRarity.Epic => new[] { Color.FromRgb(133, 63, 224), Color.FromRgb(98, 55, 153) },
-            EFortRarity.Legendary => new[] { Color.FromRgb(194, 155, 47), Color.FromRgb(186, 118, 50) },
-            EFortRarity.Mythic => new[] { Color.FromRgb(196, 201, 52), Color.FromRgb(173, 164, 61) },
-            EFortRarity.Transcendent or EFortRarity.Unattainable => new[]
-                { Color.FromRgb(199, 70, 68), Color.FromRgb(138, 39, 39) },
-            _ => throw new ArgumentOutOfRangeException(nameof(rarity), rarity, null)
-        };
+            var color1 = $"#{series.Colors.First()[..6]}";
+            var color2 = $"#{series.Colors.Last()[..6]}";
+            colors =
+            [
+                (Color)ColorConverter.ConvertFromString(color1), 
+                (Color)ColorConverter.ConvertFromString(color2)
+            ];
+        }
+        else
+        {
+            colors = rarity switch
+            {
+                EFortRarity.Common => new[] { Color.FromRgb(181, 181, 181), Color.FromRgb(158, 158, 158) },
+                EFortRarity.Uncommon => new[] { Color.FromRgb(47, 173, 51), Color.FromRgb(57, 150, 60) },
+                EFortRarity.Rare => new[] { Color.FromRgb(72, 125, 217), Color.FromRgb(44, 83, 150) },
+                EFortRarity.Epic => new[] { Color.FromRgb(133, 63, 224), Color.FromRgb(98, 55, 153) },
+                EFortRarity.Legendary => new[] { Color.FromRgb(194, 155, 47), Color.FromRgb(186, 118, 50) },
+                EFortRarity.Mythic => new[] { Color.FromRgb(196, 201, 52), Color.FromRgb(173, 164, 61) },
+                EFortRarity.Transcendent or EFortRarity.Unattainable => new[]
+                    { Color.FromRgb(199, 70, 68), Color.FromRgb(138, 39, 39) },
+                _ => throw new ArgumentOutOfRangeException(nameof(rarity), rarity, null)
+            };
+        }
 
         var radial = new RadialGradientBrush(colors[0], colors[1]);
         radial.Freeze();

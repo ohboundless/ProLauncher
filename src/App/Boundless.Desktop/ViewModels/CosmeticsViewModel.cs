@@ -8,6 +8,7 @@ using Boundless.Desktop.Framework;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.UserControls.Popups;
 using Boundless.Desktop.Utils;
+using CUE4Parse.GameTypes.FN.Enums;
 
 namespace Boundless.Desktop.ViewModels;
 
@@ -244,7 +245,12 @@ public class CosmeticsViewModel : ViewModel
                 models.Add(model);
             }
 
-            models = models.OrderByDescending(x => x.Rarity).ThenBy(x => x.Data?.Type.ParseCosmeticType()).ToList();
+            models = models.OrderByDescending(x => x.Rarity == EFortRarity.Transcendent)
+                .ThenByDescending(x => x.Data?.Series?.BackendValue ?? string.Empty)
+                .ThenByDescending(x => x.Rarity)
+                .ThenBy(x => x.Data?.Type.ParseCosmeticType())
+                .ToList();
+            
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 Cosmetics = new ObservableCollection<CosmeticItemModel>(models);
