@@ -46,14 +46,22 @@ public class LaunchFortniteCommand : ICommand
     
     private async void ExecLaunchFortniteWithSwapper()
     {
-        Log("LaunchFortniteCommand (Swapper)", LogLevel.Info, "Starting launcher...");
-        await StartLauncher();
+        try
+        {
+            Log("LaunchFortniteCommand (Swapper)", LogLevel.Info, "Starting launcher...");
+            await StartLauncher();
         
-        Log("LaunchFortniteCommand (Swapper)", LogLevel.Info, "Starting lobby bot...");
-        await StartLobbyBot();
+            Log("LaunchFortniteCommand (Swapper)", LogLevel.Info, "Starting lobby bot...");
+            await StartLobbyBot();
         
-        Log("LaunchFortniteCommand (Swapper)", LogLevel.Info, "Executing launch Fortnite process...");
-        LaunchFortnite();
+            Log("LaunchFortniteCommand (Swapper)", LogLevel.Info, "Executing launch Fortnite process...");
+            LaunchFortnite();
+        }
+        catch (Exception ex)
+        {
+            _ = new ErrorPopup("LaunchFortniteCommand_ExecLaunchFortniteWithSwapper",
+                "Could not start Fortnite with swapper! If this error persists please report it to the dev team!", ex);
+        }
     }
 
     public event EventHandler? CanExecuteChanged;

@@ -23,7 +23,7 @@ public partial class AccountCosmeticsTab : UserControl
         Log("AccountCosmeticsTab", LogLevel.Info, "Downloaded cosmetics.");
     }
 
-    public async void OnSetActiveAccount(FortniteAccount account, bool reloadData = false)
+    public async Task OnSetActiveAccount(FortniteAccount account, bool reloadData = false)
     {
         try
         {
@@ -35,7 +35,9 @@ public partial class AccountCosmeticsTab : UserControl
         }
         catch (Exception ex)
         {
-            new ErrorPopup("MainWindow_OnSetActiveAccount", $"Unable to load profile data for {account.Username}.\nIf this issue persists please report this to the dev team.", ex);
+            _ = new ErrorPopup("MainWindow_OnSetActiveAccount", 
+                $"Unable to load profile data for {account.Username}.\nIf this issue persists please report this to the dev team.", 
+                ex);
             return;
         }
 

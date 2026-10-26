@@ -19,6 +19,7 @@
         <Border.ContextMenu>
             <ContextMenu Background="#2c3252">
                 <MenuItem Header="Launch" Command="{x:Static commands:StaticCommands.LaunchFortniteCommand}"/>
+                <MenuItem Header="Refresh Profile" Command="{x:Static commands:StaticCommands.RefreshProfileCommand}"/>
                 <MenuItem Header="Delete" Command="{x:Static commands:StaticCommands.RemoveAccountCommand}"/>
                 <Separator/>
                 <MenuItem Header="Properties"/>

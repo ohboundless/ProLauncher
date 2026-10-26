@@ -33,7 +33,7 @@
                     <StackPanel>
                         <Image
                             Name="AccountIcon"
-                            Source="../Images/Icons/T_Ui_Outfit_256.png"/>
+                            Source="/Resources/Images/Icons/T_Ui_Outfit_256.png"/>
                         <StackPanel.OpacityMask>
                             <VisualBrush Visual="{Binding ElementName=Border1}" />
                         </StackPanel.OpacityMask>

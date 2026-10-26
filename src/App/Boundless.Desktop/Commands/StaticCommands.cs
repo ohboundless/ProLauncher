@@ -46,6 +46,19 @@ public static class StaticCommands
         }
     }
     
+    private static RefreshProfileCommand _refreshProfileCommand;
+    public static RefreshProfileCommand RefreshProfileCommand
+    {
+        get
+        {
+            if (_refreshProfileCommand != null)
+                return _refreshProfileCommand;
+
+            _refreshProfileCommand = new RefreshProfileCommand();
+            return _refreshProfileCommand;
+        }
+    }
+    
     #endregion
 
     #region Swapper

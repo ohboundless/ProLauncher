@@ -64,56 +64,64 @@ public partial class MainWindow : BoundlessWindow
 
     public async void LoadAccounts()
     {
-        AccountsPanel.Children.Clear();
-
-        await Accounts.Fortnite.LoadAsync();
-        var accounts = Accounts.Fortnite.Accounts;
-        if (accounts == null || accounts.Count == 0)
+        try
         {
-            NoAccountsFoundTextBlock.Visibility = Visibility.Visible;
-            return;
+            AccountsPanel.Children.Clear();
+
+            await Accounts.Fortnite.LoadAsync();
+            var accounts = Accounts.Fortnite.Accounts;
+            if (accounts == null || accounts.Count == 0)
+            {
+                NoAccountsFoundTextBlock.Visibility = Visibility.Visible;
+                return;
+            }
+
+            NoAccountsFoundTextBlock.Visibility = Visibility.Collapsed;
+
+            var ordered = accounts.OrderByDescending(x => x.LastLaunchTime);
+            var accountIds = Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame;
+
+            if (accountIds.TryGetValue("Fortnite", out var currentAccount))
+            {
+                // If the current account doesn't exist
+                if (ordered.FirstOrDefault(x => x.Id == currentAccount) == null)
+                {
+                    currentAccount = null;
+                    accountIds.Remove("Fortnite");
+                }
+            }
+
+            foreach (var account in ordered)
+            {
+                var entry = new AccountEntry(account, AccountsPanel);
+                if (currentAccount == null)
+                {
+                    entry.IsActive = true;
+                    currentAccount = account.Id;
+                    accountIds.Add("Fortnite", account.Id);
+                }
+                else if (account.Id == currentAccount)
+                {
+                    entry.IsActive = true;
+                }
+
+                AccountsPanel.Children.Add(entry);
+            }
+
+            var activeAccount = accounts.First(x => x.Id == currentAccount);
+            await OnSetActiveAccount(activeAccount);
         }
-        
-        NoAccountsFoundTextBlock.Visibility = Visibility.Collapsed;
-
-        var ordered = accounts.OrderByDescending(x => x.LastLaunchTime);
-        var accountIds = Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame;
-
-        if (accountIds.TryGetValue("Fortnite", out var currentAccount))
+        catch (Exception ex)
         {
-            // If the current account doesn't exist
-            if (ordered.FirstOrDefault(x => x.Id == currentAccount) == null)
-            {
-                currentAccount = null;
-                accountIds.Remove("Fortnite");
-            }
+            _ = new ErrorPopup("MainWindow_LoadAccounts",
+                "Unable to load accounts! If this error persists please report it to the dev team!", ex);
         }
-        
-        foreach (var account in ordered)
-        {
-            var entry = new AccountEntry(account, AccountsPanel);
-            if (currentAccount == null)
-            {
-                entry.IsActive = true;
-                currentAccount = account.Id;
-                accountIds.Add("Fortnite", account.Id);
-            }
-            else if (account.Id == currentAccount)
-            {
-                entry.IsActive = true;
-            }
-            
-            AccountsPanel.Children.Add(entry);
-        }
-
-        var activeAccount = accounts.First(x => x.Id == currentAccount);
-        OnSetActiveAccount(activeAccount);
     }
 
-    public void OnSetActiveAccount(FortniteAccount account, bool reloadData = false)
+    public async Task OnSetActiveAccount(FortniteAccount account, bool reloadData = false)
     {
         ActiveAccount = account;
-        AccountCosmeticsTab.OnSetActiveAccount(account, reloadData);
+        await AccountCosmeticsTab.OnSetActiveAccount(account, reloadData);
     }
     
     private void AddAccount_OnClick(object sender, RoutedEventArgs e)
@@ -138,10 +146,10 @@ public partial class MainWindow : BoundlessWindow
         GameProcessList.CloseFortnite();
     }
 
-    private void CosmeticsTab_OnChecked(object sender, RoutedEventArgs e)
+    private async void CosmeticsTab_OnChecked(object sender, RoutedEventArgs e)
     {
         SelectedTab = ActiveTab.Cosmetics;
-        AccountCosmeticsTab.LoadCosmetics();
+        await AccountCosmeticsTab.LoadCosmetics();
     }
     
     private void SwapperTab_OnChecked(object sender, RoutedEventArgs e)

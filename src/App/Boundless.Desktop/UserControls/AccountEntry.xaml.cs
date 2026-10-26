@@ -88,8 +88,11 @@ public partial class AccountEntry : UserControl
         return result;
     }
 
-    private void AccountEntry_OnClick(object sender, MouseButtonEventArgs e)
+    private async void AccountEntry_OnClick(object sender, MouseButtonEventArgs e)
     {
+        if (e.ChangedButton == MouseButton.Right)
+            return;
+        
         foreach (var child in _panel.Children)
         {
             if (child is AccountEntry entry)
@@ -101,7 +104,7 @@ public partial class AccountEntry : UserControl
         Configuration.SaveConfig();
 
         // Callback
-        MainWindow.OnSetActiveAccount(Account);
+        await MainWindow.OnSetActiveAccount(Account);
     }
 
     private void MoreButton_OnClick(object sender, RoutedEventArgs e)
