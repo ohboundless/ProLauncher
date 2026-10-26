@@ -50,7 +50,7 @@ public class LaunchFortniteCommand : ICommand
         await StartLauncher();
         
         Log("LaunchFortniteCommand (Swapper)", LogLevel.Info, "Starting lobby bot...");
-        StartLobbyBot();
+        await StartLobbyBot();
         
         Log("LaunchFortniteCommand (Swapper)", LogLevel.Info, "Executing launch Fortnite process...");
         LaunchFortnite();
@@ -97,6 +97,7 @@ public class LaunchFortniteCommand : ICommand
                 launcherProc.Exited += (_, _) => BotController.Stop();
             }
 
+            await Task.Delay(5000); // Wait for a possibly invalid key to reset
             while (!File.Exists(LaunchConfig.LauncherDirectory + "\\key.txt"))
             {
                 await Task.Delay(1000);
@@ -108,7 +109,7 @@ public class LaunchFortniteCommand : ICommand
         }
     }
 
-    public static void StartLobbyBot()
+    public static async Task StartLobbyBot()
     {
         if (Accounts.Fortnite.Accounts == null)
         {
@@ -127,13 +128,14 @@ public class LaunchFortniteCommand : ICommand
                 if (!Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame.TryGetValue("Fortnite", out var current))
                     throw new LaunchFortniteException("Cannot start lobby bot, no active account found!");
                     
-                var json = JsonConvert.SerializeObject(account.DeviceAuth);
-                BotController.Start(json, current);
+                var json = JsonConvert.SerializeObject(account.DeviceAuth, Formatting.Indented);
+                await BotController.Start(json, current);
 
                 // Wait for bot startup
                 var characterSuccess = false;
                 var backpackSuccess = false;
-                while (!characterSuccess || !backpackSuccess)
+                while (!characterSuccess && SwapperConfig.ConfigData?.CharacterId != null
+                       || !backpackSuccess && SwapperConfig.ConfigData?.BackpackId != null)
                 {
                     await Task.Delay(1000);
 

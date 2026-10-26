@@ -10,13 +10,13 @@ public static class BotController
 
     private static Process? _lobbyBotProcess;
 
-    public static void Start(string deviceAuthJson, string ownerAccountId)
+    public static async Task Start(string deviceAuthJson, string ownerAccountId)
     {
         _httpClient = new HttpClient();
         
         Directory.CreateDirectory(Globals.FolderPath);
-        File.WriteAllText(DeviceAuthFilePath, deviceAuthJson);
-        File.WriteAllText(OwnerIdFilePath, ownerAccountId);
+        await File.WriteAllTextAsync(DeviceAuthFilePath, deviceAuthJson);
+        await File.WriteAllTextAsync(OwnerIdFilePath, ownerAccountId);
         
         var npm = Process.Start(new ProcessStartInfo
         {
@@ -26,7 +26,7 @@ public static class BotController
             CreateNoWindow = true
         });
 
-        npm?.WaitForExit();
+        await npm?.WaitForExitAsync();
         
         _lobbyBotProcess = Process.Start(new ProcessStartInfo
         {

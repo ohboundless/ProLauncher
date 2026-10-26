@@ -151,10 +151,18 @@ public partial class MainWindow : BoundlessWindow
         SwapperTab.SwapperPanel?.CosmeticsViewModel?.SelectedFilter = CosmeticFilter.Outfits;
     }
     
-    private void LobbyBotTab_OnChecked(object sender, RoutedEventArgs e)
+    private async void LobbyBotTab_OnChecked(object sender, RoutedEventArgs e)
     {
-        //SelectedTab = ActiveTab.LobbyBot;
-        LaunchFortniteCommand.StartLobbyBot();
+        try
+        {
+            //SelectedTab = ActiveTab.LobbyBot;
+            await LaunchFortniteCommand.StartLobbyBot();
+        }
+        catch (Exception ex)
+        {
+            ErrorPopup.Show("MainWindow_LobbyBotTab_OnChecked",
+                "Could not start lobby bot! If this error persists please report it to the dev team!", ex);
+        }
     }
     
     private void StatsTab_OnChecked(object sender, RoutedEventArgs e)

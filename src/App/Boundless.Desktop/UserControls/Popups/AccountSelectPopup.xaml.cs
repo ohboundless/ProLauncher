@@ -13,7 +13,6 @@ public partial class AccountSelectPopup : UserControl
 {
     private Action<FortniteAccount> _selectedAction;
     private IEnumerable<FortniteAccount> _accounts;
-    private bool _isClosing;
     
     private string _selectedAccount;
     public string SelectedAccount => _selectedAccount;
@@ -60,7 +59,6 @@ public partial class AccountSelectPopup : UserControl
 
     private void Close()
     {
-        _isClosing = true;
         MainWindow.PopupContainer.RemovePopup(this);
     }
 }
