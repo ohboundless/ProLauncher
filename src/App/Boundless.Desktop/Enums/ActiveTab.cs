@@ -5,5 +5,6 @@ public enum ActiveTab
     Cosmetics,
     Swapper,
     LobbyBot,
-    Stats
+    Stats,
+    Settings,
 }

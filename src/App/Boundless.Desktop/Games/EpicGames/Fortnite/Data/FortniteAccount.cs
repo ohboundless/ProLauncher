@@ -1,6 +1,4 @@
-using Boundless.Desktop.Games.EpicGames.Fortnite.API;
 using Newtonsoft.Json;
-using static Boundless.Desktop.Config.Configuration;
 
 namespace Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 
@@ -31,7 +29,7 @@ public class FortniteAccount : IGameAccount
         DeviceAuth = deviceAuth;
 
         Recent = this;
-        ConfigData!.CurrentAccounts.AccountIdsByGame["Fortnite"] = token.AccountId;
-        SaveConfig();
+        ConfigData.CurrentAccounts.AccountIdsByGame["Fortnite"] = token.AccountId;
+        ConfigData.Save();
     }
 }

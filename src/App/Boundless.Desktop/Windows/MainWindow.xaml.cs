@@ -47,11 +47,22 @@ public partial class MainWindow : BoundlessWindow
             {
                 case ActiveTab.Cosmetics:
                     SwapperTab.Visibility = Visibility.Collapsed;
+                    SettingsTab.Visibility = Visibility.Collapsed;
                     AccountCosmeticsTab.Visibility = Visibility.Visible;
                     break;
                 case ActiveTab.Swapper:
                     SwapperTab.Visibility = Visibility.Visible;
+                    SettingsTab.Visibility = Visibility.Collapsed;
                     AccountCosmeticsTab.Visibility = Visibility.Collapsed;
+                    break;
+                case ActiveTab.Settings:
+                    SwapperTab.Visibility = Visibility.Collapsed;
+                    AccountCosmeticsTab.Visibility = Visibility.Collapsed;
+                    SettingsTab.Visibility = Visibility.Visible;
+                    break;
+                case ActiveTab.LobbyBot:
+                case ActiveTab.Stats:
+                default:
                     break;
             }
         }
@@ -79,7 +90,7 @@ public partial class MainWindow : BoundlessWindow
             NoAccountsFoundTextBlock.Visibility = Visibility.Collapsed;
 
             var ordered = accounts.OrderByDescending(x => x.LastLaunchTime);
-            var accountIds = Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame;
+            var accountIds = ConfigData.CurrentAccounts.AccountIdsByGame;
 
             if (accountIds.TryGetValue("Fortnite", out var currentAccount))
             {
@@ -175,6 +186,6 @@ public partial class MainWindow : BoundlessWindow
     
     private void StatsTab_OnChecked(object sender, RoutedEventArgs e)
     {
-        SelectedTab = ActiveTab.Stats;
+        SelectedTab = ActiveTab.Settings;
     }
 }

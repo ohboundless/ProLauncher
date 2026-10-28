@@ -11,7 +11,7 @@ namespace Boundless.Desktop.FortniteAPI;
 
 public static class FortniteCache
 {
-    private static string FolderPath => Configuration.DirectoryName + "\\cache";
+    private static string FolderPath => Configs.DirectoryName + "\\cache";
     private static string ImagePath => FolderPath + "\\images";
     private static string FilePath => FolderPath + "\\cosmetics.json";
     private static RestClient _client = new();

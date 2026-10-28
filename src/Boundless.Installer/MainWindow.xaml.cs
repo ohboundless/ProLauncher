@@ -28,12 +28,17 @@ public partial class MainWindow : Window
 
     private async void WriteLog(string text)
     {
-        await Dispatcher.InvokeAsync(() => LogBox.Text += text + "\n");
+        await Dispatcher.InvokeAsync(() =>
+        {
+            LogBox.Text += text + "\n";
+            LogBox.ScrollToEnd();
+        });
     }
 
     private async void Progress(double percentage)
     {
-        await Dispatcher.InvokeAsync(() => ProgressRing.Progress = percentage);
+        var endAngle = 359.9 * percentage;
+        await Dispatcher.InvokeAsync(() => ProgressArc.EndAngle = endAngle);
     }
 
     private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -42,14 +47,18 @@ public partial class MainWindow : Window
         {
             var installer = new Loader.Installer();
             await installer.Install();
-            
+
             WriteLog("Launching...");
             Process.Start(new ProcessStartInfo
             {
                 FileName = Statics.DirectoryPath + @"\app\Boundless.Desktop.exe"
             });
-            
+
             Process.GetCurrentProcess().Kill();
+        }
+        catch (ApplicationException ex)
+        {
+            WriteLog(ex.Message);
         }
         catch (Exception ex)
         {

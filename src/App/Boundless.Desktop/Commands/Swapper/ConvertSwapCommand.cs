@@ -36,7 +36,7 @@ public class ConvertSwapCommand : ICommand
                         CharacterSwap.Convert(swap);
                         break;
                     case "AthenaBackpack":
-                        if (SwapperConfig.ConfigData?.CharacterId == null)
+                        if (SwapperData.CharacterId == null)
                         {
                             swap.Log("Cannot swap backpack without first swapping a character!");
                             swap.Log("Cannot swap backpack without first swapping a character!");

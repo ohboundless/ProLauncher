@@ -35,16 +35,13 @@
                            Height="25"
                            VerticalAlignment="Top"/>
                 
-                <ui:ProgressRing Grid.Row="1"
-                                 Width="80"
-                                 Height="80"
-                                 Foreground="#2f4996"
-                                 Progress="20"
-                                 IsIndeterminate="True"
-                                 HorizontalAlignment="Center"
-                                 VerticalAlignment="Center"
-                                 BorderThickness="1"
-                                 x:Name="ProgressRing"/>
+                <ui:Arc Grid.Row="1" 
+                        Width="80" 
+                        Height="80"
+                        Stroke="#2f4996"
+                        StrokeThickness="5"
+                        EndAngle="1"
+                        x:Name="ProgressArc"/>
                 
                 <TextBox x:Name="LogBox"
                          Grid.Row="2" 

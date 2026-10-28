@@ -100,8 +100,8 @@ public partial class AccountEntry : UserControl
         }
 
         IsActive = true;
-        Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame["Fortnite"] = Account.Id;
-        Configuration.SaveConfig();
+        ConfigData.CurrentAccounts.AccountIdsByGame["Fortnite"] = Account.Id;
+        ConfigData.Save();
 
         // Callback
         await MainWindow.OnSetActiveAccount(Account);

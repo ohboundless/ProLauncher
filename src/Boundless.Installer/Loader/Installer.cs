@@ -18,17 +18,34 @@ public class Installer
         Log("Fetching status...");
 
         var json = await _client.GetStatus();
-        return json;
 
+        if ((bool)json.isUp) 
+            return json;
+        
+        var msg = (string)json.statusMessage;
+        Log(msg);
+        Log(msg);
+        Log(msg);
+        Log("Launcher is down. Please check the discord for updates.");
+        Log("Opening discord invite link in 5 seconds...");
+        
+        await Task.Delay(5000);
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = (string)json.discordUrl,
+            UseShellExecute = true
+        });
+
+        throw new ApplicationException("Launcher is down.");
     }
 
     public async Task Install()
     {
-        Log("Creating directories...");
+        Log("\nCreating directories...");
         Directory.CreateDirectory(AppPath);
         Directory.CreateDirectory(LauncherPath);
         Directory.CreateDirectory(LobbyBotPath);
-        
+
         var status = await GetStatus();
         var versionFile = DirectoryPath + "\\version.txt";
         var version = File.Exists(versionFile) ? Convert.ToInt32(await File.ReadAllTextAsync(versionFile)) : -1;

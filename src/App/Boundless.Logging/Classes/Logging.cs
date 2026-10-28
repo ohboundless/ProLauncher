@@ -18,10 +18,7 @@ public enum LogCategory
     Any,
     Http,
     Processes,
-    UI,
     Startup,
-    Files,
-    Login
 }
 
 public static class Logging
@@ -30,7 +27,7 @@ public static class Logging
     {
         Logger = new LoggerConfiguration()
             .WriteTo.Console()
-            .WriteTo.File(path, 
+            .WriteTo.File(path + @"\logs\Boundless.Desktop-.log", 
                 rollingInterval: RollingInterval.Hour, 
                 rollOnFileSizeLimit: true)
             .CreateLogger();

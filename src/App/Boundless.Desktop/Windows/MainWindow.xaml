@@ -148,10 +148,10 @@
                                                 Symbol="Person24" 
                                                 Checked="LobbyBotTab_OnChecked" 
                                                 GroupName="Nav"/>
-                        <userControls:NavButton Content="Stats" 
+                        <!--<userControls:NavButton Content="Stats" 
                                                 Symbol="DataBarVertical24" 
                                                 Checked="SwapperTab_OnChecked" 
-                                                GroupName="Nav"/>
+                                                GroupName="Nav"/>-->
                         
                         <userControls:NavButton Content="Settings" 
                                                 Symbol="Settings24" 
@@ -164,7 +164,7 @@
         </Grid>
         <!-- End sidebar -->
         
-        <!-- Start account -->
+        <!-- Start tabs -->
         <Border Grid.Row="0" 
                 Grid.Column="1"
                 Background="#111729" 
@@ -175,9 +175,10 @@
                 <Grid>
                     <tabs:AccountCosmeticsTab x:Name="AccountCosmeticsTab" Visibility="Visible"/>
                     <tabs:SwapperTab x:Name="SwapperTab" Visibility="Collapsed"/>
+                    <tabs:SettingsTab x:Name="SettingsTab" Visibility="Collapsed"/>
                 </Grid>
         </Border>
-        <!-- End account -->
+        <!-- End tabs -->
         
         <popups:PopupContainer Visibility="Collapsed"
                                Grid.Row="0" 

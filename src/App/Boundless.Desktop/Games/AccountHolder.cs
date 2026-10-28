@@ -8,7 +8,7 @@ namespace Boundless.Desktop.Games;
 public class AccountHolder<T>
     where T : IGameAccount
 {
-    private static string _directory => Configuration.DirectoryName + "\\accounts";
+    private static string _directory => Configs.DirectoryName + "\\accounts";
 
     private List<T>? _accounts { get; set; }
     public IReadOnlyList<T>? Accounts => _accounts;

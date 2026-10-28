@@ -70,7 +70,7 @@ public class LaunchFortniteCommand : ICommand
     {
         try
         {
-            if (!Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame.TryGetValue("Fortnite", out var current))
+            if (!ConfigData.CurrentAccounts.AccountIdsByGame.TryGetValue("Fortnite", out var current))
             {
                 throw new LaunchFortniteException("Cannot launch Fortnite, no active account found!");
             }
@@ -133,7 +133,7 @@ public class LaunchFortniteCommand : ICommand
                 MainWindow.PopupContainer.ShowMessage("Starting Lobby Bot",
                     $"Please wait for {account.Username} to appear online, then invite it.");
 
-                if (!Configuration.ConfigData!.CurrentAccounts.AccountIdsByGame.TryGetValue("Fortnite", out var current))
+                if (!ConfigData.CurrentAccounts.AccountIdsByGame.TryGetValue("Fortnite", out var current))
                     throw new LaunchFortniteException("Cannot start lobby bot, no active account found!");
                     
                 var json = JsonConvert.SerializeObject(account.DeviceAuth, Formatting.Indented);
@@ -142,21 +142,21 @@ public class LaunchFortniteCommand : ICommand
                 // Wait for bot startup
                 var characterSuccess = false;
                 var backpackSuccess = false;
-                while (!characterSuccess && SwapperConfig.ConfigData?.CharacterId != null
-                       || !backpackSuccess && SwapperConfig.ConfigData?.BackpackId != null)
+                while (!characterSuccess && SwapperData.CharacterId != null
+                       || !backpackSuccess && SwapperData.BackpackId != null)
                 {
                     await Task.Delay(1000);
 
-                    if (SwapperConfig.ConfigData?.CharacterId != null)
+                    if (SwapperData.CharacterId != null)
                     {
                         characterSuccess = await BotController.TrySetCosmetic("AthenaCharacter",
-                            SwapperConfig.ConfigData.CharacterId);
+                            SwapperData.CharacterId);
                     }
 
-                    if (SwapperConfig.ConfigData?.BackpackId != null)
+                    if (SwapperData.BackpackId != null)
                     {
                         backpackSuccess =
-                            await BotController.TrySetCosmetic("AthenaBackpack", SwapperConfig.ConfigData.BackpackId);
+                            await BotController.TrySetCosmetic("AthenaBackpack", SwapperData.BackpackId);
                     }
 
                     if (characterSuccess && backpackSuccess)

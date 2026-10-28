@@ -27,9 +27,9 @@ public static class CharacterSwap
         CharacterPartSwapper.InvalidateDefault();
         parameter.Log("Invalidated default character.");
 
-        SwapperConfig.ConfigData?.CharacterId = parameter.SwapTo.CosmeticId;
-        SwapperConfig.ConfigData?.CharacterCps = parts;
-        SwapperConfig.SaveConfig();
+        SwapperData.CharacterId = parameter.SwapTo.CosmeticId;
+        SwapperData.CharacterCps = parts;
+        SwapperData.Save();
     }
     
     public static void Revert(SwapParameter parameter)
@@ -37,10 +37,10 @@ public static class CharacterSwap
         CharacterPartSwapper.RevertAll();
         parameter.Log("Reverted outfit and backbling...");
         
-        SwapperConfig.ConfigData?.CharacterId = null;
-        SwapperConfig.ConfigData?.BackpackId = null;
-        SwapperConfig.ConfigData?.CharacterCps = null;
-        SwapperConfig.ConfigData?.BackpackCps = null;
-        SwapperConfig.SaveConfig();
+        SwapperData.CharacterId = null;
+        SwapperData.BackpackId = null;
+        SwapperData.CharacterCps = null;
+        SwapperData.BackpackCps = null;
+        SwapperData.Save();
     }
 }

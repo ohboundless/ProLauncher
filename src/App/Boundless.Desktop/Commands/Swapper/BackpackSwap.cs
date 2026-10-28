@@ -10,7 +10,7 @@ public static class BackpackSwap
 {
     public static void Convert(SwapParameter parameter)
     {
-        var character = SC.CosmeticsLoader.LoadCosmetic<CharacterCosmetic>(SwapperConfig.ConfigData!.CharacterId!);
+        var character = SC.CosmeticsLoader.LoadCosmetic<CharacterCosmetic>(SwapperData.CharacterId!);
         var backpack = SC.CosmeticsLoader.LoadCosmetic<BackpackCosmetic>(parameter.SwapTo.CosmeticId);
         if (backpack == null)
         {
@@ -34,24 +34,24 @@ public static class BackpackSwap
         CharacterPartSwapper.InvalidateBackpack();
         parameter.Log("Invalidated default backpack.");
         
-        SwapperConfig.ConfigData.BackpackId = parameter.SwapTo.CosmeticId;
-        SwapperConfig.ConfigData.BackpackCps = backpackParts;        
-        SwapperConfig.SaveConfig();
+        SwapperData.BackpackId = parameter.SwapTo.CosmeticId;
+        SwapperData.BackpackCps = backpackParts;        
+        SwapperData.Save();
     }
     
     public static void Revert(SwapParameter parameter)
     {
-        if (SwapperConfig.ConfigData!.BackpackCps == null)
+        if (SwapperData.BackpackCps == null)
         {
             parameter.Log("No character to revert.");
             return;
         }
         
-        CharacterPartSwapper.RevertBackpack(SwapperConfig.ConfigData.CharacterCps!);
+        CharacterPartSwapper.RevertBackpack(SwapperData.CharacterCps!);
         parameter.Log("Reverted backbling...");
         
-        SwapperConfig.ConfigData.BackpackId = null;
-        SwapperConfig.ConfigData.BackpackCps = null;
-        SwapperConfig.SaveConfig();
+        SwapperData.BackpackId = null;
+        SwapperData.BackpackCps = null;
+        SwapperData.Save();
     }
 }
