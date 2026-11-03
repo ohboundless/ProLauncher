@@ -40,7 +40,7 @@ public class LaunchFortniteCommand : ICommand
     {
         LaunchFortnite();
         
-        var username = MainWindow.ActiveAccount?.Username ?? "NULL";
+        var username = MainWindow.ActiveAccount.Username ?? "NULL";
         MainWindow.PopupContainer.ShowMessage("Launching...", $"Retrieving access token for \"{username}\" and launching Fortnite.", removeAllPopups: false);
     }
     

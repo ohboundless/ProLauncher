@@ -6,5 +6,6 @@ public class FortniteProfileData
     public bool HasUpgradedBattlePass;
     public int BattlePassLevel;
     public int Currency;
+    public string? EquippedCharacterId;
     public List<AthenaCosmetic> Cosmetics;
 }

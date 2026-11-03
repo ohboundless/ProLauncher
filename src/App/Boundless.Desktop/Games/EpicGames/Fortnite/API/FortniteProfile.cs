@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Text;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using RestSharp;
 using Boundless.Desktop.Utils;
@@ -14,23 +15,17 @@ public class FortniteProfile(FortniteAccount account)
     private const string PROFILE_URI = "https://fngw-mcp-gc-livefn.ol.epicgames.com/fortnite/api/game/v2/profile/";
 
     [JsonIgnore] private FortniteAccount _account = account;
+    [JsonIgnore] private FortniteToken? _androidToken;
     [JsonIgnore] private dynamic? _athena;
     [JsonIgnore] private dynamic? _commonPublic;
     [JsonIgnore] private dynamic? _commonCore;
 
-    private async Task<dynamic> GetProfile(string profileId)
+    private async Task<dynamic> GetProfile(string? profileId)
     {
         Log("FortniteProfiles", LogLevel.Info, $"Loading profileId: '{profileId}'");
         
-        var androidToken = await FortniteHandler.GetAndroidAccessToken(_account);
-        if (androidToken == null)
-        {
-            Log("FortniteProfiles", LogLevel.Error, "Unable to get android token!");
-            throw new NoNullAllowedException("Android token was null!");
-        }
-        
         var request = new RestRequest(PROFILE_URI + $"{_account.Id}/client/QueryProfile", Method.Post);
-        request.AddHeader("Authorization", "Bearer " + androidToken.Token);
+        request.AddHeader("Authorization", "Bearer " + _androidToken.Token);
         request.AddQueryParameter("profileId", profileId);
         request.AddJsonBody("{}");
 
@@ -42,10 +37,47 @@ public class FortniteProfile(FortniteAccount account)
     private async Task LoadCommonPublicProfile() => _commonPublic = await GetProfile("common_public");
     private async Task LoadCommonCoreProfile() => _commonCore = await GetProfile("common_core");
 
+    private async Task<string?> QueryEquippedCharacter()
+    {
+        Log("FortniteProfiles", LogLevel.Info, "Querying items.");
+        
+        var jwt = await FortniteHandler.GetAndroidAccessToken(_account, true);
+        if (jwt == null)
+        {
+            Log("FortniteProfiles", LogLevel.Error, "Unable to get android token!");
+            throw new NoNullAllowedException("Android token was null!");
+        }
+
+        var eos = await FortniteHandler.GetEOSToken(jwt.Token);
+        var request = new RestRequest($"https://fngw-svc-gc-livefn.ol.epicgames.com/api/locker/v4/62a9473a2dca46b29ccf17577fcf42d7/account/{_account.Id}/items");
+        request.AddHeader("Authorization", "Bearer " + eos);
+
+        var json = await _client.GetJsonAsync(request);
+        var slots = json.activeLoadoutGroup.loadouts["CosmeticLoadout:LoadoutSchema_Character"].loadoutSlots;
+
+        foreach (var slot in slots)
+        {
+            if (slot.slotTemplate != "CosmeticLoadoutSlotTemplate:LoadoutSlot_Character")
+                continue;
+
+            var id = (string)slot.equippedItemId;
+            return id.Split(":").Last();
+        }
+
+        return null;
+    }
+    
     public async Task<FortniteProfileData> LoadProfileData()
     {
         Log("FortniteProfiles", LogLevel.Info, $"Loading profile data for '{_account.Id}'");
-
+        
+        _androidToken = await FortniteHandler.GetAndroidAccessToken(_account);
+        if (_androidToken == null)
+        {
+            Log("FortniteProfiles", LogLevel.Error, "Unable to get android token!");
+            throw new NoNullAllowedException("Android token was null!");
+        }
+        
         await LoadAthenaProfile();
         await LoadCommonCoreProfile();
         
@@ -64,6 +96,9 @@ public class FortniteProfile(FortniteAccount account)
         result.BattlePassLevel = athena.stats.attributes.level;
         result.Cosmetics = GatherCosmetics(athena.items);
 
+        var characterId = await QueryEquippedCharacter();
+        result.EquippedCharacterId = characterId;
+        
         return result;
     }
 

@@ -15,6 +15,7 @@ public static class FortniteHandler
     internal static RestClient _client { get; } = new();
 
     private const string TOKEN_URI = "https://account-public-service-prod.ol.epicgames.com/account/api/oauth/token";
+    private const string EOS_TOKEN_URI = "https://api.epicgames.dev/auth/v1/oauth/token";
     
     // fortniteNewSwitchGameClient
     private const string SWITCH_CLIENT =
@@ -27,6 +28,9 @@ public static class FortniteHandler
     // fortniteAndroidGameClient
     private const string ANDROID_CLIENT =
         "Basic M2Y2OWU1NmM3NjQ5NDkyYzhjYzI5ZjFhZjA4YThhMTI6YjUxZWU5Y2IxMjIzNGY1MGE2OWVmYTY3ZWY1MzgxMmU=";
+
+    // live-fn
+    private const string DEPLOYMENT_ID = "62a9473a2dca46b29ccf17577fcf42d7";
     
     private static async Task<string> GetClientAccessToken()
     {
@@ -101,7 +105,7 @@ public static class FortniteHandler
         return await HandleTokenRequest(request);
     }
 
-    public static async Task<FortniteToken?> GetTokenWithDeviceAuth(FortniteDeviceAuth deviceAuth)
+    public static async Task<FortniteToken?> GetTokenWithDeviceAuth(FortniteDeviceAuth deviceAuth, bool jwt = false)
     {
         var request = new RestRequest(TOKEN_URI, Method.Post);
         request.AddHeader("Authorization", ANDROID_CLIENT);
@@ -110,10 +114,32 @@ public static class FortniteHandler
         request.AddParameter("account_id", deviceAuth.AccountId);
         request.AddParameter("secret", deviceAuth.Secret);
         
-        return await HandleTokenRequest(request);
+        if (jwt) 
+            request.AddParameter("token_type", "eg1");
+
+        var token = await HandleTokenRequest(request);
+        /*if (jwt)
+            token?.Token = token.Token.Split("eg1~").Last();*/
+
+        return token;
+    }
+    
+    public static async Task<string> GetEOSToken(string jwt)
+    {
+        var request = new RestRequest(EOS_TOKEN_URI, Method.Post);
+        request.AddHeader("Authorization", ANDROID_CLIENT);
+        request.AddParameter("grant_type", "external_auth");
+        request.AddParameter("external_auth_type", "epicgames_access_token");
+        request.AddParameter("external_auth_token", jwt);
+        request.AddParameter("deployment_id", DEPLOYMENT_ID);
+
+        var nonce = new Random().Next(1, int.MaxValue);
+        request.AddParameter("nonce", nonce);
+
+        var json = await _client.GetJsonAsync(request);
+        return json.access_token;
     }
 
-    // TODO summary
     public static async Task<FortniteDeviceAuth> CreateDeviceAuth(string accountId, string token)
     {
         var request = new RestRequest($"https://account-public-service-prod.ol.epicgames.com/account/api/public/account/{accountId}/deviceAuth", Method.Post);
@@ -141,9 +167,9 @@ public static class FortniteHandler
         return response;
     }
 
-    public static async Task<FortniteToken?> GetAndroidAccessToken(FortniteAccount account)
+    public static async Task<FortniteToken?> GetAndroidAccessToken(FortniteAccount account, bool jwt = false)
     {
-        return await GetTokenWithDeviceAuth(account.DeviceAuth);
+        return await GetTokenWithDeviceAuth(account.DeviceAuth, jwt);
     }
     
     #endregion
@@ -207,6 +233,7 @@ public static class FortniteHandler
         var androidToken = await ExchangeToken(ANDROID_CLIENT, token.Token);
         var deviceAuth = await CreateDeviceAuth(token.AccountId, androidToken.Token);
         var account = new FortniteAccount(token, deviceAuth);
+        account.ProfileData = await new FortniteProfile(account).LoadProfileData();
         
         await Accounts.Fortnite.AddAccountAsync(account);
     }

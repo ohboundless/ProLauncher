@@ -28,7 +28,7 @@ public class AccountHolder<T>
 
         if (_accounts!.Find(x => x.Id == account.Id) != null)
         {
-            MainWindow.PopupContainer.ShowMessage("Unable to add account", $"Account with username {account.Username} is already added.");
+            MainWindow.PopupContainer.ShowMessage("Unable to add account", $"Account with username {account.UsernamePrivate} is already added.");
             Log("Accounts", LogLevel.Info, $"Account with id {account.Id} is already managed.");
             return;
         }

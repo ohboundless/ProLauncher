@@ -12,9 +12,17 @@ public class SettingsDescription(string name, string description) : Attribute
 public sealed class Settings() : AbstractConfigData("settings")
 {
     [SettingsDescription("Hide Account Names", "Give each account a number instead of using the display name.")]
-    public bool HideAccountNames { get; set; }
+    public bool HideAccountNames
+    {
+        get;
+        set
+        {
+            field = value;
+            MainWindow?.LoadAccounts();
+        }
+    }
 
-    [SettingsDescription("Show Lobby Bot Console (Debugging)", "Show the lobby bot console to allow for debugging.")]
+    [SettingsDescription("Hide Lobby Bot Console", "Hide the lobby bot console. Turn this off to allow for debugging.")]
     public bool HideLobbyBotConsole { get; set; } = true;
 
     [SettingsDescription("Show Logging Console (Debugging)", "Show the logging console to allow for debugging.")]

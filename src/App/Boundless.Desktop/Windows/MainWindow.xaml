@@ -156,7 +156,7 @@
                         <userControls:NavButton Content="Settings" 
                                                 Symbol="Settings24" 
                                                 Checked="SettingsTab_OnChecked" 
-                                                GroupName="Settings"/>
+                                                GroupName="Nav"/>
                         
                     </StackPanel>
                 </Grid>

@@ -20,5 +20,5 @@ public interface IGameAccount
     public string Id { get; }
     
     [JsonProperty("username")]
-    public string Username { get; }
+    public string UsernamePrivate { get; }
 }

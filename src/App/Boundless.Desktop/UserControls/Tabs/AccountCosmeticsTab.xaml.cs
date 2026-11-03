@@ -41,12 +41,21 @@ public partial class AccountCosmeticsTab : UserControl
             return;
         }
 
+        // Names
         AccountUsername.Text = account.Username; // TODO get actual player name
         EpicUsername.Text = account.Username; // TODO get actual epic name
-        AccountIcon.Source = new BitmapImage(new Uri(account.Icon)); // TODO get account icon as currently equipped skin
+        
+        // Icon
+        AccountIcon.Source = new BitmapImage(new Uri(account.Icon));
+        
+        // Account level
         AccountLevel.Text = account.ProfileData.AccountLevel.ToString("N0");
+        
+        // Battle Pass
         // TODO has upgraded BattlePass?
         BattlePassLevel.Text = account.ProfileData.BattlePassLevel.ToString("N0");
+        
+        // Currency
         CurrencyQuantity.Text = account.ProfileData.Currency.ToString("N0");
         
         CosmeticPanel.CosmeticsViewModel?.OnTabSwitched();

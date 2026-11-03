@@ -17,7 +17,7 @@ public static class Globals
     public const string BACKEND_URI = "http://localhost:5197";
     public static RestClient Client = new(BACKEND_URI);
 
-    public static MainWindow MainWindow;
+    public static MainWindow? MainWindow;
 
     public static MainConfig ConfigData { get; } = Configs.GetConfig<MainConfig>("config");
     public static SwapperConfig SwapperData { get; } = Configs.GetConfig<SwapperConfig>("swapper");
