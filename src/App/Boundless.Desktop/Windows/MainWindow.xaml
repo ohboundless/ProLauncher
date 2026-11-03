@@ -155,7 +155,7 @@
                         
                         <userControls:NavButton Content="Settings" 
                                                 Symbol="Settings24" 
-                                                Checked="SwapperTab_OnChecked" 
+                                                Checked="SettingsTab_OnChecked" 
                                                 GroupName="Settings"/>
                         
                     </StackPanel>

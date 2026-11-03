@@ -137,7 +137,7 @@ public class LaunchFortniteCommand : ICommand
                     throw new LaunchFortniteException("Cannot start lobby bot, no active account found!");
                     
                 var json = JsonConvert.SerializeObject(account.DeviceAuth, Formatting.Indented);
-                await BotController.Start(json, current);
+                await BotController.Start(json, current, Settings.HideLobbyBotConsole);
 
                 // Wait for bot startup
                 var characterSuccess = false;

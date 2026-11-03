@@ -10,7 +10,7 @@ public static class BotController
 
     private static Process? _lobbyBotProcess;
 
-    public static async Task Start(string deviceAuthJson, string ownerAccountId)
+    public static async Task Start(string deviceAuthJson, string ownerAccountId, bool createNoWindow)
     {
         _httpClient = new HttpClient();
         
@@ -23,17 +23,17 @@ public static class BotController
             WorkingDirectory = Globals.FolderPath + "\\src",
             FileName = "cmd.exe",
             Arguments = "/c npm install",
-            CreateNoWindow = true
+            CreateNoWindow = createNoWindow
         });
 
-        await npm?.WaitForExitAsync();
+        await npm.WaitForExitAsync();
         
         _lobbyBotProcess = Process.Start(new ProcessStartInfo
         {
             WorkingDirectory = Globals.FolderPath + "\\src",
             FileName = "node",
             Arguments = "index.js",
-            CreateNoWindow = true
+            CreateNoWindow = createNoWindow
         });
     }
 

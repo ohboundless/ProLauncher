@@ -15,7 +15,6 @@ public partial class AccountEntry : UserControl
     private StackPanel _panel;
 
     private bool _isActive;
-
     public bool IsActive
     {
         get => _isActive;

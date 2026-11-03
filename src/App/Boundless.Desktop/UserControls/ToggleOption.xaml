@@ -1,0 +1,23 @@
+<UserControl x:Class="Boundless.Desktop.UserControls.ToggleOption"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Boundless.Desktop.UserControls"
+             mc:Ignorable="d"
+             d:DesignHeight="100" d:DesignWidth="300">
+    <StackPanel Orientation="Horizontal">
+        <ToggleButton Checked="ToggleButton_CheckChanged" 
+                      Unchecked="ToggleButton_CheckChanged"
+                      x:Name="ToggleBtn"
+                      Padding="20 15"
+                      Margin="0 5"/>
+        <StackPanel VerticalAlignment="Center" Margin="15 12">
+            <TextBlock Text="Placeholder Name" Foreground="White" x:Name="OptionName"/>
+            <TextBlock Text="Placeholder Description" 
+                       Foreground="#bababa" 
+                       FontSize="11"
+                       x:Name="OptionDesc"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

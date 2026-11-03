@@ -54,7 +54,7 @@ public static class Configs
         return data;
     }
 
-    public static void SaveConfig(string name, AbstractConfigData data)
+    internal static void SaveConfig(string name, AbstractConfigData data)
     {
         var filePath = GetFilePath(name);
         var json = JsonConvert.SerializeObject(data, Formatting.Indented);

@@ -20,7 +20,8 @@
         <Border Grid.Row="1" VerticalAlignment="Top" BorderBrush="#202a47" BorderThickness="0 1 0 0"/>
         
         <StackPanel Grid.Row="1"
-                    Margin="30">
+                    Margin="30"
+                    x:Name="SettingsPanel">
             
         </StackPanel>
     </Grid>
