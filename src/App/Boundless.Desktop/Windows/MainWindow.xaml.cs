@@ -124,7 +124,7 @@ public partial class MainWindow : BoundlessWindow
         }
         catch (Exception ex)
         {
-            _ = new ErrorPopup("MainWindow_LoadAccounts",
+            ErrorPopup.Show("MainWindow_LoadAccounts",
                 "Unable to load accounts! If this error persists please report it to the dev team!", ex);
         }
     }

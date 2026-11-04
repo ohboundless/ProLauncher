@@ -2,11 +2,12 @@
 
 namespace Boundless.Swapper.Launcher;
 
-public class Edit(string assetPath, string dataFilePath, string containerPath)
+public class Edit(string assetPath, string dataFilePath, string containerPath, string swapType)
 {
     public string AssetPath = assetPath;
     public string DataFilePath = dataFilePath;
     public string ContainerPath = containerPath;
+    public string SwapType = swapType;
 }
 
 public class LaunchConfig
@@ -31,14 +32,14 @@ public class LaunchConfig
         File.WriteAllText(EditsPath, json);
     }
 
-    public void SaveAssetData(string assetPath, string containerPath, byte[] buffer)
+    public void SaveAssetData(string assetPath, string containerPath, byte[] buffer, string swapType)
     {
         var duplicateEdit = Edits.FirstOrDefault(x => x.AssetPath == assetPath);
         if (duplicateEdit != null)
             Edits.RemoveAll(x => x.AssetPath == assetPath);
         
         var filePath = DataPath + "\\" + assetPath.Split("/").Last();
-        var edit = new Edit(assetPath, filePath, containerPath);
+        var edit = new Edit(assetPath, filePath, containerPath, swapType);
 
         File.WriteAllBytes(filePath, buffer);
         Edits.Add(edit);
@@ -48,10 +49,22 @@ public class LaunchConfig
     public void RemoveAsset(string assetPath)
     {
         Edits.RemoveAll(x => x.AssetPath == assetPath);
+        Save();
         
         var filePath = DataPath + "\\" + assetPath.Split("/").Last();
         File.Delete(filePath);
-        
+    }
+    
+    public void RemoveAssetBySwapType(string type)
+    {
+        var assets = Edits.FindAll(x => x.SwapType == type);
+        Edits.RemoveAll(x => x.SwapType == type);
         Save();
+        
+        foreach (var asset in assets)
+        {
+            var filePath = DataPath + "\\" + asset.AssetPath.Split("/").Last();
+            File.Delete(filePath);
+        }
     }
 }

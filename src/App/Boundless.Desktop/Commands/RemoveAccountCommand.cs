@@ -36,7 +36,7 @@ public class RemoveAccountCommand : ICommand
         }
         catch (Exception ex)
         {
-            new ErrorPopup("RemoveAccountCommand",
+            ErrorPopup.Show("RemoveAccountCommand",
                 "Failed to remove account. If this issue persists please report this to the dev team.", ex);
         }
     }

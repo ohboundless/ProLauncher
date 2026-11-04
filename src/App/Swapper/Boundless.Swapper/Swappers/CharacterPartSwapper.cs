@@ -6,7 +6,7 @@ using UAssetEditor.Unreal.Properties.Types;
 
 namespace Boundless.Swapper.Swappers;
 
-public class CharacterPartSwapper
+public static class CharacterPartSwapper
 {
     private const string DataCosmetics = "FortniteGame/Content/Balance/DefaultGameDataCosmetics.uasset";
 
@@ -31,7 +31,7 @@ public class CharacterPartSwapper
         var writer = new Writer();
         dataCosmetics.WriteAll(writer);
 
-        SC.LaunchConfig.SaveAssetData(DataCosmetics, containerPath, writer.ToArray());
+        SC.LaunchConfig.SaveAssetData(DataCosmetics, containerPath, writer.ToArray(), "Character");
     }
 
     public static void InvalidateDefault()
@@ -43,7 +43,7 @@ public class CharacterPartSwapper
             "/DefaultCosmeticsA111111111racters/M1111111111111111Body_F_Prime_A");
         Researcher.FindAndReplace(memoryStream, "CP_Athena_Body_F_Prime_A", "1111111111111111111111_A");
 
-        SC.LaunchConfig.SaveAssetData(DefaultBody, containerPath, memoryStream.ToArray());
+        SC.LaunchConfig.SaveAssetData(DefaultBody, containerPath, memoryStream.ToArray(), "Character");
     }
     
     public static void InvalidateBackpack()
@@ -55,7 +55,7 @@ public class CharacterPartSwapper
             "/Gam111111111111111111111111111111111111111111ckpack");
         Researcher.FindAndReplace(memoryStream, "NoBackpack", "N1111111ck");
 
-        SC.LaunchConfig.SaveAssetData(NoBackpack, containerPath, memoryStream.ToArray());
+        SC.LaunchConfig.SaveAssetData(NoBackpack, containerPath, memoryStream.ToArray(), "Backpack");
     }
 
     public static void RevertAll()

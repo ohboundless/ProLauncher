@@ -48,7 +48,7 @@ public class AddAccountCommand : ICommand
         }
         catch (Exception ex)
         {
-            new ErrorPopup("AddAccountCommand",
+            ErrorPopup.Show("AddAccountCommand",
                 "Failed to authorize account. If this issue persists please report this to the dev team.", ex);
         }
         finally

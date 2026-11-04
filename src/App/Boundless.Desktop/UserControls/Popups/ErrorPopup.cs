@@ -6,7 +6,7 @@ namespace Boundless.Desktop.UserControls.Popups;
 
 public partial class ErrorPopup : MessagePopup
 {
-    public ErrorPopup(string category, string message, Exception exception) : base(MainWindow.PopupContainer,
+    private ErrorPopup(string category, string message, Exception exception) : base(MainWindow.PopupContainer,
         "ERROR",
         message,
         "Copy and close",

@@ -264,7 +264,7 @@ public class CosmeticsViewModel : ViewModel
         }
         catch (Exception ex)
         {
-            _ = new ErrorPopup("CosmeticsLoading",
+            ErrorPopup.Show("CosmeticsLoading",
                 "Error loading cosmetics. If this issue persists please report this to the dev team.", ex);
         }
         finally

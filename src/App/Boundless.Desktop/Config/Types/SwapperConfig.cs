@@ -9,4 +9,5 @@ public sealed class SwapperConfig() : AbstractConfigData("swapper")
     public string? BackpackId { get; set; }
     public string[]? CharacterCps { get; set; }
     public string[]? BackpackCps { get; set; }
+    public string? PickaxeId { get; set; }
 }

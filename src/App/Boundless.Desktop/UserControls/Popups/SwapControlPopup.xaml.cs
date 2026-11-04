@@ -32,7 +32,7 @@ public partial class SwapControlPopup : UserControl
         if (SwapTo.Data?.Images == null)
         {
             var error = new NullReferenceException($"Images were null for {SwapTo.CosmeticId}");
-            _ = new ErrorPopup("SwapControlPopup",
+            ErrorPopup.Show("SwapControlPopup",
                 $"Unable to load image for {SwapTo.CosmeticId}. If this error persists please report it to the dev team.",
                 error);
         }
