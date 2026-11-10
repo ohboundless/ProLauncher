@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Boundless.Desktop.Config;
+using Boundless.Desktop.FortniteAPI;
 using Boundless.Desktop.Games.EpicGames.Fortnite;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 
@@ -45,10 +46,12 @@ public partial class AccountEntry : UserControl
         Populate();
     }
 
-    private void Populate()
+    private async void Populate()
     {
         AccountName.Text = Account.Username;
-        AccountIcon.Source = new BitmapImage(new Uri(Account.Icon));
+
+        var accountIcon = await FortniteCache.CacheImageFromUrlAsync(Account.Icon, Account.Id);
+        AccountIcon.Source = new BitmapImage(new Uri(accountIcon));
         LastPlayTime.Text = BuildLastLaunchedString(Account.LastLaunchTime);
     }
 

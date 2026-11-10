@@ -130,7 +130,7 @@ public static class FortniteCache
         return false;
     }
 
-    public static async Task<string> CacheIconAsync(this CosmeticData cosmeticData, string uri, string channel, string tag)
+    public static async Task<string> CacheIconAsync(this CosmeticData cosmeticData, string uri, string? channel = null, string? tag = null)
     {
         var path = cosmeticData.GetImagePath(channel, tag);
         await CacheImageAsync(uri, path);
@@ -138,9 +138,12 @@ public static class FortniteCache
         return path;
     }
     
-    public static async Task<string> CacheImageFromUrlAsync(string uri)
+    public static async Task<string> CacheImageFromUrlAsync(string uri, string? overrideName = null)
     {
-        var path = $"{ImagePath}\\{new Uri(uri).PathAndQuery.Split("/").Last()}";
+        var path = $"{ImagePath}\\{overrideName}.png";
+        if (overrideName == null)
+            path = $"{ImagePath}\\{uri.Split("/").Last()}";
+        
         await CacheImageAsync(uri, path);
         
         return path;

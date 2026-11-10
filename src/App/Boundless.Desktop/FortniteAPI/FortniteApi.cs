@@ -12,10 +12,10 @@ public static class FortniteApi
     private const string BASE_URI = "https://fortnite-api.com/";
     private static RestClient _client = new(BASE_URI);
     
-    public static async Task<BRCosmeticModel?> GetBRCosmeticsAsync()
+    public static async Task<BRCosmeticsModel?> GetBRCosmeticsAsync()
     {
         var request = new RestRequest("v2/cosmetics/br");
-        return await _client.GetJsonAsync<BRCosmeticModel?>(request);
+        return await _client.GetJsonAsync<BRCosmeticsModel?>(request);
     }
     
     public static EFortRarity GetRarity(this CosmeticData data, out string? series, out string? seriesBackgroundUri)
@@ -48,7 +48,7 @@ public static class FortniteApi
         return string.Empty;
     }
 
-    public static string? GetIcon(this CosmeticData data, string? channel, string? tag)
+    public static string? GetIcon(this CosmeticData data, string? channel = null, string? tag = null)
     {
         if (channel == null || tag == null)
         {
@@ -64,7 +64,6 @@ public static class FortniteApi
             Log("FortniteApi", LogLevel.Warn,
                 $"Small icon for {data.Id} is null. Unable to retrieve icon. Returning null...");
             return null;
-
         }
 
         var option = data.GetOption(channel, tag);

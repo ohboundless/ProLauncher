@@ -46,7 +46,8 @@ public partial class AccountCosmeticsTab : UserControl
         EpicUsername.Text = account.Username; // TODO get actual epic name
         
         // Icon
-        AccountIcon.Source = new BitmapImage(new Uri(account.Icon));
+        var accountIcon = await FortniteCache.CacheImageFromUrlAsync(account.Icon, account.Id);
+        AccountIcon.Source = new BitmapImage(new Uri(accountIcon));
         
         // Account level
         AccountLevel.Text = account.ProfileData.AccountLevel.ToString("N0");

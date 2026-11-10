@@ -7,6 +7,12 @@ using System.Text.Json.Serialization;
 public sealed record BRCosmeticModel(
     [property: JsonPropertyName("error")] string Error,
     [property: JsonPropertyName("status")] int Status,
+    [property: JsonPropertyName("data")] CosmeticData Data
+);
+
+public sealed record BRCosmeticsModel(
+    [property: JsonPropertyName("error")] string Error,
+    [property: JsonPropertyName("status")] int Status,
     [property: JsonPropertyName("data")] CosmeticData[] Data
 );
 
