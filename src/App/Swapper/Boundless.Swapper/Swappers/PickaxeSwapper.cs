@@ -25,6 +25,7 @@ public static class PickaxeSwapper
         "FortItemComponentData_WeaponReloadSounds",
         "ItemComponentData_Icon",
         "FortItemComponentData_LargeIcon",
+        "ItemComponentData_OwnedGameplayTags"
     };
 
     private static Dictionary<string, string> BigAssetByContainer = new()
@@ -109,7 +110,7 @@ public static class PickaxeSwapper
         var writer = new Writer();
         fromAsset.WriteAll(writer);
         
-        SC.LaunchConfig.SaveAssetData(from, containerPath, writer.ToArray(), "Pickaxe");
+        SC.LaunchConfig.SaveAssetData(SC.CUE4Parse.Provider.FixPath(from), containerPath, writer.ToArray(), "Pickaxe");
     }
 
     public static void RevertAll()

@@ -30,7 +30,7 @@ public partial class CosmeticItem : UserControl
             var panel = MainWindow!.SelectSwapTab.CosmeticPanel;
             if (itemModel.PanelType == PanelType.Selecting)
             {
-                _ = new SwapControlPopup(itemModel, panel.SelectedSwap);
+                _ = new SwapControlPopup(panel.SelectedSwap, itemModel);
                 return;
             }
             

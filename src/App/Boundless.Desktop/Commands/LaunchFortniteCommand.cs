@@ -142,8 +142,10 @@ public class LaunchFortniteCommand : ICommand
                 // Wait for bot startup
                 var characterSuccess = false;
                 var backpackSuccess = false;
+                var pickaxeSuccess = false;
                 while (!characterSuccess && SwapperData.CharacterId != null
-                       || !backpackSuccess && SwapperData.BackpackId != null)
+                       || !backpackSuccess && SwapperData.BackpackId != null
+                       || !pickaxeSuccess && SwapperData.PickaxeId != null)
                 {
                     await Task.Delay(1000);
 
@@ -157,6 +159,12 @@ public class LaunchFortniteCommand : ICommand
                     {
                         backpackSuccess =
                             await BotController.TrySetCosmetic("AthenaBackpack", SwapperData.BackpackId);
+                    }
+                    
+                    if (SwapperData.PickaxeId != null)
+                    {
+                        pickaxeSuccess =
+                            await BotController.TrySetCosmetic("AthenaPickaxe", SwapperData.PickaxeId);
                     }
 
                     if (characterSuccess && backpackSuccess)
