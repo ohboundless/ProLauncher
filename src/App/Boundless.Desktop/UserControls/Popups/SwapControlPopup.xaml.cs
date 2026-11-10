@@ -29,18 +29,18 @@ public partial class SwapControlPopup : UserControl
 
     public void InitializeSwapControl()
     {
-        if (SwapTo.Data?.Images == null)
+        try
         {
-            var error = new NullReferenceException($"Images were null for {SwapTo.CosmeticId}");
-            ErrorPopup.Show("SwapControlPopup",
-                $"Unable to load image for {SwapTo.CosmeticId}. If this error persists please report it to the dev team.",
-                error);
+            SwapToImage.Source = new BitmapImage(SwapTo.IconUri);
+
+            if (SwapFrom != null)
+                SwapFromImage.Source = new BitmapImage(SwapFrom.IconUri);
+
         }
-            
-        SwapToImage.Source = new BitmapImage(new Uri(SwapTo.Data.Images.Icon));
-        
-        if (SwapFrom?.Data?.Images.Icon != null)
-            SwapFromImage.Source = new BitmapImage(new Uri(SwapFrom.Data.Images.Icon));
+        catch (Exception ex)
+        {
+            ErrorPopup.Show("SwapControlPopup_InitializeSwapControl", "Unable to load icons! Please report this to the dev team!", ex);
+        }
     }
 
     private void Close_OnClick(object sender, RoutedEventArgs e)

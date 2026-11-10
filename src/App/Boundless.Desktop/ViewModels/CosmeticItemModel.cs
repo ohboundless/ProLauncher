@@ -189,8 +189,11 @@ public class CosmeticItemModel : INotifyPropertyChanged
         }
 
         if (_seriesUriStr != null)
-            SeriesUri = new Uri(_seriesUriStr);
-        
+        {
+            var uri = await FortniteCache.CacheImageFromUrlAsync(_seriesUriStr);
+            SeriesUri = new Uri(uri);
+        }
+
         await LoadIconAsync();
     }
 
@@ -208,7 +211,6 @@ public class CosmeticItemModel : INotifyPropertyChanged
             image.UriSource = uri;
             image.CacheOption = BitmapCacheOption.OnLoad;
             image.DecodePixelWidth = 256;
-            image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
             image.EndInit();
 
             if (image.CanFreeze)

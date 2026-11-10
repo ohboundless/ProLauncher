@@ -132,16 +132,35 @@ public static class FortniteCache
 
     public static async Task<string> CacheIconAsync(this CosmeticData cosmeticData, string uri, string channel, string tag)
     {
+        var path = cosmeticData.GetImagePath(channel, tag);
+        await CacheImageAsync(uri, path);
+        
+        return path;
+    }
+    
+    public static async Task<string> CacheImageFromUrlAsync(string uri)
+    {
+        var path = $"{ImagePath}\\{new Uri(uri).PathAndQuery.Split("/").Last()}";
+        await CacheImageAsync(uri, path);
+        
+        return path;
+    }
+    
+    public static async Task CacheImageAsync(string uri, string path)
+    {
+        if (File.Exists(path))
+            return;
+        
         var request = new RestRequest(uri);
+        request.AddHeader("User-Agent", "ProLauncher/" + VERSION);
+        request.AddHeader("Accept", "mage/avif,image/webp,image/apng,image/*,*/*;q=0.8");
+        
         var data = await _client.DownloadDataAsync(request);
 
         if (data == null)
             throw new HttpRequestException($"Unable to download '{uri}'");
 
-        var path = cosmeticData.GetImagePath(channel, tag);
         await File.WriteAllBytesAsync(path, data);
-
-        return path;
     }
     #endregion
 }
