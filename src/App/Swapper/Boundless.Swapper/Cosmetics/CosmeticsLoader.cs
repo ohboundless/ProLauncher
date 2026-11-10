@@ -52,7 +52,7 @@ public class CosmeticsLoader(SwapperCore core)
     {
         foreach (var kvp in _provider.Files)
         {
-            if (kvp.Value.NameWithoutExtension != id)
+            if (kvp.Value.NameWithoutExtension.ToLower() != id)
                 continue;
 
             if (!_provider.TryLoadPackage(kvp.Value, out var pkg))
@@ -70,8 +70,12 @@ public class CosmeticsLoader(SwapperCore core)
         return null;
     }
 
-    public List<BaseCosmetic> LoadCharacters()
+    // TODO maybe
+    public bool IsPickaxeSwappable(string fromCosmeticId, string toCosmeticId)
     {
-        return LoadGeneric<CharacterCosmetic>("AthenaCharacterItemDefinition", CosmeticConstants.CharacterPaths);
+        var fromCosmetic = LoadCosmetic<PickaxeCosmetic>(fromCosmeticId.ToLower());
+        var toCosmetic = LoadCosmetic<PickaxeCosmetic>(toCosmeticId.ToLower());
+
+        return true;
     }
 }

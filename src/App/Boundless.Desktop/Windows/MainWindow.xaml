@@ -175,6 +175,7 @@
                 <Grid>
                     <tabs:AccountCosmeticsTab x:Name="AccountCosmeticsTab" Visibility="Visible"/>
                     <tabs:SwapperTab x:Name="SwapperTab" Visibility="Collapsed"/>
+                    <tabs:SelectSwapTab x:Name="SelectSwapTab" Visibility="Collapsed"/>
                     <tabs:SettingsTab x:Name="SettingsTab" Visibility="Collapsed"/>
                 </Grid>
         </Border>

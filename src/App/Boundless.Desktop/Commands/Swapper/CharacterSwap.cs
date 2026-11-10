@@ -10,7 +10,7 @@ public static class CharacterSwap
 {
     public static void Convert(SwapParameter parameter)
     {
-        var character = SC.CosmeticsLoader.LoadCosmetic<CharacterCosmetic>(parameter.SwapTo.CosmeticId);
+        var character = SC.CosmeticsLoader.LoadCosmetic<CharacterCosmetic>(parameter.SwapTo.CosmeticId.ToLower());
         if (character == null)
         {
             parameter.Log("Error!");

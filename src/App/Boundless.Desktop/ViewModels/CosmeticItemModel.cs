@@ -9,6 +9,7 @@ using Boundless.Desktop.FortniteAPI;
 using Boundless.Desktop.FortniteAPI.Models;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.Utils;
+using Boundless.Desktop.ViewModels.Enums;
 using Boundless.Swapper.Cosmetics.Models;
 using CUE4Parse.GameTypes.FN.Enums;
 
@@ -113,7 +114,7 @@ public class CosmeticItemModel : INotifyPropertyChanged
     public Visibility Visibility { get; set; }
 
     public bool IsNull => Data == null;
-    public bool IsForSwapper => Cosmetic.IsForSwapper;
+    public PanelType PanelType => Cosmetic.PanelType;
     public string ItemName => Data?.Name ?? "NULL";
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -136,7 +137,7 @@ public class CosmeticItemModel : INotifyPropertyChanged
         Data = cosmetic.CosmeticData;
         _loadTask = new Lazy<Task>(LoadCoreAsync);
         
-        if (!IsForSwapper)
+        if (PanelType != PanelType.Swapper)
         {
             if (!FortniteCache.TryGetCosmetic(CosmeticId, out var model))
             {

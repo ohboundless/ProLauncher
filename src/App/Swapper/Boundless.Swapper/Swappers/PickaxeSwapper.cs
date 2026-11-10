@@ -104,7 +104,7 @@ public static class PickaxeSwapper
             });
         }
 
-        dataList.Value.As<ArrayProperty>().Value = newList;
+        dataList.Value = newList;
         
         var writer = new Writer();
         fromAsset.WriteAll(writer);

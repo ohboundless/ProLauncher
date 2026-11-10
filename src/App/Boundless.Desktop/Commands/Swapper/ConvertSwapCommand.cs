@@ -23,7 +23,6 @@ public class ConvertSwapCommand : ICommand
             {
                 var templateId = swap.SwapTo.Cosmetic.TemplateId.Split(":");
                 var athenaType = templateId[0];
-                //var id = templateId[1];
 
                 Log("ConvertSwapCommand", LogLevel.Info, $"Starting swap for {swap.SwapTo.Cosmetic.TemplateId}");
                 
@@ -44,7 +43,9 @@ public class ConvertSwapCommand : ICommand
                         }
                         else
                             BackpackSwap.Convert(swap);
-                        
+                        break;
+                    case "AthenaPickaxe":
+                        PickaxeSwap.Convert(swap);
                         break;
                     default:
                         swap.Log($"Swap type '{athenaType}' is not implemented yet!");
@@ -54,7 +55,6 @@ public class ConvertSwapCommand : ICommand
                 }
 
                 swap.Log($"Converted in {sw.ElapsedMilliseconds}ms");
-                
             }
             catch (Exception ex)
             {

@@ -2,7 +2,7 @@ namespace Boundless.Installer.Loader;
 
 public static class Statics
 {
-    public const string ServerUrl = "https://proswapper-api.azurewebsites.net";
+    public const string ServerUrl = "http://201.79.44.147";
     
     public static string DirectoryPath => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
                                           "\\BoundlessLauncher";

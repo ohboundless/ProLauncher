@@ -3,8 +3,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Boundless.Desktop.Enums;
 using Boundless.Desktop.UserControls.Popups;
 using Boundless.Desktop.ViewModels;
+using Boundless.Desktop.ViewModels.Enums;
 
 namespace Boundless.Desktop.UserControls;
 
@@ -15,13 +17,30 @@ public partial class CosmeticItem : UserControl
         InitializeComponent();
     }
 
-    private void CosmeticItem_OnMouseUp(object sender, MouseButtonEventArgs e)
+    private async void CosmeticItem_OnMouseUp(object sender, MouseButtonEventArgs e)
     {
         if (DataContext is not CosmeticItemModel itemModel)
             throw new InvalidCastException("DataContext is not a CosmeticItemModel.");
 
-        if (!itemModel.IsForSwapper)
+        if (itemModel.PanelType == PanelType.AccountCosmetics)
             return;
+
+        if (itemModel.Cosmetic.TemplateId.StartsWith("AthenaPickaxe"))
+        {
+            var panel = MainWindow!.SelectSwapTab.CosmeticPanel;
+            if (itemModel.PanelType == PanelType.Selecting)
+            {
+                _ = new SwapControlPopup(itemModel, panel.SelectedSwap);
+                return;
+            }
+            
+            MainWindow.SelectedTab = ActiveTab.SelectSwap;
+            panel.SelectedSwap = itemModel;
+            panel.CosmeticsViewModel?.SelectedFilter = CosmeticFilter.Pickaxes;
+            
+            await MainWindow.SelectSwapTab.OnSetActiveAccount(MainWindow.ActiveAccount!);
+            return;
+        }
             
         _ = new SwapControlPopup(itemModel);
     }

@@ -10,8 +10,8 @@ public static class BackpackSwap
 {
     public static void Convert(SwapParameter parameter)
     {
-        var character = SC.CosmeticsLoader.LoadCosmetic<CharacterCosmetic>(SwapperData.CharacterId!);
-        var backpack = SC.CosmeticsLoader.LoadCosmetic<BackpackCosmetic>(parameter.SwapTo.CosmeticId);
+        var character = SC.CosmeticsLoader.LoadCosmetic<CharacterCosmetic>(SwapperData.CharacterId!.ToLower());
+        var backpack = SC.CosmeticsLoader.LoadCosmetic<BackpackCosmetic>(parameter.SwapTo.CosmeticId.ToLower());
         if (backpack == null)
         {
             parameter.Log("Error!");

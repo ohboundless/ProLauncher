@@ -8,6 +8,8 @@ using Boundless.Desktop.Framework;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.UserControls.Popups;
 using Boundless.Desktop.Utils;
+using Boundless.Desktop.ViewModels.Enums;
+using Boundless.Swapper.Cosmetics.Models;
 using CUE4Parse.GameTypes.FN.Enums;
 
 namespace Boundless.Desktop.ViewModels;
@@ -99,8 +101,9 @@ public class CosmeticsViewModel : ViewModel
             CosmeticsView.Refresh();
         }
     }
+
+    public PanelType CosmeticPanelType { get; set; } = PanelType.AccountCosmetics;
     
-    public bool IsForSwapper { get; set; }
     #endregion
 
     public CosmeticsViewModel()
@@ -113,7 +116,7 @@ public class CosmeticsViewModel : ViewModel
     {
         if (obj is not CosmeticItemModel model)
             return false;
-
+        
         if (string.IsNullOrWhiteSpace(SearchText))
             return true;
 
@@ -141,7 +144,7 @@ public class CosmeticsViewModel : ViewModel
     
     public void OnTabSwitched()
     {
-        if (MainWindow.ActiveAccount == null && !IsForSwapper)
+        if (MainWindow!.ActiveAccount == null && CosmeticPanelType != PanelType.Swapper)
             return;
 
         if (SelectedFilter == CosmeticFilter.None)
@@ -160,10 +163,13 @@ public class CosmeticsViewModel : ViewModel
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        var myCosmetics = IsForSwapper ? null : MainWindow.ActiveAccount!.ProfileData?.Cosmetics;
-        Action<double> progressCallback = IsForSwapper
-            ? MainWindow.SwapperTab.UpdateCosmeticsLoadingProgress
-            : MainWindow.AccountCosmeticsTab.UpdateCosmeticsLoadingProgress;
+        var myCosmetics = CosmeticPanelType == PanelType.Swapper ? null : MainWindow.ActiveAccount!.ProfileData?.Cosmetics;
+        Action<double> progressCallback = CosmeticPanelType switch
+        {
+            PanelType.AccountCosmetics => MainWindow.AccountCosmeticsTab.UpdateCosmeticsLoadingProgress,
+            PanelType.Swapper => MainWindow.SwapperTab.UpdateCosmeticsLoadingProgress,
+            PanelType.Selecting => MainWindow.SelectSwapTab.UpdateCosmeticsLoadingProgress
+        };
         
         _ = Task.Run(async () =>
         {
@@ -199,7 +205,7 @@ public class CosmeticsViewModel : ViewModel
 
             if (athenaType != "*")
             {
-                if (IsForSwapper)
+                if (CosmeticPanelType == PanelType.Swapper)
                 {
                     var allCosmetics = FortniteCache.Cosmetics;
 
@@ -217,7 +223,7 @@ public class CosmeticsViewModel : ViewModel
                     {
                         if (!cosmetic.TemplateId.StartsWith(athenaType))
                             continue;
-
+                        
                         filtered.Add(cosmetic);
                     }
                 }
@@ -232,6 +238,7 @@ public class CosmeticsViewModel : ViewModel
                 if (IsInvalidCosmetic(obj.TemplateId))
                     continue;
 
+                obj.ViewModel = this;
                 var model = new CosmeticItemModel(obj);
                 progressCallback(Convert.ToDouble(models.Count) / cosmetics.Count);
 

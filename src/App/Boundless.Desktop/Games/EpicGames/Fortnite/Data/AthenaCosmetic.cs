@@ -1,4 +1,6 @@
 ﻿using Boundless.Desktop.FortniteAPI.Models;
+using Boundless.Desktop.ViewModels;
+using Boundless.Desktop.ViewModels.Enums;
 using Newtonsoft.Json;
 
 namespace Boundless.Desktop.Games.EpicGames.Fortnite.Data;
@@ -42,7 +44,9 @@ public class AthenaCosmetic
     { }
     
     [JsonIgnore] public CosmeticData? CosmeticData { get; }
-    [JsonIgnore] public bool IsForSwapper { get; }
+    
+    [JsonIgnore] public CosmeticsViewModel ViewModel { get; set; }
+    [JsonIgnore] public PanelType PanelType => ViewModel.CosmeticPanelType;
     
     public AthenaCosmetic(CosmeticData cosmeticData)
     {
@@ -53,7 +57,6 @@ public class AthenaCosmetic
         };
 
         CosmeticData = cosmeticData;
-        IsForSwapper = true;
     }
     
     public string GetCosmeticId() => TemplateId.Split(":").Last(); // AthenaCharacter:CID...

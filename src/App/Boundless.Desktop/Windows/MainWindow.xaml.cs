@@ -47,16 +47,25 @@ public partial class MainWindow : BoundlessWindow
             {
                 case ActiveTab.Cosmetics:
                     SwapperTab.Visibility = Visibility.Collapsed;
+                    SelectSwapTab.Visibility = Visibility.Collapsed;
                     SettingsTab.Visibility = Visibility.Collapsed;
                     AccountCosmeticsTab.Visibility = Visibility.Visible;
                     break;
                 case ActiveTab.Swapper:
-                    SwapperTab.Visibility = Visibility.Visible;
+                    SelectSwapTab.Visibility = Visibility.Collapsed;
                     SettingsTab.Visibility = Visibility.Collapsed;
                     AccountCosmeticsTab.Visibility = Visibility.Collapsed;
+                    SwapperTab.Visibility = Visibility.Visible;
+                    break;
+                case ActiveTab.SelectSwap:
+                    SwapperTab.Visibility = Visibility.Collapsed;
+                    AccountCosmeticsTab.Visibility = Visibility.Collapsed;
+                    SettingsTab.Visibility = Visibility.Collapsed;
+                    SelectSwapTab.Visibility = Visibility.Visible;
                     break;
                 case ActiveTab.Settings:
                     SwapperTab.Visibility = Visibility.Collapsed;
+                    SelectSwapTab.Visibility = Visibility.Collapsed;
                     AccountCosmeticsTab.Visibility = Visibility.Collapsed;
                     SettingsTab.Visibility = Visibility.Visible;
                     break;
