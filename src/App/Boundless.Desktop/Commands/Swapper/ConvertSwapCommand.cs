@@ -1,7 +1,7 @@
 ﻿global using static Boundless.Swapper.Globals;
 using System.Diagnostics;
 using System.Windows.Input;
-using Boundless.Desktop.Config;
+using Boundless.Desktop.Commands.Swapper.Types;
 
 namespace Boundless.Desktop.Commands.Swapper;
 
@@ -46,6 +46,9 @@ public class ConvertSwapCommand : ICommand
                         break;
                     case "AthenaPickaxe":
                         PickaxeSwap.Convert(swap);
+                        break;
+                    case "AthenaDance":
+                        EmoteSwap.Convert(swap);
                         break;
                     default:
                         swap.Log($"Swap type '{athenaType}' is not implemented yet!");

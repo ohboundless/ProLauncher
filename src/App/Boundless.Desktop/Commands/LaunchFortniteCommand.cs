@@ -143,9 +143,11 @@ public class LaunchFortniteCommand : ICommand
                 var characterSuccess = false;
                 var backpackSuccess = false;
                 var pickaxeSuccess = false;
+                var emoteSuccess = false;
                 while (!characterSuccess && SwapperData.CharacterId != null
                        || !backpackSuccess && SwapperData.BackpackId != null
-                       || !pickaxeSuccess && SwapperData.PickaxeId != null)
+                       || !pickaxeSuccess && SwapperData.PickaxeId != null
+                       || !emoteSuccess && SwapperData.EmoteId != null)
                 {
                     await Task.Delay(1000);
 
@@ -166,12 +168,15 @@ public class LaunchFortniteCommand : ICommand
                         pickaxeSuccess =
                             await BotController.TrySetCosmetic("AthenaPickaxe", SwapperData.PickaxeId);
                     }
-
-                    if (characterSuccess && backpackSuccess)
-                        Log("LobbyBotController", LogLevel.Info, "Set cosmetics");
-                    else
-                        Log("LobbyBotController", LogLevel.Info, "Unable to set cosmetics. Retrying...");
+                    
+                    if (SwapperData.EmoteId != null)
+                    {
+                        emoteSuccess =
+                            await BotController.TrySetCosmetic("AthenaDance", SwapperData.EmoteId);
+                    }
                 }
+
+                await BotController.SetReady();
             }
             catch (Exception ex)
             {

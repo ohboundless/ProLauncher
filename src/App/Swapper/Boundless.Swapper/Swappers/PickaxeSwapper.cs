@@ -59,7 +59,7 @@ public static class PickaxeSwapper
         
         // Swap model
         var fromMesh = fromExport["WeaponMeshOverride"] ?? throw new NoNullAllowedException($"Could not get WeaponMeshOverride from '{fromExportName}'");
-        var toMesh = toExport["WeaponMeshOverride"] ?? throw new NoNullAllowedException($"Could not get WeaponMeshOverride from '{toExportName}'");;
+        var toMesh = toExport["WeaponMeshOverride"] ?? throw new NoNullAllowedException($"Could not get WeaponMeshOverride from '{toExportName}'");
         fromMesh.Value = toMesh.Value;
         
         var dataList = fromExport["DataList"]?.GetValue<ArrayProperty>();
@@ -88,7 +88,7 @@ public static class PickaxeSwapper
                 newList.Add(item);
         }
         
-        // Add To Asset data
+        // Add To asset data
         foreach (var property in list)
         {
             var entry = toAsset.ImportMap[-property.Index.Index - 1];

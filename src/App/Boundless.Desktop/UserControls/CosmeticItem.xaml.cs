@@ -25,7 +25,8 @@ public partial class CosmeticItem : UserControl
         if (itemModel.PanelType == PanelType.AccountCosmetics)
             return;
 
-        if (itemModel.Cosmetic.TemplateId.StartsWith("AthenaPickaxe"))
+        var filter = MainWindow!.SwapperTab.SwapperPanel.CosmeticsViewModel!.SelectedFilter;
+        if (filter is CosmeticFilter.Pickaxes or CosmeticFilter.Emotes)
         {
             var panel = MainWindow!.SelectSwapTab.CosmeticPanel;
             if (itemModel.PanelType == PanelType.Selecting)
@@ -36,7 +37,7 @@ public partial class CosmeticItem : UserControl
             
             MainWindow.SelectedTab = ActiveTab.SelectSwap;
             panel.SelectedSwap = itemModel;
-            panel.CosmeticsViewModel?.SelectedFilter = CosmeticFilter.Pickaxes;
+            panel.CosmeticsViewModel?.SelectedFilter = filter;
             
             await MainWindow.SelectSwapTab.OnSetActiveAccount(MainWindow.ActiveAccount!);
             return;

@@ -11,6 +11,7 @@ namespace Boundless.Swapper.Cosmetics.Models;
 
 public abstract class BaseCosmetic
 {
+    public string Path { get; }
     public string Id { get; }
     public FText? ItemName { get; }
     //public FText ItemDescription { get; }
@@ -18,8 +19,9 @@ public abstract class BaseCosmetic
     private FSoftObjectPath? LargeIcon { get; }
     private FSoftObjectPath? Icon { get; }
     
-    public BaseCosmetic(UObject obj)
+    public BaseCosmetic(UObject obj, string path)
     {
+        Path = path;
         Id = obj.Name;
         ItemName = obj.GetOrDefault<FText>(nameof(ItemName));
         //ItemDescription = obj.GetOrDefault<FText>(nameof(ItemDescription));

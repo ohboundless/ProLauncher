@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows.Input;
-using Boundless.Desktop.Config;
-using Boundless.Swapper.Swappers;
+using Boundless.Desktop.Commands.Swapper.Types;
 
 namespace Boundless.Desktop.Commands.Swapper;
 
@@ -32,6 +31,12 @@ public class RevertSwapCommand : ICommand
                 break;
             case "AthenaBackpack":
                 BackpackSwap.Revert(swap);
+                break;
+            case "AthenaPickaxe":
+                PickaxeSwap.Revert(swap);
+                break;
+            case "AthenaDance":
+                EmoteSwap.Revert(swap);
                 break;
         }
         

@@ -30,8 +30,7 @@ public partial class MainWindow : Window
     {
         await Dispatcher.InvokeAsync(() =>
         {
-            LogBox.Text += text + "\n";
-            LogBox.ScrollToEnd();
+            LogBox.Text = text;
         });
     }
 

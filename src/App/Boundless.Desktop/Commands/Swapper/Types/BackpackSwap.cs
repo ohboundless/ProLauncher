@@ -1,10 +1,8 @@
-﻿using Boundless.Desktop.Config;
-using Boundless.Desktop.UserControls.Popups;
-using Boundless.Swapper;
+﻿using Boundless.Desktop.UserControls.Popups;
 using Boundless.Swapper.Cosmetics.Models;
 using Boundless.Swapper.Swappers;
 
-namespace Boundless.Desktop.Commands.Swapper;
+namespace Boundless.Desktop.Commands.Swapper.Types;
 
 public static class BackpackSwap
 {

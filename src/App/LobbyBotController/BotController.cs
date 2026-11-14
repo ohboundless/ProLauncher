@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using Boundless.Logging.Classes;
+using static Boundless.Logging.Classes.Logging;
 
 namespace LobbyBotController;
 
@@ -48,6 +50,23 @@ public static class BotController
         try
         {
             await _httpClient.GetAsync($"http://localhost:7701/set?type={athenaType}&id={id}");
+            Log("LobbyBotController", LogLevel.Info, $"Set cosmetic ({athenaType}:{id})");
+            
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
+    
+    public static async Task<bool> SetReady()
+    {
+        try
+        {
+            await _httpClient.GetAsync($"http://localhost:7701/ready");
+            Log("LobbyBotController", LogLevel.Info, "Called ready.");
+            
             return true;
         }
         catch (Exception ex)

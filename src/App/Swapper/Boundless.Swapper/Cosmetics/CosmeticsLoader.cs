@@ -62,7 +62,7 @@ public class CosmeticsLoader(SwapperCore core)
             }
 
             var obj = pkg.GetExport(kvp.Value.NameWithoutExtension);
-            var model = Activator.CreateInstance(typeof(T), obj);
+            var model = Activator.CreateInstance(typeof(T), obj, kvp.Key);
 
             return (T?)model;
         }

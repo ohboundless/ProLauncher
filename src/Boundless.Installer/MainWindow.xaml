@@ -6,54 +6,48 @@
         xmlns:local="clr-namespace:Boundless.Installer"
         mc:Ignorable="d"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        Title="ProLauncher - Installer" Height="450" Width="500"
+        Title="ProLauncher - Installer" Height="400" Width="750"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         Loaded="MainWindow_OnLoaded">
-    <Border Background="#090f19"
+    <Border Background="#111729"
             CornerRadius="25">
-        
-        <Border Margin="10"
-                CornerRadius="25"
-                Background="#111729">
             
-            <Grid Margin="25">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="60"/>
-                    <RowDefinition Height="150"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                
-                <TextBlock Grid.Row="1" 
-                           Text="Launching..."
-                           Foreground="White"
-                           TextAlignment="Center"
-                           FontSize="16"
-                           FontWeight="SemiBold"
-                           Height="25"
-                           VerticalAlignment="Top"/>
-                
-                <ui:Arc Grid.Row="1" 
-                        Width="80" 
-                        Height="80"
-                        Stroke="#2f4996"
-                        StrokeThickness="5"
-                        EndAngle="1"
-                        x:Name="ProgressArc"/>
-                
-                <TextBox x:Name="LogBox"
-                         Grid.Row="2" 
-                         Margin="10"
-                         Background="Transparent"
-                         BorderBrush="Transparent"
-                         Text="Starting..."
-                         VerticalScrollBarVisibility="Hidden"
-                         IsReadOnly="True"/>
-            </Grid>
+        <Grid Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="170"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
             
-        </Border>
+            <TextBlock Grid.Row="1" 
+                       Text="Pro Launcher"
+                       Foreground="White"
+                       TextAlignment="Center"
+                       FontSize="16"
+                       FontWeight="SemiBold"
+                       Height="25"
+                       VerticalAlignment="Top"/>
+            
+            <ui:Arc Grid.Row="1" 
+                    Width="80" 
+                    Height="80"
+                    Stroke="#2f4996"
+                    StrokeThickness="5"
+                    EndAngle="1"
+                    x:Name="ProgressArc"/>
+            
+            <TextBlock x:Name="LogBox"
+                     Grid.Row="2" 
+                     Margin="10"
+                     Background="Transparent"
+                     Text="Starting..."
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Foreground="White"/>
+        </Grid>
         
     </Border>
 </Window>
