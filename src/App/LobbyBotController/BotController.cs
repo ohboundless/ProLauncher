@@ -56,22 +56,21 @@ public static class BotController
         }
         catch (Exception ex)
         {
+            Log("BotController", LogLevel.Error, ex.ToString());
             return false;
         }
     }
     
-    public static async Task<bool> SetReady()
+    public static async Task SetReady()
     {
         try
         {
             await _httpClient.GetAsync($"http://localhost:7701/ready");
             Log("LobbyBotController", LogLevel.Info, "Called ready.");
-            
-            return true;
         }
         catch (Exception ex)
         {
-            return false;
+            Log("BotController", LogLevel.Error, ex.ToString());
         }
     }
 }
