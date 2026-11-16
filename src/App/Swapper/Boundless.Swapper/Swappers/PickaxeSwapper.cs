@@ -25,19 +25,6 @@ public static class PickaxeSwapper
         "FortItemComponentData_WeaponReloadSounds",
         "ItemComponentData_Icon",
         "FortItemComponentData_LargeIcon",
-        "ItemComponentData_OwnedGameplayTags"
-    };
-
-    private static Dictionary<string, string> BigAssetByContainer = new()
-    {
-        {
-            "pakchunk20-WindowsClient.utoc",
-            "FortniteGame/Content/Athena/SupplyDrops/FN_Birthday_Supply_Drop_5/Textures/T_Gadget_FN_Birthday_Supply_Drop_5_Balloon_D.ubulk"
-        },
-        {
-            "pakchunk100-WindowsClient.utoc",
-            "FortniteGame/Plugins/GameFeatures/BRCosmetics/Content/Characters/Player/Male/Large/Bodies/M_LRG_UnluckyRoll/Textures/T_UnluckyRoll_Body_FX.ubulk"
-        },
     };
     
     public static void SwapPickaxe(string from, string to)
@@ -110,6 +97,7 @@ public static class PickaxeSwapper
         var writer = new Writer();
         fromAsset.WriteAll(writer);
         
+        RevertAll();
         SC.LaunchConfig.SaveAssetData(SC.CUE4Parse.Provider.FixPath(from), containerPath, writer.ToArray(), "Pickaxe");
     }
 

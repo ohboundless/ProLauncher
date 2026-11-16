@@ -47,6 +47,7 @@ public static class EmoteSwapper
         var writer = new Writer();
         fromAsset.WriteAll(writer);
         
+        RevertAll();
         SC.LaunchConfig.SaveAssetData(SC.CUE4Parse.Provider.FixPath(from), containerPath, writer.ToArray(), "Emote");
     }
 

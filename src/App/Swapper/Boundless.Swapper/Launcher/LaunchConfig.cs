@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Boundless.Logging.Classes;
+using Newtonsoft.Json;
 
 namespace Boundless.Swapper.Launcher;
 
@@ -24,6 +25,23 @@ public class LaunchConfig
     {
         Directory.CreateDirectory(LauncherDirectory);
         Directory.CreateDirectory(DataPath);
+
+        if (File.Exists(EditsPath))
+        {
+            try
+            {
+                var json = File.ReadAllText(EditsPath);
+                Edits = JsonConvert.DeserializeObject<List<Edit>>(json);
+            }
+            catch (Exception ex)
+            {
+                Log("LaunchConfig", LogLevel.Error, ex.ToString());
+                Log("LaunchConfig", LogLevel.Error, "Resetting Edits.json");
+                
+                File.Delete(EditsPath);
+                Save();
+            }
+        }
     }
 
     public void Save()
