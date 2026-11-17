@@ -6,24 +6,26 @@
         xmlns:local="clr-namespace:Boundless.Installer"
         mc:Ignorable="d"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        Title="ProLauncher - Installer" Height="400" Width="750"
+        Title="ProLauncher - Installer" Height="350" Width="600"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         Loaded="MainWindow_OnLoaded">
     <Border Background="#111729"
+            BorderBrush="#2f4a9c"
+            BorderThickness="2"
             CornerRadius="25">
             
         <Grid Margin="25">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
-                <RowDefinition Height="170"/>
+                <RowDefinition Height="160"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             
             <TextBlock Grid.Row="1" 
-                       Text="Pro Launcher"
+                       Text="Pro Swapper"
                        Foreground="White"
                        TextAlignment="Center"
                        FontSize="16"
@@ -36,7 +38,7 @@
                     Height="80"
                     Stroke="#2f4996"
                     StrokeThickness="5"
-                    EndAngle="1"
+                    EndAngle="45"
                     x:Name="ProgressArc"/>
             
             <TextBlock x:Name="LogBox"

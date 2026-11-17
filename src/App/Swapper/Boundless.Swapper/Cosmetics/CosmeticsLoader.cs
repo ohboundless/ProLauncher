@@ -3,6 +3,7 @@ using Boundless.Swapper.Cosmetics.Models;
 using CUE4Parse.FileProvider;
 using CUE4Parse.FileProvider.Objects;
 using CUE4Parse.UE4.Assets;
+using CUE4Parse.UE4.Objects.UObject;
 
 namespace Boundless.Swapper.Cosmetics;
 
@@ -10,6 +11,9 @@ public class CosmeticsLoader(SwapperCore core)
 {
     private DefaultFileProvider _provider => core.CUE4Parse.Provider;
 
+    // We only need to cache pickaxes
+    private Dictionary<string, PickaxeCosmetic> _loadedPickaxes = new();
+    
     public List<BaseCosmetic> LoadGeneric<T>(string exportType, params string[] paths) 
         where T : BaseCosmetic
     {
@@ -64,18 +68,47 @@ public class CosmeticsLoader(SwapperCore core)
             var obj = pkg.GetExport(kvp.Value.NameWithoutExtension);
             var model = Activator.CreateInstance(typeof(T), obj, kvp.Key);
 
+            if (model is PickaxeCosmetic pickaxe)
+                _loadedPickaxes[id] = pickaxe;
+            
             return (T?)model;
         }
 
         return null;
     }
 
-    // TODO maybe
     public bool IsPickaxeSwappable(string fromCosmeticId, string toCosmeticId)
     {
-        var fromCosmetic = LoadCosmetic<PickaxeCosmetic>(fromCosmeticId.ToLower());
-        var toCosmetic = LoadCosmetic<PickaxeCosmetic>(toCosmeticId.ToLower());
+        if (fromCosmeticId == toCosmeticId)
+            return false;
+        
+        var fromCosmetic = _loadedPickaxes.TryGetValue(fromCosmeticId, out var cosmetic)
+            ? cosmetic
+            : LoadCosmetic<PickaxeCosmetic>(fromCosmeticId);
+        
+        var toCosmetic = _loadedPickaxes.TryGetValue(toCosmeticId, out var cosmetic2)
+            ? cosmetic2
+            : LoadCosmetic<PickaxeCosmetic>(toCosmeticId);
 
-        return true;
+        if (fromCosmetic == null || toCosmetic == null)
+            return false;
+        
+        if (fromCosmetic.PrimaryFireAbility == null)
+        {
+            if (!fromCosmetic.WeaponDefinition.TryLoad(out var fromWid))
+                return false;
+
+            fromCosmetic.PrimaryFireAbility = fromWid.GetOrDefault<FSoftObjectPath>("PrimaryFireAbility").ToString();
+        }
+
+        if (toCosmetic.PrimaryFireAbility == null)
+        {
+            if (!toCosmetic.WeaponDefinition.TryLoad(out var toWid))
+                return false;
+
+            toCosmetic.PrimaryFireAbility = toWid.GetOrDefault<FSoftObjectPath>("PrimaryFireAbility").ToString();
+        }
+
+        return fromCosmetic.PrimaryFireAbility == toCosmetic.PrimaryFireAbility;
     }
 }

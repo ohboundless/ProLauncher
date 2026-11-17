@@ -53,5 +53,6 @@ public class Downloader
         
         Log("Extracting...");
         await ZipFile.ExtractToDirectoryAsync(fileName, directoryPath, overwriteFiles: true);
+        File.Delete(fileName);
     }
 }

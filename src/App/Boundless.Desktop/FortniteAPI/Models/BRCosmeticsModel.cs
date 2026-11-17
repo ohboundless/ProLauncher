@@ -43,8 +43,15 @@ public enum ECosmeticType
     AthenaPickaxe,
     AthenaDance,
     AthenaToy,
+    AthenaEmoji,
     AthenaSpray,
     AthenaGlider,
+    AthenaSkyDiveContrail,
+    AthenaItemWrap,
+    AthenaLoadingScreen,
+    AthenaMusicPack,
+    CosmeticCompanion,
+    CosmeticShoes,
     
     EverythingElse
 }

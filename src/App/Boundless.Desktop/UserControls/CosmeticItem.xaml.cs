@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Serialization;
 using Boundless.Desktop.Enums;
 using Boundless.Desktop.UserControls.Popups;
 using Boundless.Desktop.ViewModels;
@@ -28,7 +29,7 @@ public partial class CosmeticItem : UserControl
         var filter = MainWindow!.SwapperTab.SwapperPanel.CosmeticsViewModel!.SelectedFilter;
         if (filter is CosmeticFilter.Pickaxes or CosmeticFilter.Emotes)
         {
-            var panel = MainWindow!.SelectSwapTab.CosmeticPanel;
+            var panel = MainWindow.SelectSwapTab.CosmeticPanel;
             if (itemModel.PanelType == PanelType.Selecting)
             {
                 _ = new SwapControlPopup(panel.SelectedSwap, itemModel);
@@ -38,6 +39,7 @@ public partial class CosmeticItem : UserControl
             MainWindow.SelectedTab = ActiveTab.SelectSwap;
             panel.SelectedSwap = itemModel;
             panel.CosmeticsViewModel?.SelectedFilter = filter;
+            panel.CosmeticsViewModel?.SwapCosmeticId = itemModel.CosmeticId.ToLower();
             
             await MainWindow.SelectSwapTab.OnSetActiveAccount(MainWindow.ActiveAccount!);
             return;

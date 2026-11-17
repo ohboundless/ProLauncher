@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Boundless.Installer.Loader;
+using Boundless.Installer.Windows;
 
 namespace Boundless.Installer;
 
@@ -61,11 +62,8 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            LogBox.Text = string.Empty;
-            WriteLog("An error has occurred! Please report this to the dev team!");
-            WriteLog("An error has occurred! Please report this to the dev team!");
-            WriteLog("An error has occurred! Please report this to the dev team!\n");
-            WriteLog(ex.ToString());
+            WriteLog("An error has occured!");
+            _ = new MessagePopup("Error!", ex.ToString()).ShowDialog();
         }
     }
 }

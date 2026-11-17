@@ -1,3 +1,4 @@
+using System.IO;
 using Boundless.Desktop.UserControls.Popups;
 using Boundless.Desktop.Utils;
 
@@ -23,7 +24,7 @@ public sealed class Settings() : AbstractConfigData("settings")
     }
 
     [SettingsDescription("Hide Lobby Bot Console", "Hide the lobby bot console. Turn this off to allow for debugging.")]
-    public bool HideLobbyBotConsole { get; set; } = true;
+    public bool HideLobbyBotConsole { get; set; } = false;
 
     [SettingsDescription("Show Logging Console (Debugging)", "Show the logging console to allow for debugging.")]
     public bool ShowLoggingConsole
@@ -35,6 +36,16 @@ public sealed class Settings() : AbstractConfigData("settings")
             if (value)
             {
                 DllImports.AllocConsole();
+                
+                Console.SetOut(new StreamWriter(Console.OpenStandardOutput())
+                {
+                    AutoFlush = true
+                });
+
+                Console.SetError(new StreamWriter(Console.OpenStandardError())
+                {
+                    AutoFlush = true
+                });
             }
             else
             {

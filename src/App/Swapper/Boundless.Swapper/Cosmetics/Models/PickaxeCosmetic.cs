@@ -6,4 +6,5 @@ namespace Boundless.Swapper.Cosmetics.Models;
 public class PickaxeCosmetic(UObject obj, string path) : BaseCosmetic(obj, path)
 {
     public FSoftObjectPath WeaponDefinition { get; } = obj.GetOrDefault<FSoftObjectPath>(nameof(WeaponDefinition));
+    public string? PrimaryFireAbility { get; set; }
 }

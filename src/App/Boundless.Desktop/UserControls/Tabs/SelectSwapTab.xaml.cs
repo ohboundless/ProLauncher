@@ -20,12 +20,6 @@ public partial class SelectSwapTab : UserControl
         InitializeComponent();
     }
 
-    public async Task LoadCosmetics()
-    {
-        await FortniteCache.GetAllCosmetics();
-        Log("AccountCosmeticsTab", LogLevel.Info, "Downloaded cosmetics.");
-    }
-
     public async Task OnSetActiveAccount(FortniteAccount account, bool reloadData = false)
     {
         try

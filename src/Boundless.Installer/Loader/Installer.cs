@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.IO;
+using Boundless.Installer.Windows;
 using static Boundless.Installer.Loader.Statics;
 
 namespace Boundless.Installer.Loader;
@@ -23,29 +24,32 @@ public class Installer
             return json;
         
         var msg = (string)json.statusMessage;
-        Log(msg);
-        Log(msg);
-        Log(msg);
         Log("Launcher is down. Please check the discord for updates.");
-        Log("Opening discord invite link in 5 seconds...");
-        
-        await Task.Delay(5000);
-        Process.Start(new ProcessStartInfo
+
+        new Task(() =>
         {
-            FileName = (string)json.discordUrl,
-            UseShellExecute = true
-        });
+            Thread.Sleep(5000);
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = (string)json.discordUrl,
+                UseShellExecute = true
+            });
+        }).Start();
+        
+        _ = new MessagePopup("Launcher is down!", 
+            $"{msg}\nOpening discord invite link in 5 seconds...").ShowDialog();
 
         throw new ApplicationException("Launcher is down.");
     }
 
     public async Task Install()
     {
-        Log("\nCreating directories...");
+        Log("Creating directory...");
+        Directory.CreateDirectory(DirectoryPath);
         Directory.CreateDirectory(AppPath);
         Directory.CreateDirectory(LauncherPath);
         Directory.CreateDirectory(LobbyBotPath);
-
+        
         var status = await GetStatus();
         var versionFile = DirectoryPath + "\\version.txt";
         var version = File.Exists(versionFile) ? Convert.ToInt32(await File.ReadAllTextAsync(versionFile)) : -1;
@@ -56,7 +60,7 @@ public class Installer
             await Task.Delay(1000);
             return;
         }
-        
+
         var processes = Process.GetProcessesByName("Boundless.Desktop");
         if (processes.Any())
         {
@@ -64,6 +68,14 @@ public class Installer
             foreach (var process in processes)
                 process.Kill();
         }
+        
+        var appFiles = Directory.EnumerateFiles(AppPath, "*");
+        foreach (var file in appFiles)
+            File.Delete(file);
+
+        var zips = Directory.EnumerateFiles(DirectoryPath, "*.zip", SearchOption.AllDirectories);
+        foreach (var file in zips)
+            File.Delete(file);
 
         Log("Downloading app...");
         await _client.DownloadAndExtract(AppPath, (string)status.appUrl);

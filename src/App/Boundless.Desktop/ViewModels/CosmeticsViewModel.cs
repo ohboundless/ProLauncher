@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Printing;
 using System.Windows;
 using System.Windows.Data;
 using Boundless.Desktop.FortniteAPI;
@@ -104,6 +105,9 @@ public class CosmeticsViewModel : ViewModel
 
     public PanelType CosmeticPanelType { get; set; } = PanelType.AccountCosmetics;
     
+    // The cosmetic id we are swapping to and currently selecting for
+    public string SwapCosmeticId { get; set; }
+    
     #endregion
 
     public CosmeticsViewModel()
@@ -116,9 +120,6 @@ public class CosmeticsViewModel : ViewModel
     {
         if (obj is not CosmeticItemModel model)
             return false;
-        
-        if (string.IsNullOrWhiteSpace(SearchText))
-            return true;
 
         if (model.Data == null)
         {
@@ -126,11 +127,36 @@ public class CosmeticsViewModel : ViewModel
             return false;
         }
         
-        return model.GetItemName().Contains(_searchText, StringComparison.OrdinalIgnoreCase)
-               || model.CosmeticId.Contains(_searchText, StringComparison.OrdinalIgnoreCase);
+        var matchesSearch = model.GetItemName().Contains(_searchText, StringComparison.OrdinalIgnoreCase)
+               || model.CosmeticId.Contains(_searchText, StringComparison.OrdinalIgnoreCase)
+               || string.IsNullOrWhiteSpace(SearchText);
+
+        if (!matchesSearch)
+            return false;
+        
+        if (CosmeticPanelType == PanelType.Selecting)
+        {
+            if (SelectedFilter == CosmeticFilter.Pickaxes)
+            {
+                return SC.CosmeticsLoader.IsPickaxeSwappable(model.CosmeticId, SwapCosmeticId);
+            }
+        }
+
+        if (CosmeticPanelType is not (PanelType.Selecting or PanelType.Swapper) ||
+            SelectedFilter != CosmeticFilter.Emotes)
+            return matchesSearch;
+
+        // Don't show sprays and emojis
+        if (model.CosmeticId.StartsWith("spid_")
+            || model.CosmeticId.StartsWith("spray_")
+            || model.CosmeticId.StartsWith("emoji_")
+            || model.CosmeticId.StartsWith("emoticon_"))
+            return false;
+
+        return matchesSearch;
     }
-    
-    internal CancellationTokenSource HandleCancellation()
+
+    private CancellationTokenSource HandleCancellation()
     {
         if (_currentCancellationSource != null)
         {
