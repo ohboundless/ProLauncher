@@ -10,8 +10,70 @@
              Margin="5"
              Visibility="{Binding Visibility}"
              MouseUp="CosmeticItem_OnMouseUp">
+    <UserControl.ToolTip>
+        <TextBlock Text="{Binding Data.Name}" 
+                   FontSize="14"
+                   HorizontalAlignment="Center"
+                   Foreground="#d6d6d6"/>
+    </UserControl.ToolTip>
+    
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                    To="1.05"
+                                    Duration="0:0:0.04">
+                                    <DoubleAnimation.EasingFunction>
+                                        <QuadraticEase EasingMode="EaseIn"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                    To="1.1"
+                                    Duration="0:0:0.04">
+                                    <DoubleAnimation.EasingFunction>
+                                        <QuadraticEase EasingMode="EaseIn"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                    To="1.0"
+                                    Duration="0:0:0.2"/>
+
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                    To="1.0"
+                                    Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+    
     <Grid>
-        
         <Border x:Name="MaskBorder"
                 CornerRadius="10"
                 Background="{Binding BackgroundRadial}" />
