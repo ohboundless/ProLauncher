@@ -20,7 +20,7 @@ public static class EpicInstallations
 
     public static Dictionary<string, EpicInstall> Installs { get; } = new();
     
-    public static void PopulateInstallations()
+    public static bool TryPopulateInstallations()
     {
         var programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
         var launcherDataPath = $@"{programData}\Epic\UnrealEngineLauncher\LauncherInstalled.dat";
@@ -56,6 +56,9 @@ public static class EpicInstallations
             Installs[appName] = result;
                 
             Log("EpicInstallations", LogLevel.Info, $"Populated {appName} install location.");
+            return true;
         }
+
+        return false;
     }
 }

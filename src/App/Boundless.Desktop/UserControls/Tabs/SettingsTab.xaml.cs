@@ -17,11 +17,19 @@ public partial class SettingsTab : UserControl
 
         foreach (var property in properties)
         {
+            var propertyType = property.PropertyType;
             var value = property.GetValue(Settings);
 
-            if (value is bool boolean)
+            if (propertyType == typeof(bool))
             {
+                var boolean = (bool)value!;
                 var option = new ToggleOption(property, boolean);
+                SettingsPanel.Children.Add(option);
+            }
+            else if (propertyType == typeof(string))
+            {
+                var str = (string?)value ?? string.Empty;
+                var option = new StringOption(property, str);
                 SettingsPanel.Children.Add(option);
             }
             else

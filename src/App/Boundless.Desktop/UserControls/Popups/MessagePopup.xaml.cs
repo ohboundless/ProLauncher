@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using Boundless.Desktop.Utils;
 
 namespace Boundless.Desktop.UserControls.Popups;
 
@@ -59,6 +60,11 @@ public partial class MessagePopup : UserControl
     {
         ConfirmAction?.Invoke();
         RemovePopup();
+    }
+
+    public static void Show(string title, string message, string confirmButtonText = "Ok", Action? confirmAction = null)
+    {
+        MainWindow?.PopupContainer.ShowMessage(title, message, confirmButtonText, confirmAction);
     }
     
     public void RemovePopup() => ParentGrid.RemovePopup(this);
