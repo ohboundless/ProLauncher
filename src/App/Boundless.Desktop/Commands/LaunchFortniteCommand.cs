@@ -41,7 +41,7 @@ public class LaunchFortniteCommand : ICommand
         LaunchFortnite();
         
         var username = MainWindow.ActiveAccount.Username ?? "NULL";
-        MainWindow.PopupContainer.ShowMessage("Launching...", $"Retrieving access token for \"{username}\" and launching Fortnite.", removeAllPopups: false);
+        MessagePopup.Show("Launching...", $"Retrieving access token for \"{username}\" and launching Fortnite.");
     }
     
     private async void ExecLaunchFortniteWithSwapper()
@@ -82,15 +82,16 @@ public class LaunchFortniteCommand : ICommand
             }
 
             await FortniteHandler.LaunchFortnite(account);
-            MainWindow.LoadAccounts();
+            MainWindow!.LoadAccounts();
         }
         catch (LaunchFortniteException ex)
         {
-            MainWindow.PopupContainer.ShowMessage("ERROR", ex.Message);
+            MessagePopup.Show("ERROR", ex.Message);
         }
         catch (Exception ex)
         {
-            HandleError(ex);
+            ErrorPopup.Show("LaunchFortniteCommand",
+                "An error occured. Please report this to the dev team.", ex);
         }
     }
 
@@ -113,7 +114,8 @@ public class LaunchFortniteCommand : ICommand
         }
         catch (Exception ex)
         {
-            HandleError(ex);
+            ErrorPopup.Show("LaunchFortniteCommand",
+                "An error occured. Please report this to the dev team.", ex);
         }
     }
 
@@ -121,7 +123,7 @@ public class LaunchFortniteCommand : ICommand
     {
         if (Accounts.Fortnite.Accounts == null)
         {
-            MainWindow.PopupContainer.ShowMessage("Please Add an Account",
+            MessagePopup.Show("Please Add an Account",
                 "Cannot select accounts because accounts are null.");
             return;
         }
@@ -130,12 +132,12 @@ public class LaunchFortniteCommand : ICommand
         {
             try
             {
-                MainWindow.PopupContainer.ShowMessage("Starting Lobby Bot",
+                MessagePopup.Show("Starting Lobby Bot",
                     $"Please wait for {account.Username} to appear online, then invite it.");
 
                 if (!ConfigData.CurrentAccounts.AccountIdsByGame.TryGetValue("Fortnite", out var current))
                     throw new LaunchFortniteException("Cannot start lobby bot, no active account found!");
-                    
+
                 var json = JsonConvert.SerializeObject(account.DeviceAuth, Formatting.Indented);
                 await BotController.Start(json, current, Settings.HideLobbyBotConsole);
 
@@ -162,13 +164,13 @@ public class LaunchFortniteCommand : ICommand
                         backpackSuccess =
                             await BotController.TrySetCosmetic("AthenaBackpack", SwapperData.BackpackId);
                     }
-                    
+
                     if (SwapperData.PickaxeId != null)
                     {
                         pickaxeSuccess =
                             await BotController.TrySetCosmetic("AthenaPickaxe", SwapperData.PickaxeId);
                     }
-                    
+
                     if (SwapperData.EmoteId != null)
                     {
                         emoteSuccess =
@@ -180,18 +182,9 @@ public class LaunchFortniteCommand : ICommand
             }
             catch (Exception ex)
             {
-                HandleError(ex);
+                ErrorPopup.Show("LaunchFortniteCommand",
+                    "An error occured. Please report this to the dev team.", ex);
             }
         });
-    }
-
-    private static void HandleError(Exception ex)
-    {
-        var error = ex.ToString();
-        MainWindow.PopupContainer.ShowMessage("ERROR",
-            "An error occured. Please report this to the dev team.",
-            "Copy error and close",
-            () => Clipboard.SetText(error));
-        Log("LaunchFortniteCommand", LogLevel.Error, error);
     }
 }

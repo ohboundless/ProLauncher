@@ -36,16 +36,14 @@ public sealed class Settings() : AbstractConfigData("settings")
             
             if (File.Exists(Path.Combine(value, @"Fortnite\FortniteGame\Binaries\Win64\", exeName)))
             {
-                field = Path.Combine(value, "Fortnite\\");
-                SetInstall(field);
+                SetInstall(Path.Combine(value, "Fortnite\\"));
                 
                 return;
             }
 
             if (File.Exists(Path.Combine(value, @"FortniteGame\Binaries\Win64\", exeName)))
             {
-                field = value;
-                SetInstall(field);
+                SetInstall(value);
                 
                 return;
             }
@@ -62,15 +60,15 @@ public sealed class Settings() : AbstractConfigData("settings")
 
                 var split = dir.Split(@"FortniteGame\Binaries\Win64").First();
                 split = split[..^1];
-                
-                field = split;
-                SetInstall(field);
+                SetInstall(split);
                 
                 return;
             }
 
             void SetInstall(string path)
             {
+                field = path;
+                
                 EpicInstallations.Installs["Fortnite"] = new EpicInstall
                 {
                     Path = path,
