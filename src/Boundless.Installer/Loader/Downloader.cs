@@ -13,6 +13,7 @@ public class Downloader
     public Downloader()
     {
         _httpClient = new HttpClient();
+        _httpClient.DefaultRequestHeaders.Add("User-Agent", $"ProLauncher/{Statics.Version}");
     }
 
     public async Task<dynamic> GetStatus()

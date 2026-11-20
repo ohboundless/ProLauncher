@@ -15,6 +15,8 @@ public partial class MessagePopup : Window
 
     private void Ok_OnClick(object sender, RoutedEventArgs e)
     {
+        Clipboard.SetText(Message.Text);
+        
         Close();
         Thread.Sleep(5000);
         Process.GetCurrentProcess().Kill();

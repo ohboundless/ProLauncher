@@ -24,11 +24,14 @@ public sealed class Settings() : AbstractConfigData("settings")
 {
     [SettingsDescription("Fortnite Install Directory", "The directory which contains Fortnite.",
         SettingsFlags.DirectorySelector)]
-    public string FortniteInstallPath
+    public string? FortniteInstallPath
     {
         get;
         set
         {
+            if (value == null)
+                return;
+            
             const string exeName = "FortniteClient-Win64-Shipping.exe";
             
             if (File.Exists(Path.Combine(value, @"Fortnite\FortniteGame\Binaries\Win64\", exeName)))
