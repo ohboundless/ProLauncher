@@ -22,9 +22,9 @@ public static class Globals
 
     public static MainWindow? MainWindow;
 
-    public static MainConfig ConfigData { get; } = Configs.GetConfig<MainConfig>("config");
-    public static SwapperConfig SwapperData { get; } = Configs.GetConfig<SwapperConfig>("swapper");
-    public static Settings Settings { get; } = Configs.GetConfig<Settings>("settings");
+    public static MainConfig ConfigData { get; } = Configs.GetConfig<MainConfig>("Config");
+    public static SwapperConfig SwapperData { get; } = Configs.GetConfig<SwapperConfig>("Swapper");
+    public static Settings Settings { get; } = Configs.GetConfig<Settings>("Settings");
     
     public static void StartupTasks()
     {

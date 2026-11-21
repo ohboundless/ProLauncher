@@ -14,10 +14,10 @@ public class Edit(string assetPath, string dataFilePath, string containerPath, s
 public class LaunchConfig
 {
     public static string LauncherDirectory => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                              @"\BoundlessLauncher\launcher";
+                                              @"\BoundlessLauncher\Launcher";
     public string ExePath => LauncherDirectory + "\\ProSwapper.Launcher.exe";
-    public string EditsPath => LauncherDirectory + "\\edits.json";
-    public string DataPath => LauncherDirectory + "\\data";
+    public string EditsPath => LauncherDirectory + "\\Edits.json";
+    public string DataPath => LauncherDirectory + "\\Data";
     
     private List<Edit> Edits { get; } = new();
 

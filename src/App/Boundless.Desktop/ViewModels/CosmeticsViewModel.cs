@@ -146,11 +146,12 @@ public class CosmeticsViewModel : ViewModel
             SelectedFilter != CosmeticFilter.Emotes)
             return matchesSearch;
 
-        // Don't show sprays and emojis
+        // Don't show sprays, emojis, and toys
         if (model.CosmeticId.StartsWith("spid_")
             || model.CosmeticId.StartsWith("spray_")
             || model.CosmeticId.StartsWith("emoji_")
-            || model.CosmeticId.StartsWith("emoticon_"))
+            || model.CosmeticId.StartsWith("emoticon_")
+            || model.CosmeticId.StartsWith("toy_"))
             return false;
 
         return matchesSearch;

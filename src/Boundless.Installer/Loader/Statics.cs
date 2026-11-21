@@ -8,9 +8,9 @@ public static class Statics
     public static string DirectoryPath => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
                                           "\\BoundlessLauncher";
 
-    public static string AppPath = DirectoryPath + "\\app";
-    public static string LauncherPath = DirectoryPath + "\\launcher";
-    public static string LobbyBotPath = DirectoryPath + "\\lobbybot";
+    public static string AppPath = DirectoryPath + "\\App";
+    public static string LauncherPath = DirectoryPath + "\\Launcher";
+    public static string LobbyBotPath = DirectoryPath + "\\LobbyBot";
 
     public static Action<string> Log;
     public static Action<double> Progress;

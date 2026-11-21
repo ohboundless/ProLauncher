@@ -27,7 +27,7 @@ public static class Logging
     {
         Logger = new LoggerConfiguration()
             .WriteTo.Console()
-            .WriteTo.File(path + @"\logs\Boundless.Desktop-.log", 
+            .WriteTo.File(path + @"\Logs\Boundless.Desktop-.log", 
                 rollingInterval: RollingInterval.Hour, 
                 rollOnFileSizeLimit: true)
             .CreateLogger();
