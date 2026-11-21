@@ -1,12 +1,10 @@
 ﻿using System.Data;
-using System.Diagnostics;
 using CUE4Parse.Encryption.Aes;
 using CUE4Parse.FileProvider;
 using CUE4Parse.MappingsProvider.Usmap;
 using CUE4Parse.UE4.IO;
 using CUE4Parse.UE4.Objects.Core.Misc;
 using CUE4Parse.UE4.Versions;
-using Serilog;
 
 namespace Boundless.Swapper.Core;
 

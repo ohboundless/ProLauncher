@@ -1,13 +1,8 @@
-﻿using System.Data;
-using CUE4Parse.FileProvider;
+﻿using CUE4Parse.FileProvider;
 using CUE4Parse.UE4.IO.Objects;
-using CUE4Parse.UE4.Readers;
-using Serilog;
-using UAssetEditor;
 using UAssetEditor.Unreal.Assets;
 using UAssetEditor.Unreal.Readers.IoStore;
 using UAssetEditor.Unreal.Versioning;
-using UsmapDotNet;
 
 namespace Boundless.Swapper.Core;
 

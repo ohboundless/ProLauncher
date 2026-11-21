@@ -1,6 +1,4 @@
 ﻿using Boundless.Logging.Classes;
-using Boundless.Swapper.Cosmetics.Models;
-using Boundless.Swapper.Launcher;
 using UAssetEditor.Binary;
 using UAssetEditor.Unreal.Properties.Types;
 

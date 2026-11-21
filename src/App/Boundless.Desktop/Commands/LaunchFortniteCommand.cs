@@ -1,13 +1,9 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Windows;
+﻿using System.IO;
 using System.Windows.Input;
-using Boundless.Desktop.Config;
 using Boundless.Desktop.Exceptions;
 using Boundless.Desktop.Games;
 using Boundless.Desktop.Games.EpicGames.Fortnite.API;
 using Boundless.Desktop.UserControls.Popups;
-using Boundless.Desktop.Utils;
 using Boundless.Swapper.Launcher;
 using LobbyBotController;
 using Newtonsoft.Json;

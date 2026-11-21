@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace Boundless.Swapper.Core;
 

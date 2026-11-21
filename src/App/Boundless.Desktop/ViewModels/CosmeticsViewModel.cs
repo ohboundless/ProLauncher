@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Printing;
 using System.Windows;
 using System.Windows.Data;
 using Boundless.Desktop.FortniteAPI;
@@ -8,9 +7,7 @@ using Boundless.Desktop.FortniteAPI.Models;
 using Boundless.Desktop.Framework;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.UserControls.Popups;
-using Boundless.Desktop.Utils;
 using Boundless.Desktop.ViewModels.Enums;
-using Boundless.Swapper.Cosmetics.Models;
 using CUE4Parse.GameTypes.FN.Enums;
 
 namespace Boundless.Desktop.ViewModels;

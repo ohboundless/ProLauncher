@@ -1,7 +1,5 @@
-﻿using System.Data;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Threading;
-using Boundless.Desktop.UserControls.Popups;
 
 namespace Boundless.Desktop;
 

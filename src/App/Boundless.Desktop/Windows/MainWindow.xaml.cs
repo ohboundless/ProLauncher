@@ -1,18 +1,12 @@
-﻿using System.Data;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows;
 using Boundless.Desktop.Commands;
-using Boundless.Desktop.Config;
 using Boundless.Desktop.Enums;
 using Boundless.Desktop.Games;
-using Boundless.Desktop.Games.EpicGames.Fortnite.API;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
 using Boundless.Desktop.UserControls;
 using Boundless.Desktop.UserControls.Popups;
 using Boundless.Desktop.Utils;
 using Boundless.Desktop.ViewModels;
-using LobbyBotController;
-using Newtonsoft.Json;
 
 namespace Boundless.Desktop.Windows;
 

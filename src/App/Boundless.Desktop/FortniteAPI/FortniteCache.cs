@@ -3,7 +3,6 @@ using System.IO;
 using System.Net.Http;
 using Boundless.Desktop.FortniteAPI.Models;
 using Boundless.Desktop.Config;
-using Boundless.Desktop.Utils;
 using Newtonsoft.Json;
 using RestSharp;
 

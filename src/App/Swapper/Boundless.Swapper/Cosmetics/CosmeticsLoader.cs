@@ -1,8 +1,6 @@
-﻿using Boundless.Swapper.Core;
-using Boundless.Swapper.Cosmetics.Models;
+﻿using Boundless.Swapper.Cosmetics.Models;
 using CUE4Parse.FileProvider;
 using CUE4Parse.FileProvider.Objects;
-using CUE4Parse.UE4.Assets;
 using CUE4Parse.UE4.Objects.UObject;
 
 namespace Boundless.Swapper.Cosmetics;

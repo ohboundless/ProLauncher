@@ -2,7 +2,6 @@
 using Boundless.Swapper.Core;
 using Boundless.Swapper.Cosmetics;
 using Boundless.Swapper.Launcher;
-using CUE4Parse_Conversion.Textures.BC;
 using CUE4Parse.Compression;
 
 namespace Boundless.Swapper;

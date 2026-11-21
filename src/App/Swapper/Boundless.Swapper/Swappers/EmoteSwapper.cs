@@ -1,9 +1,5 @@
 using System.Data;
 using UAssetEditor.Binary;
-using UAssetEditor.Unreal.Objects;
-using UAssetEditor.Unreal.Properties.Structs;
-using UAssetEditor.Unreal.Properties.Types;
-using UAssetEditor.Utils;
 
 namespace Boundless.Swapper.Swappers;
 
