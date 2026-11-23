@@ -216,7 +216,7 @@
                     </StackPanel>
                 </Button>
                 
-                <ComboBox Height="40" ItemsSource="{Binding MyStringList}" 
+                <ComboBox Height="40" 
                           ItemStringFormat="Sort By: {0}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>

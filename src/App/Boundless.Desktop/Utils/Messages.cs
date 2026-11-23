@@ -13,11 +13,11 @@ public static class Messages
         bool removeAllPopups = true)
     {
         ShowMessage(
-            new MessagePopup(parent, 
-                title,
+            new MessagePopup(title,
                 message, 
                 confirmText, 
-                confirmAction), 
+                confirmAction, 
+                parent), 
             removeAllPopups);
     }
     
@@ -25,6 +25,16 @@ public static class Messages
     {
         Log("Messages", LogLevel.Info,
             $"Creating popup: Title: '{popupMessage.Title}'. Message: '{popupMessage.Message}'. ConfirmText: '{popupMessage.ConfirmButtonText}'. IsConfirmActionNull: {popupMessage.ConfirmAction == null}");
-        popupMessage.ParentGrid.AddPopup(popupMessage, removeAllPopups);
+        popupMessage.ParentGrid!.AddPopup(popupMessage, removeAllPopups);
+    }
+
+    public static void QueueMessage(
+        string title, 
+        string message, 
+        string confirmText = "Ok", 
+        Action? confirmAction = null)
+    {
+        var popup = new MessagePopup(title, message, confirmText, confirmAction);
+        QueuedMessage = popup;
     }
 }

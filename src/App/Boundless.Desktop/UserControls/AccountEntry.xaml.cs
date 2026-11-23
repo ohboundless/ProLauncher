@@ -50,7 +50,9 @@ public partial class AccountEntry : UserControl
     {
         AccountName.Text = Account.Username;
 
-        var accountIcon = await FortniteCache.CacheImageFromUrlAsync(Account.Icon, Account.Id);
+        var accountIcon =
+            await FortniteCache.CacheImageFromUrlAsync(Account.Icon,
+                Account.ProfileData?.EquippedCharacterId ?? Account.Id);
         AccountIcon.Source = new BitmapImage(new Uri(accountIcon));
         LastPlayTime.Text = BuildLastLaunchedString(Account.LastLaunchTime);
     }

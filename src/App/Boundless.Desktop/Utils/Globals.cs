@@ -21,6 +21,7 @@ public static class Globals
     public static RestClient Client = new(BACKEND_URI);
 
     public static MainWindow? MainWindow;
+    public static MessagePopup? QueuedMessage { get; set; }
 
     public static MainConfig ConfigData { get; } = Configs.GetConfig<MainConfig>("Config");
     public static SwapperConfig SwapperData { get; } = Configs.GetConfig<SwapperConfig>("Swapper");
@@ -36,17 +37,20 @@ public static class Globals
         // Populate Fortnite install
         if (string.IsNullOrWhiteSpace(Settings.FortniteInstallPath))
         {
+            var success = false;
             try
             {
-                if (!EpicInstallations.TryPopulateInstallations())
-                    throw new FileNotFoundException("Cannot find Fortnite's install location");
+                success = EpicInstallations.TryPopulateInstallations();
             }
             catch (FileNotFoundException ex)
             {
                 Log("StartupTasks_PopulateInstallations", LogLevel.Error, ex.ToString());
+            }
 
-                MessagePopup.Show("Fortnite Install Location",
-                    "Cannot automatically find Fortnite's install location. Please select Fortnite's install folder.",
+            if (!success)
+            {
+                Messages.QueueMessage("Fortnite Install Location",
+                    "Could not automatically find Fortnite's install location. Please select Fortnite's install folder.",
                     "Select", () =>
                     {
                         var dialog = new OpenFolderDialog();
@@ -55,6 +59,9 @@ public static class Globals
 
                         Settings.FortniteInstallPath = dialog.FolderName;
                         Settings.Save();
+
+                        Log("StartupTasks_PopulateInstallations", LogLevel.Info,
+                            $"FortniteInstallPath: {Settings.FortniteInstallPath}");
                     });
             }
         }

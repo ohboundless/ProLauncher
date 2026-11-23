@@ -271,20 +271,23 @@ public class CosmeticItemModel : INotifyPropertyChanged
             tag = null;
             return true;
         }
-
-        var variants = Cosmetic.Attributes?.Variants;
-        if (variants != null)
+        
+        if (PanelType == PanelType.AccountCosmetics) // TODO remove when adding styles
         {
-            foreach (var variant in variants)
+            var variants = Cosmetic.Attributes?.Variants;
+            if (variants != null)
             {
-                foreach (var style in variant.Owned)
+                foreach (var variant in variants)
                 {
-                    if (!RareCosmetics.IsRare(CosmeticId, variant.Channel, style))
-                        continue;
+                    foreach (var style in variant.Owned)
+                    {
+                        if (!RareCosmetics.IsRare(CosmeticId, variant.Channel, style))
+                            continue;
 
-                    channel = variant.Channel;
-                    tag = style;
-                    return true;
+                        channel = variant.Channel;
+                        tag = style;
+                        return true;
+                    }
                 }
             }
         }

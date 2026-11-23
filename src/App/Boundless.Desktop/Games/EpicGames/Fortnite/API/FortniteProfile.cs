@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Text;
 using Boundless.Desktop.Games.EpicGames.Fortnite.Data;
+using Boundless.Desktop.UserControls.Popups;
 using RestSharp;
 using Boundless.Desktop.Utils;
 using Newtonsoft.Json;
@@ -87,18 +88,44 @@ public class FortniteProfile(FortniteAccount account)
         var result = new FortniteProfileData();
         
         // common_core
-        var commonCore = _commonCore.profileChanges[0].profile;
-        result.Currency = CalculateCurrency(commonCore.items);
-        
-        // athena
-        var athena = _athena.profileChanges[0].profile;
-        result.AccountLevel = athena.stats.attributes.accountLevel;
-        result.BattlePassLevel = athena.stats.attributes.level;
-        result.Cosmetics = GatherCosmetics(athena.items);
+        try
+        {
+            var commonCore = _commonCore?.profileChanges[0].profile;
 
-        var characterId = await QueryEquippedCharacter();
-        result.EquippedCharacterId = characterId;
-        
+            if (commonCore != null)
+                result.Currency = CalculateCurrency(commonCore.items);
+        }
+        catch (Exception ex)
+        {
+            Log("FortniteProfile_LoadProfileData", LogLevel.Error, $"Unable to calculate currency. {ex}");
+        }
+
+        // athena
+        try
+        {
+            var athena = _athena?.profileChanges[0].profile;
+            if (athena != null)
+            {
+                result.AccountLevel = athena.stats.attributes.accountLevel;
+                result.BattlePassLevel = athena.stats.attributes.level;
+                result.Cosmetics = GatherCosmetics(athena.items);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log("FortniteProfile_LoadProfileData", LogLevel.Error, $"Unable to gather athena profile data. {ex}");
+        }
+
+        try
+        {
+            var characterId = await QueryEquippedCharacter();
+            result.EquippedCharacterId = characterId;
+        }
+        catch (Exception ex)
+        {
+            Log("FortniteProfile_LoadProfileData", LogLevel.Error, $"Unable to get equipped character. {ex}");
+        }
+
         return result;
     }
 

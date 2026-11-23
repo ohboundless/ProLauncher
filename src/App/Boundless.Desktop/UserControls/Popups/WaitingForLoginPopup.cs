@@ -5,11 +5,12 @@ namespace Boundless.Desktop.UserControls.Popups;
 
 public partial class WaitingForLoginPopup : MessagePopup
 {
-    public WaitingForLoginPopup(Action cancelAction) : base(MainWindow.PopupContainer, 
+    public WaitingForLoginPopup(Action cancelAction) : base( 
         "Login Pending", 
         "Waiting for login to complete...", 
         "Cancel", 
-        cancelAction)
+        cancelAction,
+        MainWindow?.PopupContainer)
     {
         InitializeComponent();
         Messages.ShowMessage(this);

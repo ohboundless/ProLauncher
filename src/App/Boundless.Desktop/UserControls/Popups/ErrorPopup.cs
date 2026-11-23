@@ -6,11 +6,12 @@ namespace Boundless.Desktop.UserControls.Popups;
 
 public partial class ErrorPopup : MessagePopup
 {
-    private ErrorPopup(string category, string message, Exception exception) : base(MainWindow.PopupContainer,
+    private ErrorPopup(string category, string message, Exception exception) : base(
         "ERROR",
         message,
         "Copy and close",
-        () => Clipboard.SetText(exception.ToString()))
+        () => Clipboard.SetText(exception.ToString()),
+        MainWindow?.PopupContainer)
     {
         InitializeComponent();
         Messages.ShowMessage(this);

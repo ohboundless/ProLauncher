@@ -7,8 +7,6 @@ namespace Boundless.Desktop.UserControls.Popups;
 
 public partial class MessagePopup : UserControl
 {
-    public PopupContainer ParentGrid;
-
     private string _title;
     public string Title
     {
@@ -42,22 +40,24 @@ public partial class MessagePopup : UserControl
         }
     }
 
-    public Action? ConfirmAction;
+    public readonly Action? ConfirmAction;
+    public PopupContainer? ParentGrid { get; set; }
     
-    public MessagePopup(PopupContainer parentGrid, string title, string message, 
-        string confirmButtonText = "Ok", Action? confirmAction = null)
+    public MessagePopup(string title, string message, 
+        string confirmButtonText = "Ok", Action? confirmAction = null, PopupContainer? parentGrid = null)
     {
         InitializeComponent();
         
-        ParentGrid = parentGrid;
         Title = title;
         Message = message;
         ConfirmButtonText = confirmButtonText;
         ConfirmAction = confirmAction;
+        ParentGrid = parentGrid;
     }
 
     private void Ok_OnClick(object sender, RoutedEventArgs e)
     {
+        ParentGrid ??= MainWindow!.PopupContainer;
         ConfirmAction?.Invoke();
         RemovePopup();
     }

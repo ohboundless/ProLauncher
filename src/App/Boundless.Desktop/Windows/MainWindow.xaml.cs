@@ -26,6 +26,12 @@ public partial class MainWindow : BoundlessWindow
         
         // Loops
         GameProcessList.FortniteProcessLoop();
+
+        if (QueuedMessage != null)
+        {
+            QueuedMessage.ParentGrid = PopupContainer;
+            Messages.ShowMessage(QueuedMessage);
+        }
     }
 
     private ActiveTab _selectedTab = ActiveTab.Cosmetics;
