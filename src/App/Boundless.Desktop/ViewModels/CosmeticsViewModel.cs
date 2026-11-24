@@ -131,14 +131,6 @@ public class CosmeticsViewModel : ViewModel
         if (!matchesSearch)
             return false;
         
-        if (CosmeticPanelType == PanelType.Selecting)
-        {
-            if (SelectedFilter == CosmeticFilter.Pickaxes)
-            {
-                return SC.CosmeticsLoader.IsPickaxeSwappable(model.CosmeticId, SwapCosmeticId);
-            }
-        }
-
         if (CosmeticPanelType is not (PanelType.Selecting or PanelType.Swapper) ||
             SelectedFilter != CosmeticFilter.Emotes)
             return matchesSearch;
@@ -226,7 +218,8 @@ public class CosmeticsViewModel : ViewModel
         {
             var models = new List<CosmeticItemModel>();
             var filtered = new List<AthenaCosmetic>();
-
+            var isSelectingPickaxe = CosmeticPanelType == PanelType.Selecting && athenaType == "AthenaPickaxe";
+            
             if (athenaType != "*")
             {
                 if (CosmeticPanelType == PanelType.Swapper)
@@ -243,13 +236,29 @@ public class CosmeticsViewModel : ViewModel
                 }
                 else
                 {
+                    if (isSelectingPickaxe)
+                        await SC.CosmeticsLoader.LoadSavedPickaxeAbilities();
+
+                    var completed = 0;
                     foreach (var cosmetic in cosmetics)
                     {
+                        completed++;
+                        progressCallback(Convert.ToDouble(completed) / cosmetics.Count);
+                        
                         if (!cosmetic.TemplateId.StartsWith(athenaType))
                             continue;
+
+                        if (isSelectingPickaxe)
+                        {
+                            if (!SC.CosmeticsLoader.IsPickaxeSwappable(cosmetic.GetCosmeticId(), SwapCosmeticId))
+                                continue;
+                        }
                         
                         filtered.Add(cosmetic);
                     }
+                    
+                    if (isSelectingPickaxe)
+                        await SC.CosmeticsLoader.SavePickaxeAbilities();
                 }
 
                 cosmetics = filtered;
@@ -300,9 +309,12 @@ public class CosmeticsViewModel : ViewModel
         }
         finally
         {
-            Log("CosmeticsLoading", LogLevel.Info, "Flushing cosmetics cache...");
-            FortniteCache.Flush();
             IsProcessing = false;
+
+            /*if (CosmeticPanelType == PanelType.Selecting)
+            {
+                await FilterCosmeticsAsync();
+            }*/
         }
     }
 

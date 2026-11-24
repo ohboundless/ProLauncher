@@ -143,6 +143,16 @@ public partial class MainWindow : BoundlessWindow
     {
         ActiveAccount = account;
         await AccountCosmeticsTab.OnSetActiveAccount(account, reloadData);
+
+        // Reload Icon
+        foreach (AccountEntry entry in AccountsPanel.Children)
+        {
+            if (entry.Account != account)
+                continue;
+            
+            entry.Populate();
+            break;
+        }
     }
     
     private void AddAccount_OnClick(object sender, RoutedEventArgs e)

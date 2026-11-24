@@ -20,24 +20,8 @@ public partial class SelectSwapTab : UserControl
         InitializeComponent();
     }
 
-    public async Task OnSetActiveAccount(FortniteAccount account, bool reloadData = false)
+    public void OnSetActiveAccount(FortniteAccount account, bool reloadData = false)
     {
-        try
-        {
-            if (account.ProfileData == null || reloadData)
-            {
-                account.ProfileData = await new FortniteProfile(account).LoadProfileData();
-                await Accounts.Fortnite.SaveAsync();
-            }
-        }
-        catch (Exception ex)
-        {
-            ErrorPopup.Show("MainWindow_OnSetActiveAccount", 
-                $"Unable to load profile data for {account.Username}.\nIf this issue persists please report this to the dev team.", 
-                ex);
-            return;
-        }
-        
         CosmeticPanel.CosmeticsViewModel?.OnTabSwitched();
     }
     

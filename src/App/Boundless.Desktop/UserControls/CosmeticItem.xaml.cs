@@ -38,10 +38,10 @@ public partial class CosmeticItem : UserControl
             
             MainWindow.SelectedTab = ActiveTab.SelectSwap;
             panel.SelectedSwap = itemModel;
-            panel.CosmeticsViewModel?.SelectedFilter = filter;
-            panel.CosmeticsViewModel?.SwapCosmeticId = itemModel.CosmeticId.ToLower();
+            panel.CosmeticsViewModel.SelectedFilter = filter;
+            panel.CosmeticsViewModel.SwapCosmeticId = itemModel.CosmeticId.ToLower();
             
-            await MainWindow.SelectSwapTab.OnSetActiveAccount(MainWindow.ActiveAccount!);
+            MainWindow.SelectSwapTab.OnSetActiveAccount(MainWindow.ActiveAccount!);
             return;
         }
             

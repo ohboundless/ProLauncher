@@ -26,7 +26,7 @@ public static class FortniteCache
             {
                 Log("FortniteApiCache", LogLevel.Info,
                     "Data cache for fortnite-api.com did not exist. Creating one now...");
-                Flush();
+                Save();
                 return;
             }
 
@@ -54,18 +54,17 @@ public static class FortniteCache
             Load(false);
         }
     }
-    
-    public static void Flush()
+
+    private static void Save()
     {
         Directory.CreateDirectory(FolderPath);
         Directory.CreateDirectory(ImagePath);
-        
+
+        Cosmetics = [];
         var json = JsonConvert.SerializeObject(Cosmetics, Formatting.Indented);
         File.WriteAllText(FilePath, json);
 
-        Cosmetics = [];
-        Cosmetics = null;
-        Log("FortniteApiCache", LogLevel.Info, $"Flushed cosmetics cache. ({FilePath})");
+        Log("FortniteApiCache", LogLevel.Info, $"Saved cosmetics. ({FilePath})");
     }
     #endregion
     

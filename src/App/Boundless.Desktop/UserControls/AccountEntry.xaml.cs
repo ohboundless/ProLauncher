@@ -46,12 +46,11 @@ public partial class AccountEntry : UserControl
         Populate();
     }
 
-    private async void Populate()
+    public async void Populate()
     {
         AccountName.Text = Account.Username;
 
-        var accountIcon =
-            await FortniteCache.CacheImageFromUrlAsync(Account.Icon,
+        var accountIcon = await FortniteCache.CacheImageFromUrlAsync(Account.Icon,
                 Account.ProfileData?.EquippedCharacterId ?? Account.Id);
         AccountIcon.Source = new BitmapImage(new Uri(accountIcon));
         LastPlayTime.Text = BuildLastLaunchedString(Account.LastLaunchTime);
