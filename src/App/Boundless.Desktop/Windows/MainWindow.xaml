@@ -23,6 +23,7 @@
         MinWidth="950"
         MinHeight="600"
         Title="Fortnite Account Manager"
+        Topmost="False"
         Style="{StaticResource MyBoundlessWindowStyle}"
         Loaded="MainWindow_OnLoaded">
     <Grid Background="#090f19">
