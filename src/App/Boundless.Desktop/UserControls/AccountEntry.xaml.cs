@@ -15,10 +15,9 @@ public partial class AccountEntry : UserControl
     public FortniteAccount Account;
     private StackPanel _panel;
 
-    private bool _isActive;
     public bool IsActive
     {
-        get => _isActive;
+        get;
         set
         {
             if (value)
@@ -32,10 +31,10 @@ public partial class AccountEntry : UserControl
                 Container.BorderBrush = new SolidColorBrush(Colors.Transparent);
             }
 
-            _isActive = value;
+            field = value;
         }
     }
-    
+
     public AccountEntry(FortniteAccount account, StackPanel panel)
     {
         InitializeComponent();

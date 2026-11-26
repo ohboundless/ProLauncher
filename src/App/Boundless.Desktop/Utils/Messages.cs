@@ -5,20 +5,22 @@ namespace Boundless.Desktop.Utils;
 
 public static class Messages
 {
-    public static void ShowMessage(this PopupContainer parent, 
+    public static MessagePopup ShowMessage(this PopupContainer parent, 
         string title, 
         string message, 
         string confirmText = "Ok", 
         Action? confirmAction = null, 
         bool removeAllPopups = true)
     {
-        ShowMessage(
-            new MessagePopup(title,
-                message, 
-                confirmText, 
-                confirmAction, 
-                parent), 
-            removeAllPopups);
+        var popup = new MessagePopup(
+            title,
+            message,
+            confirmText,
+            confirmAction,
+            parent);
+        
+        ShowMessage(popup, removeAllPopups);
+        return popup;
     }
     
     public static void ShowMessage(MessagePopup popupMessage, bool removeAllPopups = true)

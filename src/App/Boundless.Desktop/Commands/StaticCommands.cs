@@ -6,56 +6,52 @@ namespace Boundless.Desktop.Commands;
 public static class StaticCommands
 {
     #region Account
-    
-    private static LaunchFortniteCommand _launchFortniteCommand;
+
     public static LaunchFortniteCommand LaunchFortniteCommand
     {
         get
         {
-            if (_launchFortniteCommand != null)
-                return _launchFortniteCommand;
+            if (field != null)
+                return field;
 
-            _launchFortniteCommand = new LaunchFortniteCommand();
-            return _launchFortniteCommand;
+            field = new LaunchFortniteCommand();
+            return field;
         }
     }
-    
-    private static AddAccountCommand _addAccountCommand;
+
     public static AddAccountCommand AddAccountCommand
     {
         get
         {
-            if (_addAccountCommand != null)
-                return _addAccountCommand;
+            if (field != null)
+                return field;
 
-            _addAccountCommand = new AddAccountCommand();
-            return _addAccountCommand;
+            field = new AddAccountCommand();
+            return field;
         }
     }
-    
-    private static RemoveAccountCommand _removeAccountCommand;
+
     public static RemoveAccountCommand RemoveAccountCommand
     {
         get
         {
-            if (_removeAccountCommand != null)
-                return _removeAccountCommand;
+            if (field != null)
+                return field;
 
-            _removeAccountCommand = new RemoveAccountCommand();
-            return _removeAccountCommand;
+            field = new RemoveAccountCommand();
+            return field;
         }
     }
-    
-    private static RefreshProfileCommand _refreshProfileCommand;
+
     public static RefreshProfileCommand RefreshProfileCommand
     {
         get
         {
-            if (_refreshProfileCommand != null)
-                return _refreshProfileCommand;
+            if (field != null)
+                return field;
 
-            _refreshProfileCommand = new RefreshProfileCommand();
-            return _refreshProfileCommand;
+            field = new RefreshProfileCommand();
+            return field;
         }
     }
     
@@ -63,29 +59,27 @@ public static class StaticCommands
 
     #region Swapper
 
-    private static ConvertSwapCommand _convertSwapCommand;
     public static ConvertSwapCommand ConvertSwapCommand
     {
         get
         {
-            if (_convertSwapCommand != null)
-                return _convertSwapCommand;
+            if (field != null)
+                return field;
 
-            _convertSwapCommand = new ConvertSwapCommand();
-            return _convertSwapCommand;
+            field = new ConvertSwapCommand();
+            return field;
         }
     }
 
-    private static RevertSwapCommand _revertSwapCommand;
     public static RevertSwapCommand RevertSwapCommand
     {
         get
         {
-            if (_revertSwapCommand != null)
-                return _revertSwapCommand;
+            if (field != null)
+                return field;
 
-            _revertSwapCommand = new RevertSwapCommand();
-            return _revertSwapCommand;
+            field = new RevertSwapCommand();
+            return field;
         }
     }
     

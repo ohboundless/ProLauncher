@@ -10,8 +10,8 @@
             BorderThickness="1"
             CornerRadius="10"
             Background="#202542"
-            MinWidth="350"
-            MinHeight="200">
+            MinWidth="450"
+            MinHeight="250">
         <Grid Margin="15">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -31,6 +31,8 @@
             <TextBox Grid.Row="1" 
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Center"
+                       HorizontalContentAlignment="Center"
+                       VerticalContentAlignment="Center"
                        TextWrapping="Wrap"
                        TextAlignment="Center"
                        Foreground="#dedede"

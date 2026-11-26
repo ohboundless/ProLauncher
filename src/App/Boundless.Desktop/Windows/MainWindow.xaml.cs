@@ -34,16 +34,15 @@ public partial class MainWindow : BoundlessWindow
         }
     }
 
-    private ActiveTab _selectedTab = ActiveTab.Cosmetics;
     public ActiveTab SelectedTab
     {
-        get => _selectedTab;
+        get;
         set
         {
-            if (_selectedTab == value)
+            if (field == value)
                 return;
 
-            _selectedTab = value;
+            field = value;
             switch (value)
             {
                 case ActiveTab.Cosmetics:
@@ -76,7 +75,7 @@ public partial class MainWindow : BoundlessWindow
                     break;
             }
         }
-    }
+    } = ActiveTab.Cosmetics;
 
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
     {

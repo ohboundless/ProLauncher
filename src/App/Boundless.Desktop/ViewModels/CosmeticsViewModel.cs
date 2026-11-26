@@ -29,44 +29,40 @@ public class CosmeticsViewModel : ViewModel
 {
     #region Properties
     private CancellationTokenSource? _currentCancellationSource;
-    private ObservableCollection<CosmeticItemModel> _cosmetics = new();
 
     public ObservableCollection<CosmeticItemModel> Cosmetics
     {
-        get => _cosmetics;
+        get;
         set
         {
-            _cosmetics = value;
+            field = value;
             OnPropertyChanged(nameof(Cosmetics));
-            
-            CosmeticsView = CollectionViewSource.GetDefaultView(_cosmetics);
+
+            CosmeticsView = CollectionViewSource.GetDefaultView(field);
             CosmeticsView.Filter = FilterCosmetics;
         }
-    }
-
-    private ICollectionView _cosmeticsView;
+    } = new();
 
     public ICollectionView CosmeticsView
     {
-        get => _cosmeticsView;
+        get;
         private set
         {
-            _cosmeticsView = value;
+            field = value;
             OnPropertyChanged(nameof(CosmeticsView));
         }
     }
-    
-    private bool _isProcessing;
+
     public bool IsProcessing
     {
-        get => _isProcessing;
+        get;
         set
         {
-            _isProcessing = value;
+            field = value;
             OnPropertyChanged();
         }
     }
-    
+
     private string _searchText = string.Empty;
     public string SearchText
     {
@@ -82,23 +78,22 @@ public class CosmeticsViewModel : ViewModel
             CosmeticsView.Refresh();
         }
     }
-    
-    private CosmeticFilter _selectedFilter = CosmeticFilter.None;
+
     public CosmeticFilter SelectedFilter
     {
-        get => _selectedFilter;
+        get;
         set
         {
-            if (_selectedFilter == value)
+            if (field == value)
                 return;
 
-            _selectedFilter = value;
+            field = value;
             OnPropertyChanged(nameof(SelectedFilter));
 
             OnTabSwitched();
             CosmeticsView.Refresh();
         }
-    }
+    } = CosmeticFilter.None;
 
     public PanelType CosmeticPanelType { get; set; } = PanelType.AccountCosmetics;
     

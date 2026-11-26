@@ -7,29 +7,27 @@ namespace Boundless.Desktop.UserControls.Popups;
 public partial class MultipleOptionsPopup : UserControl
 {
     private readonly IEnumerable<KeyValuePair<string, Action>> _choicesAndActions;
-    
-    private string _title;
+
     public string Title
     {
-        get => _title;
+        get;
         set
         {
-            _title = value;
+            field = value;
             TitleTextBlock.Text = value;
         }
     }
-    
-    private string _message;
+
     public string Message
     {
-        get => _message;
+        get;
         set
         {
-            _message = value;
+            field = value;
             MessageTextBlock.Text = value;
         }
     }
-    
+
     public MultipleOptionsPopup(string? title, string? message, params KeyValuePair<string, Action>[] choicesAndActions)
     {
         _choicesAndActions = choicesAndActions;

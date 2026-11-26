@@ -24,89 +24,75 @@ public class CosmeticItemModel : INotifyPropertyChanged
 
     private string _channel;
     private string _tag;
-    
-    private CosmeticData? _data;
 
     public CosmeticData? Data
     {
-        get => _data;
+        get;
         private set
         {
-            _data = value;
+            field = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(IsNull));
             OnPropertyChanged(nameof(ItemName));
         }
     }
 
-    private EFortRarity _rarity;
-
     public EFortRarity Rarity
     {
-        get => _rarity;
+        get;
         private set
         {
-            _rarity = value;
+            field = value;
             OnPropertyChanged();
         }
     }
-
-    private Uri? _iconUri;
 
     public Uri? IconUri
     {
-        get => _iconUri;
+        get;
         private set
         {
-            _iconUri = value;
+            field = value;
             OnPropertyChanged();
         }
     }
-
-    private BitmapSource? _iconSource;
 
     public BitmapSource? IconSource
     {
-        get => _iconSource;
+        get;
         private set
         {
-            _iconSource = value;
+            field = value;
             OnPropertyChanged();
         }
     }
-    
-    private BitmapSource? _backgroundSource;
 
     public BitmapSource? BackgroundSource
     {
-        get => _backgroundSource;
+        get;
         private set
         {
-            _backgroundSource = value;
+            field = value;
             OnPropertyChanged();
         }
     }
-
-    private Brush? _backgroundRadial;
 
     public Brush? BackgroundRadial
     {
-        get => _backgroundRadial;
+        get;
         set
         {
-            _backgroundRadial = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
-    private Brush? _borderColor;
-
     public Brush? BorderColor
     {
-        get => _borderColor;
+        get;
         private set
         {
-            _borderColor = value;
+            field = value;
             OnPropertyChanged();
         }
     }

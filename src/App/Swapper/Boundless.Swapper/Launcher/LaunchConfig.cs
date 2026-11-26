@@ -17,6 +17,7 @@ public class LaunchConfig
                                               @"\BoundlessLauncher\Launcher";
     public string ExePath => LauncherDirectory + "\\ProSwapper.Launcher.exe";
     public string EditsPath => LauncherDirectory + "\\Edits.json";
+    public static string KeyPath => LauncherDirectory + "\\key.txt";
     public string DataPath => LauncherDirectory + "\\Data";
     
     private List<Edit> Edits { get; } = new();

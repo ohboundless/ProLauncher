@@ -17,7 +17,7 @@ public static class Globals
 {
     public const string VERSION = "1.0.0";
 
-    public const string BACKEND_URI = "http://localhost:5197";
+    public const string BACKEND_URI = "http://201.79.44.147";
     public static RestClient Client = new(BACKEND_URI);
 
     public static MainWindow? MainWindow;

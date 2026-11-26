@@ -7,39 +7,37 @@ namespace Boundless.Desktop.UserControls.Popups;
 
 public partial class MessagePopup : UserControl
 {
-    private string _title;
     public string Title
     {
-        get => _title;
+        get;
         set
         {
-            _title = value;
+            field = value;
             TitleTextBlock.Text = value;
         }
     }
-    
-    private string _message;
+
     public string Message
     {
-        get => _message;
+        get;
         set
         {
-            _message = value;
+            field = value;
             MessageTextBlock.Text = value;
         }
     }
 
-    private string _confirmButtonText;
     public string ConfirmButtonText
     {
-        get => _confirmButtonText;
+        get;
         set
         {
-            _confirmButtonText = value;
+            field = value;
             ConfirmButton.Content = value;
         }
     }
 
+    private bool _confirmed;
     public readonly Action? ConfirmAction;
     public PopupContainer? ParentGrid { get; set; }
     
@@ -60,11 +58,21 @@ public partial class MessagePopup : UserControl
         ParentGrid ??= MainWindow!.PopupContainer;
         ConfirmAction?.Invoke();
         RemovePopup();
+
+        _confirmed = true;
     }
 
-    public static void Show(string title, string message, string confirmButtonText = "Ok", Action? confirmAction = null)
+    public static MessagePopup? Show(string title, string message, string confirmButtonText = "Ok", Action? confirmAction = null)
     {
-        MainWindow?.PopupContainer.ShowMessage(title, message, confirmButtonText, confirmAction);
+        return MainWindow?.PopupContainer.ShowMessage(title, message, confirmButtonText, confirmAction);
+    }
+
+    public async Task WaitAsync()
+    {
+        while (!_confirmed)
+        {
+            await Task.Delay(150);
+        }
     }
     
     public void RemovePopup() => ParentGrid.RemovePopup(this);

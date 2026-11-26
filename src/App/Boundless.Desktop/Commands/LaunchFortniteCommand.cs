@@ -4,9 +4,11 @@ using Boundless.Desktop.Exceptions;
 using Boundless.Desktop.Games;
 using Boundless.Desktop.Games.EpicGames.Fortnite.API;
 using Boundless.Desktop.UserControls.Popups;
+using Boundless.Desktop.Utils;
 using Boundless.Swapper.Launcher;
 using LobbyBotController;
 using Newtonsoft.Json;
+using RestSharp;
 
 namespace Boundless.Desktop.Commands;
 
@@ -95,17 +97,49 @@ public class LaunchFortniteCommand : ICommand
     {
         try
         {
+            checkKey:
+            var valid = false;
+            if (File.Exists(LaunchConfig.KeyPath))
+            {
+                var key = await File.ReadAllTextAsync(LaunchConfig.KeyPath);
+                valid = await CheckKey(key);
+            }
+
+            if (!valid)
+            {
+                await GetKey();
+                goto checkKey;
+            }
+            
             var launcherProc = Launcher.Launch();
             if (launcherProc != null)
             {
                 launcherProc.EnableRaisingEvents = true;
                 launcherProc.Exited += (_, _) => BotController.Stop();
+
+                await Task.Delay(5000);
+                if (launcherProc.HasExited && launcherProc.ExitCode == 1) // Invalid key
+                {
+                    File.Delete(LaunchConfig.KeyPath);
+                    goto checkKey;
+                }
             }
 
-            await Task.Delay(5000); // Wait for a possibly invalid key to reset
-            while (!File.Exists(LaunchConfig.LauncherDirectory + "\\key.txt"))
+            async Task GetKey()
             {
-                await Task.Delay(1000);
+                await MessagePopup.Show("Invalid Swapper Key", "Please enter a valid key")!.WaitAsync();
+
+                var key = await new InputPopup("Enter Swapper Key")
+                    .GetValueAsync();
+                await File.WriteAllTextAsync(LaunchConfig.KeyPath, key.Trim());
+            }
+
+            async Task<bool> CheckKey(string key)
+            {
+                var request = new RestRequest($"/api/key/validate?app={key}");
+                var response = await Client.GetAsync<string>(request);
+
+                return response == "true";
             }
         }
         catch (Exception ex)

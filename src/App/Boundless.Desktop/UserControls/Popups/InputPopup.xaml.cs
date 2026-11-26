@@ -7,50 +7,54 @@ namespace Boundless.Desktop.UserControls.Popups;
 
 public partial class InputPopup : UserControl
 {
-    public PopupContainer ParentGrid;
-
-    private string _title;
     public string Title
     {
-        get => _title;
+        get;
         set
         {
-            _title = value;
+            field = value;
             TitleTextBlock.Text = value;
         }
     }
 
-    private string _confirmButtonText;
     public string ConfirmButtonText
     {
-        get => _confirmButtonText;
+        get;
         set
         {
-            _confirmButtonText = value;
+            field = value;
             ConfirmButton.Content = value;
         }
     }
 
-    private Action<string>? ConfirmAction;
+    private bool _confirmed;
     
-    public InputPopup(PopupContainer parentGrid, string title, 
-        string confirmButtonText = "Confirm", Action<string>? confirmAction = null)
+    public InputPopup(string title, string confirmButtonText = "Confirm")
     {
         InitializeComponent();
         
-        ParentGrid = parentGrid;
         Title = title;
         ConfirmButtonText = confirmButtonText;
-        ConfirmAction = confirmAction;
-
-        parentGrid.Container.Children.Add(this);
     }
 
     private void Ok_OnClick(object sender, RoutedEventArgs e)
     {
-        ConfirmAction?.Invoke(TextBox.Text);
-        RemovePopup();
+        MainWindow.PopupContainer.RemovePopup(this);
+        _confirmed = true;
     }
     
-    public void RemovePopup() => ParentGrid.RemovePopup(this);
+    public async Task<string> GetValueAsync()
+    {
+        await Dispatcher.InvokeAsync(() =>
+        {
+            MainWindow.PopupContainer.AddPopup(this);
+        });
+        
+        while (!_confirmed)
+        {
+            await Task.Delay(150);
+        }
+
+        return TextBox.Text;
+    }
 }
