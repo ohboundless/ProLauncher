@@ -92,9 +92,6 @@ public partial class AccountEntry : UserControl
 
     private async void AccountEntry_OnClick(object sender, MouseButtonEventArgs e)
     {
-        if (e.ChangedButton == MouseButton.Right)
-            return;
-        
         foreach (var child in _panel.Children)
         {
             if (child is AccountEntry entry)

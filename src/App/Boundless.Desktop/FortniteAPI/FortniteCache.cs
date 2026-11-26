@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Concurrent;
+using System.Data;
 using System.IO;
 using System.Net.Http;
 using Boundless.Desktop.FortniteAPI.Models;
@@ -22,6 +23,8 @@ public static class FortniteCache
     {
         try
         {
+            Directory.CreateDirectory(ImagePath);
+            
             if (!File.Exists(FilePath))
             {
                 Log("FortniteApiCache", LogLevel.Info,
@@ -106,7 +109,6 @@ public static class FortniteCache
     #endregion
 
     #region Icons
-
     private static string GetImagePath(this CosmeticData cosmeticData, string? channel = null, string? tag = null)
     {
         if (channel != null && tag != null)
@@ -135,14 +137,34 @@ public static class FortniteCache
         
         return path;
     }
+    #endregion
     
+    #region Image Caching
+    private static readonly ConcurrentDictionary<string, Lazy<Task>> _activeDownloads = new();
+
     public static async Task<string> CacheImageFromUrlAsync(string uri, string? overrideName = null)
     {
-        var path = $"{ImagePath}\\{overrideName}.png";
-        if (overrideName == null)
-            path = $"{ImagePath}\\{uri.Split("/").Last()}";
+        var fileName = overrideName != null 
+            ? $"{overrideName}.png" 
+            : uri.Split('/').Last();
+        var path = Path.Combine(ImagePath, fileName);
+
+        var lazyTask = _activeDownloads.GetOrAdd(path, _ => new Lazy<Task>(async () =>
+        {
+            try
+            {
+                if (File.Exists(path)) 
+                    return;
+
+                await CacheImageAsync(uri, path);
+            }
+            finally
+            {
+                _activeDownloads.TryRemove(path, out var _);
+            }
+        }));
         
-        await CacheImageAsync(uri, path);
+        await lazyTask.Value;
         
         return path;
     }
