@@ -28,6 +28,10 @@ If you would like to receive support or obtain a key, please join our [Discord](
 ## Download
 Head over to the [Releases](https://github.com/ohboundless/ProLauncher/releases) page and download either ProLauncher if you would like the full experience. Or just FortniteAccountManager for the features without a key.
 
+## Prerequisites
+- https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-10.0.13-windows-x64-installer
+- https://nodejs.org/dist/v24.22.0/node-v24.22.0-x64.msi
+
 ### Bugs
 Please report any bugs you find and I will do my best to fix them.
 
