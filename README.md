@@ -23,7 +23,10 @@ It's basically like a resource pack for Minecraft, except for Fortnite. It does 
 The actual account managing is done completely on your machine. Your passwords are not held on any external servers. 
 
 ## Our Discord
-If you would like to recieve support or obtain a key, please join our [Discord](https://discord.com/invite/ueKadV6kCy)
+If you would like to receive support or obtain a key, please join our [Discord](https://discord.com/invite/ueKadV6kCy)
+
+## Download
+Head over to the [Releases](https://github.com/ohboundless/ProLauncher/releases) page and download either ProLauncher if you would like the full experience. Or just FortniteAccountManager for the features without a key.
 
 ### Bugs
 Please report any bugs you find and I will do my best to fix them.
