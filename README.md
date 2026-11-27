@@ -16,7 +16,7 @@ It's basically like a resource pack for Minecraft, except for Fortnite. It does 
 ## Features:
 (With a key)
 - Swap the default Emmy skin to any skin
-- Swap "No Backbling" do any backbling
+- Swap "No Backbling" to any backbling
 - Swap compatible pickaxes (a little buggy at times)
 - Swap any emote to any emote
 
