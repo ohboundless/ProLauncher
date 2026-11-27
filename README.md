@@ -11,7 +11,7 @@ A multi-tool launcher for Fortnite
 - View currently equipped skin
 
 Using a key, you can access the skin swapper/skin changer.
-It's basically like a resource pack for Minecraft, except for Fortnite. It does not show the swapped skin for other people. It is purely client-sided.
+It's basically like a resource pack on Minecraft, except for Fortnite. It does not show the swapped skin for other people. It is purely client-sided.
 
 ## Features:
 (With a key)
