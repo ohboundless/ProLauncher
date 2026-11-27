@@ -23,7 +23,7 @@ It's basically like a resource pack for Minecraft, except for Fortnite. It does 
 The actual account managing is done completely on your machine. Your passwords are not held on any external servers. 
 
 ## Our Discord
-If you would like to recieve support or obtain a key, please join our [discord](https://discord.com/invite/ueKadV6kCy)
+If you would like to recieve support or obtain a key, please join our [Discord](https://discord.com/invite/ueKadV6kCy)
 
 ### Bugs
 Please report any bugs you find and I will do my best to fix them.
